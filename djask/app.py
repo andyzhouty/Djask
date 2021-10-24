@@ -24,16 +24,18 @@ class Djask(APIFlask):
             admin_bp,
             url_prefix="/admin",
         )
-        
+
     @staticmethod
-    def _error_handler(error: HTTPError) -> t.Union[t.Tuple[dict, int], t.Tuple[dict, int, t.Mapping[str, str]]]:
+    def _error_handler(
+        error: HTTPError,
+    ) -> t.Union[t.Tuple[dict, int], t.Tuple[dict, int, t.Mapping[str, str]]]:
         """Override the default error handler in APIFlask"""
         body = f"{error.status_code} {error.message}<br />{error.detail}"
         return body, error.status_code, error.headers
 
     def error_processor(self, f: ErrorCallbackType) -> ErrorCallbackType:
         """Override the default error processor in APIFlask"""
-        if hasattr(self, 'ensure_sync'):  # pragma: no cover
+        if hasattr(self, "ensure_sync"):  # pragma: no cover
             self.error_callback = self.ensure_sync(f)
         else:  # pragma: no cover
             self.error_callback = f

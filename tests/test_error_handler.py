@@ -6,7 +6,7 @@ def test_default_error_processor(app, client):
     @app.get("/404")
     def handle_404():
         abort(404)
-    
+
     rv = client.get("/404")
     assert rv.status_code == 404
     assert "Not Found" in rv.get_data(as_text=True)

@@ -17,7 +17,6 @@ def test_register_model(app, client):
 
     assert app.config["ADMIN_MODEL_MAP"]["testmodel"] == TestModel
 
-
     rv = client.get("/admin/testmodel")
     assert rv.status_code == 200
 
