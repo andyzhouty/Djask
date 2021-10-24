@@ -1,26 +1,28 @@
 [project]
-name = "djask"
-version = "0.1.0"
-description = ""
 authors = [
-    {name = "andyzhou", email = "andyforever0108@outlook.com"},
+  {name = "andyzhou", email = "andyforever0108@outlook.com"},
 ]
 dependencies = [
-    "flask~=2.0",
-    "apiflask~=0.10",
+  "flask~=2.0",
+  "apiflask~=0.10",
+  "flask-sqlalchemy~=2.5",
+  "flask-wtf~=0.15",
+  "wtforms-sqlalchemy~=0.2",
 ]
-requires-python = ">=3.7"
+description = ""
 dynamic = ["classifiers"]
 license = {text = "MIT"}
+name = "djask"
+requires-python = ">=3.7"
+version = "0.1.0"
 
 [project.urls]
 homepage = ""
 
-
 [project.optional-dependencies]
 [build-system]
-requires = ["pdm-pep517"]
 build-backend = "pdm.pep517.api"
+requires = ["pdm-pep517"]
 
 [tool]
 [tool.pdm]
@@ -28,4 +30,5 @@ build-backend = "pdm.pep517.api"
 dev = [
     "black<22,>=21.9b0",
     "pytest~=6.2",
+    "pytest-cov~=3.0",
 ]

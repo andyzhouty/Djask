@@ -10,4 +10,9 @@ More features to be done...
 
 ## Documentation
 
-The documentation hasn't been written yet. You might want to check out [APIFlask's Doc](https://apiflask.com) for the time being. But note that the `app.error_processor` method has been renamed to `app.api_error_processor` for possible future needs.
+The documentation hasn't been written yet.
+
+You can have these 
+
+- For API Features, pls refer to [APIFlask Document](https://apiflask.com).
+  Note that the `app.error_processor` is rewritten.
