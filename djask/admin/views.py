@@ -1,11 +1,11 @@
-from flask import render_template, abort
+from flask import Blueprint, render_template, abort
 from flask.globals import current_app
 
-from . import admin_bp
+admin_bp = Blueprint("admin", __name__)
 
 
 @admin_bp.route("/")
-def admin_index():
+def index():
     return render_template(
         "admin/main.html", models=current_app.config["ADMIN_MODEL_MAP"].values()
     )

@@ -28,7 +28,15 @@ requires = ["pdm-pep517"]
 [tool.pdm]
 [tool.pdm.dev-dependencies]
 dev = [
-    "black<22,>=21.9b0",
-    "pytest~=6.2",
-    "pytest-cov~=3.0",
+  "black<22,>=21.9b0",
+  "pytest~=6.2",
+  "pytest-cov~=3.0",
 ]
+
+[tool.pytest.ini_options]
+addopts = "--cov=djask"
+
+[tool.coverage.run]
+branch = true
+omit = ["*.html"]
+source = ["djask"]
