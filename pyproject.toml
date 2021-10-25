@@ -34,7 +34,8 @@ dev = [
 ]
 
 [tool.pytest.ini_options]
-addopts = "--cov=djask"
+addopts = "tests --cov=djask"
+testpaths = ["tests"]
 
 [tool.coverage.run]
 branch = true
