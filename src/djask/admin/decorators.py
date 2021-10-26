@@ -1,4 +1,4 @@
-from flask.globals import current_app
+from flask import current_app
 from flask_sqlalchemy import Model
 
 
