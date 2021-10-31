@@ -1,11 +1,10 @@
 from werkzeug.security import generate_password_hash, check_password_hash
-import sqlalchemy as db
-from sqlalchemy.ext.declarative import declarative_base, AbstractConcreteBase
+from ..extensions import db
+from sqlalchemy.ext.declarative import AbstractConcreteBase
+from flask_login.mixins import UserMixin, AnonymousUserMixin
 
-Base = declarative_base()
 
-
-class User(AbstractConcreteBase, Base):
+class AbstractUser(AbstractConcreteBase):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(128), index=True, unique=True)
     name = db.Column(db.String(128))
@@ -18,3 +17,12 @@ class User(AbstractConcreteBase, Base):
 
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
+
+
+class User(AbstractUser, db.Model, UserMixin):
+    def __repr__(self):
+        return f"<User {self.username}>"
+
+
+class AnonymousUser(AnonymousUserMixin):
+    is_admin = False

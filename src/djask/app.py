@@ -1,10 +1,12 @@
+import os
 import os.path as path
 import typing as t
 
 from apiflask import APIFlask
 from apiflask.exceptions import HTTPError
 
-from .extensions import db
+from .extensions import bootstrap, compress, csrf, db
+from .types import Config, ErrorResponse
 
 
 def _check_empty(data: t.Any) -> t.Any:
@@ -12,21 +14,41 @@ def _check_empty(data: t.Any) -> t.Any:
 
 
 class Djask(APIFlask):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+    def __init__(
+        self,
+        import_name: t.Optional[str],
+        config: t.Optional[Config] = None,
+        *args,
+        **kwargs,
+    ):
+        super().__init__(*[import_name, *args], **kwargs)
         self.config.setdefault("ADMIN_SITE", False)
         self.config.setdefault("ADMIN_MODEL_MAP", {})
+        self.config.setdefault("SECRET_KEY", "djask_secret_key")
+        self.secret_key = os.getenv("SECRET_KEY", "djask_secret_key")
+        if config:  # pragma: no cover
+            for k, v in config.items():
+                self.config[k] = v
         self.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-        self.db = db
-        self.db.init_app(self)
         self.template_folder = path.abspath(
             path.join(path.dirname(__file__), "templates")
         )
 
+        self._register_extensions()
+
+    def _register_extensions(self) -> None:
+        """Register the built-in extensions"""
+        for ext in (
+            bootstrap,
+            compress,
+            csrf,
+            db,
+        ):
+            ext.init_app(self)
+        self.db = db
+
     @staticmethod
-    def _error_handler(
-        error: HTTPError,
-    ) -> t.Union[t.Tuple[dict, int], t.Tuple[dict, int, t.Mapping[str, str]]]:
+    def _error_handler(error: HTTPError) -> ErrorResponse:
         """Override the default error handler in APIFlask"""
         status_code, message = (
             _check_empty(error.status_code),

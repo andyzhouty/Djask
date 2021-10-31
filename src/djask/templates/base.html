@@ -4,14 +4,30 @@
 <head>
     <meta charset="utf-8">
     <meta viewport="width=device-width, initial-scale=1.0">
+    {{ bootstrap.load_css() }}
     <title>{% block title %}{% endblock %}</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
 </head>
 
 <body>
+    {% block flashed_messages %}
+        {% for message in get_flashed_messages(with_categories=True) %}
+        {% if message[0] != 'message' and message[0] %}
+            {% set category = message[0] %}
+        {% else %}
+            {% set category = 'info' %}
+        {% endif %}
+        {% set message_content = message[1] %}
+        <div class="alert alert-{{ category }}" class="close">
+            <button type="button" class="close" data-dismiss="alert">&times;
+            </button>
+            {{ message_content }}
+        </div>
+        {% endfor %}
+    {% endblock %}
     <main class="container">
         {% block content %}{% endblock %}
     </main>
+    {{ bootstrap.load_js() }}
 </body>
 
 </html>

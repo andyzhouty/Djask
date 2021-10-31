@@ -8,7 +8,9 @@ dependencies = [
   "flask-sqlalchemy~=2.5",
   "flask-wtf~=0.15",
   "wtforms-sqlalchemy~=0.2",
-]
+  "flask-login~=0.5",
+  "bootstrap-flask~=1.8",
+  "flask-compress~=1.10"]
 description = ""
 dynamic = ["classifiers"]
 license = {text = "MIT"}
@@ -34,7 +36,7 @@ dev = [
 ]
 
 [tool.pytest.ini_options]
-addopts = "tests --cov=djask"
+addopts = "--cov=djask"
 testpaths = ["tests"]
 
 [tool.coverage.run]
