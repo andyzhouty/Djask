@@ -4,12 +4,12 @@ from djask.admin import Admin
 from djask.auth.models import User
 
 
-
 app = Djask(__name__)
 admin_ext = Admin() # initialize the admin site
 admin_ext.init_app(app)
 
 db = app.db
+
 
 @app.before_first_request
 def init_db():

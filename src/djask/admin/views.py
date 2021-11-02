@@ -1,7 +1,8 @@
 from typing import Optional
 
-from flask import Blueprint, render_template, abort, flash, redirect, url_for, request
-from flask.globals import current_app
+from flask import render_template, abort, flash, redirect, url_for
+from flask.globals import current_app, request
+from flask.blueprints import Blueprint
 from flask_login.utils import login_user, logout_user
 
 from .forms import LoginForm
@@ -22,6 +23,7 @@ def login():
     form = LoginForm()
     if form.validate_on_submit():
         user = User.query.filter_by(username=form.username.data).first()
+        # identify the user
         if not user:
             flash("User not found.", "danger")
         elif not user.is_admin:

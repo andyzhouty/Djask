@@ -5,6 +5,13 @@ from flask_login.mixins import UserMixin, AnonymousUserMixin
 
 
 class AbstractUser(AbstractConcreteBase):
+    """
+    A base class for all user models.
+
+    It enables you to define a user model other than the User model below
+    
+    .. versionadded:: 0.1.0
+    """
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(128), index=True, unique=True)
     name = db.Column(db.String(128))
@@ -20,9 +27,20 @@ class AbstractUser(AbstractConcreteBase):
 
 
 class User(AbstractUser, db.Model, UserMixin):
+    """
+    An implementation of the AbstractUser class used for admin interface.
+    
+    .. versionadded:: 0.1.0
+    """
+
     def __repr__(self):
         return f"<User {self.username}>"
 
 
 class AnonymousUser(AnonymousUserMixin):
+    """
+    An implementation of the AnonymousUserMixin provided by flask-login.
+    
+    .. versionadded:: 0.1.0
+    """
     is_admin = False

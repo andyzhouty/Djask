@@ -51,9 +51,10 @@ requires = ["pdm-pep517"]
 [tool.pdm]
 [tool.pdm.dev-dependencies]
 dev = [
-  "black<22,>=21.9b0",
-  "pytest~=6.2",
-  "pytest-cov~=3.0",
+    "black<22,>=21.9b0",
+    "pytest~=6.2",
+    "pytest-cov~=3.0",
+    "sphinx~=4.2",
 ]
 
 [tool.pytest.ini_options]

@@ -7,14 +7,25 @@ from flask_sqlalchemy import Model
 
 
 def register(model: Model) -> Model:
-    """Register the model to the admin page."""
+    """
+    Register the model to the admin page.
+    
+    .. versionadded:: 0.1.0
+    
+    :param model: The data model to be wrapped
+    """
     current_app.config["ADMIN_MODELS"].append(model)
     return model
 
 
 def admin_required(func: t.Callable) -> t.Callable:
-    """Decorator to require admin access."""
-
+    """
+    Decorator to require admin access.
+    
+    .. versionadded:: 0.1.0
+    
+    :param func: The route to be wrapped by this decorator.
+    """
     @wraps(func)
     def wrapper(*args, **kwargs) -> Response:
         print(current_user)

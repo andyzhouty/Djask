@@ -1,3 +1,7 @@
+"""
+Provide a pluggable admin interface for Djask.
+"""
+
 import typing as t
 
 from flask_login import LoginManager
@@ -17,12 +21,21 @@ def load_user(user_id: int) -> User:
 
 class Admin:
     def __init__(self, app: Djask = None) -> None:
-        """Initialize the Admin extension."""
+        """
+        Initialize the Admin extension.
+
+        .. versionadded:: 0.1.0
+        :param app: A Djask app
+        """
         if app is not None:  # pragma: no cover
             self.init_app(app)
 
     def init_app(self, app: Djask) -> None:
-        """Initialize"""
+        """
+        Another way to initilize the Admin extension.
+        
+        .. versionadded:: 0.1.0
+        """
         if app is not None:  # pragma: no cover
             self.app = app
         if not hasattr(app, "extensions") or app.extensions is None:  # pragma: no cover
@@ -34,8 +47,20 @@ class Admin:
         self.app.register_blueprint(admin_bp)
 
     def register_model(self, model: Model) -> None:
+        """
+        Register a SQLAlchemy model with the admin site.
+        
+        .. versionadded:: 0.1.0
+        :param model: A SQLAlchemy model
+        """
         self.app.config["ADMIN_MODELS"].append(model)
 
     def register_models(self, *models: t.List[Model]) -> None:
+        """
+        Register multiple SQLAlchemy models with the admin site at a time.
+        
+        .. versionadded:: 0.1.0
+        :param models: A list of SQLAlchemy models
+        """
         for model in models:
             self.register_model(model)
