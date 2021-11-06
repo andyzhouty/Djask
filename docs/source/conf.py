@@ -17,7 +17,7 @@ sys.path.insert(0, os.path.abspath('../src/djask'))
 
 # -- Project information -----------------------------------------------------
 
-project = 'djask'
+project = 'Djask'
 copyright = '2021, Andy Zhou'
 author = 'Andy Zhou'
 
