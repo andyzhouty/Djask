@@ -1,27 +1,8 @@
-import pytest
-
 from flask_sqlalchemy import Model
 
 from djask.blueprints import Blueprint
 from djask.auth.models import User
-from djask.admin.ext import Admin
 from djask.extensions import db
-
-admin_ext = Admin()
-
-
-@pytest.fixture
-def admin(app, client):
-    admin_ext.init_app(app)
-    db.create_all()
-    user = User(username="test", is_admin=True)
-    user.set_password("test")
-    db.session.add(user)
-    db.session.commit()
-
-    rv = client.post("/admin/login", data={"username": "test", "password": "test"})
-    print(rv.status_code)
-    return app
 
 
 def test_no_admin(client):
