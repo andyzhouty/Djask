@@ -1,9 +1,9 @@
 # Djask
 
-<img src="https://raw.githubusercontent.com/z-t-y/djask/main/icon/djask.svg" width="200">
+<img src="https://raw.githubusercontent.com/z-t-y/Djask/main/icon/djask.svg" width="200">
 
-![Test Status](https://github.com/z-t-y/djask/workflows/Test/badge.svg)
-![Test Status](https://github.com/z-t-y/djask/workflows/Lint/badge.svg)
+![Test Status](https://github.com/z-t-y/Djask/workflows/Test/badge.svg)
+![Test Status](https://github.com/z-t-y/Djask/workflows/Lint/badge.svg)
 Djask is a web framework for python which stands on the top of [Flask](https://flask.palletsproject.com) and will be as powerful as [Django](https://djangoproject.com).
 
 ## Features
