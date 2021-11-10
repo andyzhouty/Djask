@@ -24,3 +24,5 @@ jobs:
       - name: Publish to GitHub
         run: |
           gh release create $(pdm show --version) ./dist/* -F CHANGES.md
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

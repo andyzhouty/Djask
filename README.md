@@ -1,6 +1,6 @@
 # Djask
 
-<img src="./icon/djask.svg" width="200">
+<img src="https://raw.githubusercontent.com/z-t-y/djask/main/icon/djask.svg" width="200">
 
 ![Test Status](https://github.com/z-t-y/djask/workflows/Test/badge.svg)
 ![Test Status](https://github.com/z-t-y/djask/workflows/Lint/badge.svg)
