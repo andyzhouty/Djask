@@ -17,7 +17,10 @@ admin_bp = Blueprint("admin", __name__, url_prefix="/admin")
 def index():
     blueprints = current_app.blueprint_objects
     return render_template(
-        "admin/dashboard.html", User=User, models=current_app.models, blueprints=blueprints
+        "admin/dashboard.html",
+        User=User,
+        models=current_app.models,
+        blueprints=blueprints,
     )
 
 
@@ -55,11 +58,7 @@ def specific_model(model_name: str):
     if model_name not in registered_models:
         abort(404, "Data model not defined or registered.")
     model = models[registered_models.index(model_name)]
-    return render_template(
-        "admin/model.html",
-        model=model,
-        model_name=model.__name__
-    )
+    return render_template("admin/model.html", model=model, model_name=model.__name__)
 
 
 @admin_bp.route("/<model_name>/add")

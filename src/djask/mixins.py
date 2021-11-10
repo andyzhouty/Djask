@@ -8,6 +8,7 @@ class ModelFunctionalityMixin:
 
     .. versionadded: 0.1.0
     """
+
     models: ModelList = []
 
     def model(self, model: ModelType) -> ModelType:

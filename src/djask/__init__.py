@@ -16,5 +16,5 @@ __all__ = [
     "current_app",
     "request",
     "g",
-    "session"
+    "session",
 ]

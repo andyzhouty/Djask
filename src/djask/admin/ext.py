@@ -25,6 +25,7 @@ class Admin:
     .. versionadded: 0.1.0
     :param app: The app to wrap.
     """
+
     app: Djask
     blueprint: Blueprint
 

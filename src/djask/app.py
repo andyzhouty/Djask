@@ -36,6 +36,7 @@ class Djask(APIFlask, ModelFunctionalityMixin):
     :param config: The config object for the application, can be a dict or another Python object.
     :param import_name: Exactly the same as the ``import_name`` parameter in :class:`~flask.Flask`.
     """
+
     blueprint_objects: t.List[Blueprint] = []
 
     def __init__(
