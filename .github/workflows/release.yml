@@ -1,16 +1,17 @@
-name: Lint
+name: Release
 
 on:
-  release:
-    types: [created]
+  push:
+    tags:
+      - 'v*'
 
 jobs:
-  lint:
+  release:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - name: Setup PDM
-        uses: actions/setup-pdm@main
+        uses: pdm-project/setup-pdm@main
         with:
           python-version: 3.9
       - name: PDM Build
