@@ -1,0 +1,137 @@
+html {
+    --light-link-color: rgba(255, 255, 255, 0.9);
+    --light-link-hover-color: rgba(255, 255, 255, 0.7);
+    --normal-link-color: rgba(255, 161, 53, 0.7);
+    --normal-link-hover-color: rgba(255, 161, 53, 0.9);
+    --fixtop-height: 6vh;
+}
+
+body {
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif,
+    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji" !important;
+}
+
+aside {
+    width: auto;
+    padding: 1.5vh;
+    max-width: 27vh;
+    position: fixed;
+    background-color: rgba(0, 0, 20, 0.9);
+    color: #fff;
+    height: 100vh;
+}
+
+.aside-header {
+    padding: 2px;
+    font-size: 1.5em;
+    font-weight: bold;
+    text-align: center;
+}
+
+.aside-logo {
+    margin-right: 3px;
+    width: 40px;
+    height: 40px;
+    background-color: #fff;
+    border-radius: 50%;
+}
+
+.menu {
+    list-style: none;
+    margin-top: 10vh;
+}
+
+.menu li {
+    text-align: center;
+}
+
+.aside-link {
+    text-decoration: none;
+    font-size: 1.4em;
+    color: var(--light-link-color);
+    margin: 8px 0 8px 0;
+}
+
+.aside-link:hover {
+    text-decoration: none;
+    color: var(--light-link-hover-color);
+}
+
+.aside-link-text {
+    margin: 0 0 0 8px;
+}
+
+@media screen and (max-width: 1366px) {
+    .aside-header-text {
+        display: block;
+        margin-top: 2vh;
+    }
+}
+
+@media screen and (max-width: 768px) {
+
+    .aside-header-text,
+    .aside-link-text {
+        display: none;
+    }
+}
+
+main {
+    overflow: auto;
+}
+
+.fixtop {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    height: var(--fixtop-height);
+}
+
+.fixtop-header {
+    line-height: 1.7em;
+    font-size: 1.7em;
+    width: 100%;
+    height: var(--fixtop-height);
+    background-color: #fff;
+    padding-top: calc((var(--fixtop-height) - 1.7em) / 2) !important;
+}
+
+.fixtop-header .bi {
+    margin: 0 0 0 10px;
+}
+
+.page-content {
+    padding-top: calc(var(--fixtop-height) + 5px);
+    overflow: auto;
+    height: 100vh;
+    background-color: #f0f2f5;
+}
+
+.models-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 0.5fr));
+    grid-gap: 2vh;
+    margin: 0 1vh auto 1vh;
+    max-width: 100%;
+}
+
+.board {
+    background-color: #fff;
+    border-radius: 2px;
+    padding: 2vh;
+}
+
+.board-header {
+    font-size: 1.5em;
+}
+
+.model-link {
+    font-size: 1.2em;
+    text-decoration: none;
+    color: var(--normal-link-color);
+}
+
+.model-link:hover {
+    text-decoration: none;
+    color: var(--normal-link-hover-color);
+}

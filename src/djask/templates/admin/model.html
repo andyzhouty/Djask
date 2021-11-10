@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% from "macros.html" import render_top_panel %}
+{% block content %}
+    {% include "aside.html" %}
+    <main>
+        {{ render_top_panel("Model "+model_name, "") }}
+        <div class="page-content">
+            <h1 class="text-center">This page is under construction.</h1>
+        </div>
+    </main>
+{% endblock %}

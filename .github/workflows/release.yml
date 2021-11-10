@@ -1,0 +1,25 @@
+name: Lint
+
+on:
+  release:
+    types: [created]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup PDM
+        uses: actions/setup-pdm@main
+        with:
+          python-version: 3.9
+      - name: PDM Build
+        run: pdm build
+      - name: Publish a Python distribution to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          user: __token__
+          password: ${{ secrets.PYPI_API_TOKEN }}
+      - name: Publish to GitHub
+        run: |
+          gh release create $(pdm show --version) ./dist/* -F CHANGES.md

@@ -2,8 +2,8 @@ import pytest
 
 from flask_sqlalchemy import Model
 
+from djask.blueprints import Blueprint
 from djask.auth.models import User
-from djask.admin.decorators import register
 from djask.admin.ext import Admin
 from djask.extensions import db
 
@@ -20,6 +20,7 @@ def admin(app, client):
     db.session.commit()
 
     rv = client.post("/admin/login", data={"username": "test", "password": "test"})
+    print(rv.status_code)
     return app
 
 
@@ -78,14 +79,17 @@ def test_admin_page(admin, client):
 
 
 def test_register_model(admin, client):
-    @register
+    @admin.model
     class TestModel(Model):
         pass
 
     class TestModel2(Model):
         pass
 
-    assert TestModel in admin.config["ADMIN_MODELS"]
+    class TestModel3(Model):
+        pass
+
+    assert TestModel in admin.models
 
     rv = client.get("/admin/testmodel")
     assert rv.status_code == 200
@@ -94,28 +98,31 @@ def test_register_model(admin, client):
     rv = client.get("/admin/testmodel2")
     assert rv.status_code == 404
 
-
-def test_user_model(admin, client):
-    from djask.auth.models import User
-
-    # Test User model
-    u = User()
-    u.set_password("test")
-    assert u.check_password("test")
-    admin_ext.register_model(User)
-
-    rv = client.get("/admin/user")
+    admin.register_models([TestModel2, TestModel3])
+    rv = client.get("/admin/testmodel2")
     assert rv.status_code == 200
 
+    # Test if models are shown on main page
+    rv = client.get("/admin/")
+    rv_data = rv.get_data(as_text=True)
+    assert "TestModel" in rv_data
+    assert "User" in rv_data
 
-def test_register_models(admin, client):
-    from djask.auth.models import User
 
+def test_blueprints(admin, client):
+    bp = Blueprint("bp", __name__)
+
+    @bp.model
     class TestModel(Model):
-        ...
+        pass
 
-    admin_ext.register_models(TestModel, User)
-    rv = client.get("/admin/testmodel")
-    assert rv.status_code == 200
-    rv = client.get("/admin/user")
-    assert rv.status_code == 200
+    # test register a blueprint multiple times
+    admin.register_blueprint(bp)
+    admin.register_blueprint(bp, url_prefix="/bp/")
+
+    print()
+
+    rv = client.get("/admin/")
+    rv_data = rv.get_data(as_text=True)
+    assert "bp" in rv_data
+    assert "TestModel" in rv_data

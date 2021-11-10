@@ -1,5 +1,8 @@
 {% extends "base.html" %}
 {% from "bootstrap/form.html" import render_form %}
 {% block content %}
-    {{ render_form(form) }}
+    <div style="margin-top: 20vh; width: auto; max-width: 70vh" class="container">
+        <h1 class="text-center">Djask Administration</h1>
+        {{ render_form(form, button_style='block btn-primary') }}
+    </div>
 {% endblock %}

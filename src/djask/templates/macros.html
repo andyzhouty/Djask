@@ -1,0 +1,25 @@
+{% macro render_model(model) %}
+    {% set model_name = model.__name__ %}
+    <div class="model model-{{ model_name | lower }} d-flex">
+        <a href="{{ url_for('admin.specific_model', model_name=model_name) }}"
+           alt="{{ model_name }} Model" class="model-link">
+            {{ model_name }}
+        </a>
+        <span class="ml-auto">
+            <a href="{{ url_for('admin.add_model', model_name=model_name) }}"
+               alt="{{ model_name }} Model Add" class="model-link">
+                <i class="bi bi-plus-square"></i>
+                Add
+            </a>
+        </span>
+    </div>
+{% endmacro %}
+
+{% macro render_top_panel(content, icon="grid-1x2") %}
+    <div class="fixtop d-flex align-content-center m-0 p-0">
+        <h2 class="fixtop-header">
+            <i class="bi bi-{{ icon }}"></i>
+            {{ content }}
+        </h2>
+    </div>
+{% endmacro %}

@@ -1,13 +1,13 @@
 from typing import Optional
 
 from flask import render_template, abort, flash, redirect, url_for
-from flask.globals import current_app, request
-from flask.blueprints import Blueprint
 from flask_login.utils import login_user, logout_user
 
 from .forms import LoginForm
 from .decorators import admin_required
 from ..auth.models import User
+from ..blueprints import Blueprint
+from ..globals import current_app, request
 
 admin_bp = Blueprint("admin", __name__, url_prefix="/admin")
 
@@ -15,7 +15,10 @@ admin_bp = Blueprint("admin", __name__, url_prefix="/admin")
 @admin_bp.route("/")
 @admin_required
 def index():
-    return render_template("admin/main.html", models=current_app.config["ADMIN_MODELS"])
+    blueprints = current_app.blueprint_objects
+    return render_template(
+        "admin/dashboard.html", User=User, models=current_app.models, blueprints=blueprints
+    )
 
 
 @admin_bp.route("/login", methods=["GET", "POST"])
@@ -47,12 +50,20 @@ def logout():
 @admin_required
 def specific_model(model_name: str):
     model_name = model_name.lower()
-    registered_models = [
-        model.__name__.lower() for model in current_app.config["ADMIN_MODELS"]
-    ]
+    models = current_app.models
+    registered_models = [model.__name__.lower() for model in models]
     if model_name not in registered_models:
         abort(404, "Data model not defined or registered.")
+    model = models[registered_models.index(model_name)]
     return render_template(
         "admin/model.html",
-        model=current_app.config["ADMIN_MODELS"][registered_models.index(model_name)],
+        model=model,
+        model_name=model.__name__
     )
+
+
+@admin_bp.route("/<model_name>/add")
+@admin_required
+def add_model(model_name: str):
+    # TODO: Write add_model view
+    return "Hello World"  # pragma: no cover

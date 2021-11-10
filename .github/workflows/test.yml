@@ -21,3 +21,8 @@ jobs:
         run: pdm install --dev
       - name: Run pytest
         run: pdm run pytest
+      - name: Generate xml coverage
+        run: pdm run coverage xml
+      - uses: codecov/codecov-action@v2
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }} # not required for public repos

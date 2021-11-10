@@ -1,13 +1,13 @@
-import typing as t
+"""
+This app.py is just a simple demo. Do not write code like this in production.
+"""
 from djask import Djask
 from djask.admin import Admin
 from djask.auth.models import User
 
-
 app = Djask(__name__)
-admin_ext = Admin() # initialize the admin site
+admin_ext = Admin()  # initialize the admin site
 admin_ext.init_app(app)
-
 db = app.db
 
 

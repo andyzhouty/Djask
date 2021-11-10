@@ -5,6 +5,9 @@
     <meta charset="utf-8">
     <meta viewport="width=device-width, initial-scale=1.0">
     {{ bootstrap.load_css() }}
+    <link href="{{ url_for('djask.static', filename='css/style.css') }}" rel="stylesheet">
+    <link href="{{ url_for('djask.static', filename='icon/djask.ico') }}" rel="icon">
+    <link href="{{ djask_bootstrap_icons() }}" rel="stylesheet">
     <title>{% block title %}{% endblock %}</title>
 </head>
 
@@ -24,10 +27,9 @@
         </div>
         {% endfor %}
     {% endblock %}
-    <main class="container">
-        {% block content %}{% endblock %}
-    </main>
+    {% block content %}{% endblock %}
     {{ bootstrap.load_js() }}
+    <script src="{{ url_for('djask.static', filename='js/script.js') }}"></script>
 </body>
 
 </html>
