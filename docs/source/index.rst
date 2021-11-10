@@ -20,6 +20,7 @@ Djask is closely bound to the powerful ORM `SQLAlchemy <https://www.sqlalchemy.o
 API Reference
 -------------
 .. toctree::
+   quickstart
    api
 
 

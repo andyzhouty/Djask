@@ -9,7 +9,7 @@ from .blueprints import Blueprint as DjaskBlueprint
 from .extensions import bootstrap, compress, csrf, db
 from .globals import current_app
 from .mixins import ModelFunctionalityMixin
-from .types import Config, ErrorResponse, ModelType
+from .types import Config, ErrorResponse
 
 
 def _avoid_none(data: t.Any) -> t.Any:
@@ -65,9 +65,10 @@ class Djask(APIFlask, ModelFunctionalityMixin):
         for k, v in djask_default_config.items():
             if self.config.get(k) is None:  # pragma: no cover
                 self.config[k] = v
-        if config:  # pragma: no cover
-            for k, v in config.items():
-                self.config[k] = v
+        if isinstance(config, dict):
+            self.config.from_mapping(config)
+        else:  # pragma: no cover
+            self.config.from_object(config)
 
         self.template_folder = path.abspath(
             path.join(path.dirname(__file__), "templates")
@@ -117,7 +118,7 @@ class Djask(APIFlask, ModelFunctionalityMixin):
             _avoid_none(error.message),
         )
         detail: t.Union[t.Dict, t.Any] = error.detail
-        body = f"{status_code} {message}{'<br />' + detail if detail else ''}"
+        body = f"{status_code} {message}{'<br />' + str(detail) if detail else ''}"
         return body, error.status_code, error.headers
 
     def register_blueprint(self, blueprint: Blueprint, **options: t.Any) -> None:

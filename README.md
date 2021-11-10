@@ -1,10 +1,17 @@
 # Djask
 
-<img src="https://raw.githubusercontent.com/z-t-y/Djask/main/icon/djask.svg" width="200">
+<div align="center">
+
+<img src="https://raw.githubusercontent.com/z-t-y/Djask/main/icon/djask.svg" width="200" alt="Djask">
+
 
 ![Test Status](https://github.com/z-t-y/Djask/workflows/Test/badge.svg)
-![Test Status](https://github.com/z-t-y/Djask/workflows/Lint/badge.svg)
-
+![Lint Status](https://github.com/z-t-y/Djask/workflows/Lint/badge.svg)
+[![pdm-managed](https://img.shields.io/badge/pdm-managed-blueviolet)](https://pdm.fming.dev)
+[![black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+  
+</div>
+  
 Djask is a web framework for python which stands on the top of [Flask](https://flask.palletsproject.com) and will be as powerful as [Django](https://djangoproject.com).
 
 ## Features
@@ -19,10 +26,7 @@ More features to be done...
 
 [Djask Documentation](https://djask.readthedocs.io).
 
-Documentation Status:
-- [x] API Reference
-- [ ] Examples
-- [ ] Tutorial
+[Documentation Progress](https://github.com/z-t-y/Djask/issues/1)
 
 You can have these documentations for more information:
 
