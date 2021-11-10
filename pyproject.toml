@@ -32,7 +32,7 @@ description = "An enhanced django-like Flask"
 dynamic = ["classifiers"]
 keywords = ["flask", "apiflask"]
 license = {text = "MIT"}
-name = "djask"
+name = "Djask"
 readme = "README.md"
 requires-python = ">=3.7"
 version = "0.1.0"
