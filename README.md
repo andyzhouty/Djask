@@ -4,6 +4,7 @@
 
 ![Test Status](https://github.com/z-t-y/Djask/workflows/Test/badge.svg)
 ![Test Status](https://github.com/z-t-y/Djask/workflows/Lint/badge.svg)
+
 Djask is a web framework for python which stands on the top of [Flask](https://flask.palletsproject.com) and will be as powerful as [Django](https://djangoproject.com).
 
 ## Features
@@ -23,10 +24,9 @@ Documentation Status:
 - [ ] Examples
 - [ ] Tutorial
 
-You can have these documentations for more information.
+You can have these documentations for more information:
 
 - [APIFlask](https://apiflask.com)
 - [Flask](https://flask.palletsprojects.com)
 - [SQLAlchemy](https://www.sqlalchemy.org)
 - [Flask-SQLAlchemy](https://flask-sqlalchemy.palletsprojects.com)
- 
