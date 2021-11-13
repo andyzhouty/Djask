@@ -90,6 +90,12 @@ def test_register_model(admin, client):
     assert "User" in rv_data
 
 
+def test_model_schema(admin, client):
+    rv = client.get("/admin/User")
+    assert rv.status_code == 200
+    assert "id" in rv.get_data(as_text=True)
+
+
 def test_blueprints(admin, client):
     bp = Blueprint("bp", __name__)
 

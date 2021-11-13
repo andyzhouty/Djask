@@ -6,15 +6,15 @@
     <main>
         {{ render_top_panel("Dashboard") }}
         <div class="page-content">
-            <div class="models-grid">
-                <div class="board built-in-models">
+            <div class="grid-container">
+                <div class="grid-item built-in-models">
                     <div class="board-header">
                         Built-In Models
                     </div>
                     {{ render_model(User) }}
                 </div>
                 {% if models | length > 1 %}
-                    <div class="board defined-models">
+                    <div class="grid-item defined-models">
                         <div class="board-header">
                             Models Not Defined in Blueprints
                         </div>
@@ -25,7 +25,7 @@
                 {% endif %}
                 {% for bp in blueprints %}
                     {% if bp.models | length > 0 and bp.name != "admin" %}
-                        <div class="board bp-models">
+                        <div class="grid-item bp-models">
                             <div class="board-header">
                                 Models Defined In {{ bp.name }}
                             </div>

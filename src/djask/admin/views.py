@@ -1,5 +1,6 @@
 from typing import Optional
 
+from sqlalchemy.orm.attributes import InstrumentedAttribute
 from flask import render_template, abort, flash, redirect, url_for
 from flask_login.utils import login_user, logout_user
 
@@ -8,6 +9,9 @@ from .decorators import admin_required
 from ..auth.models import User
 from ..blueprints import Blueprint
 from ..globals import current_app, request
+from ..extensions import db
+
+import wtforms_sqlalchemy
 
 admin_bp = Blueprint("admin", __name__, url_prefix="/admin")
 
@@ -58,7 +62,13 @@ def specific_model(model_name: str):
     if model_name not in registered_models:
         abort(404, "Data model not defined or registered.")
     model = models[registered_models.index(model_name)]
-    return render_template("admin/model.html", model=model, model_name=model.__name__)
+    schema = {}
+    for name, value in model.__dict__.items():
+        if isinstance(value, InstrumentedAttribute):
+            schema[name] = value
+    return render_template(
+        "admin/model.html", model=model, model_name=model.__name__, schema=schema
+    )
 
 
 @admin_bp.route("/<model_name>/add")

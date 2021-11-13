@@ -8,7 +8,7 @@ html {
 
 body {
     font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif,
-    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji" !important;
+        "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji" !important;
 }
 
 aside {
@@ -107,7 +107,7 @@ main {
     background-color: #f0f2f5;
 }
 
-.models-grid {
+.grid-container {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 0.5fr));
     grid-gap: 2vh;
@@ -115,10 +115,16 @@ main {
     max-width: 100%;
 }
 
-.board {
+.max-height {
+    /* the 1vh subtraction for better visual appearance */
+    height: calc(100% - 1vh);
+}
+
+.grid-item {
     background-color: #fff;
     border-radius: 2px;
     padding: 2vh;
+    margin: .5vh;
 }
 
 .board-header {
@@ -134,4 +140,28 @@ main {
 .model-link:hover {
     text-decoration: none;
     color: var(--normal-link-hover-color);
+}
+
+.model-schema {
+    padding: 6vh !important;
+    max-width: 100vh;
+    height: 100%;
+}
+
+.column {
+    display: flex;
+    font-size: larger;
+    line-height: 1.6em;
+    font-weight: 600;
+}
+
+.column-type {
+    color: #55a;
+    margin-left: auto;
+}
+
+@media screen and (max-width: 1024px) {
+    .column {
+        flex-direction: column;
+    }
 }

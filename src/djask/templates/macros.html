@@ -23,3 +23,13 @@
         </h2>
     </div>
 {% endmacro %}
+
+{% macro render_schema(schema) %}
+    <h1>Schema</h1>
+    {% for k, v in schema.items() %}
+        <div class="column">
+            <div class="column-name">{{ k }}</div>
+            <div class="column-type">{{ v.type.__repr__() }}</div>
+        </div>
+    {% endfor %}
+{% endmacro %}

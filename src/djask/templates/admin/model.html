@@ -1,11 +1,15 @@
 {% extends "base.html" %}
-{% from "macros.html" import render_top_panel %}
+{% from "macros.html" import render_top_panel, render_schema %}
 {% block content %}
     {% include "aside.html" %}
     <main>
         {{ render_top_panel("Model "+model_name, "") }}
         <div class="page-content">
-            <h1 class="text-center">This page is under construction.</h1>
+            <div class="grid-container max-height">
+                <div class="model-schema grid-item">
+                    {{ render_schema(schema) }}
+                </div>
+            </div>
         </div>
     </main>
 {% endblock %}
