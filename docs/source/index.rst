@@ -17,10 +17,15 @@ Djask comes with a full support of Web APIs.
 
 Djask is closely bound to the powerful ORM `SQLAlchemy <https://www.sqlalchemy.org>`_, giving you best experiences.
 
+User's Guide
+------------
+.. toctree::
+   quickstart
+
+
 API Reference
 -------------
 .. toctree::
-   quickstart
    api
 
 
