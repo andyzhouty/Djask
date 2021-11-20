@@ -66,7 +66,7 @@ def specific_model(model_name: str):
     for name, value in model.__dict__.items():
         if isinstance(value, InstrumentedAttribute):
             schema[name] = value
-    
+
     instances = model.query.all()
     return render_template(
         "admin/model.html",

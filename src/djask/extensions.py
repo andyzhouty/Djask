@@ -9,4 +9,3 @@ bootstrap = Bootstrap()
 compress = Compress()
 csrf = CSRFProtect()
 db = SQLAlchemy(model_class=Model)
-
