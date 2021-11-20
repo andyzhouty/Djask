@@ -134,3 +134,4 @@ dmypy.json
 # IDE config files
 .vscode/
 .idea/
+workspace.vim

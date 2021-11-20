@@ -16,6 +16,7 @@ def app():
     ctx.push()
     app.db.create_all()
     yield app
+    app.db.drop_all()
     ctx.pop()
 
 

@@ -1,8 +1,9 @@
-from flask_sqlalchemy import Model
+from sqlalchemy import MetaData
 
 from djask.blueprints import Blueprint
 from djask.auth.models import User
 from djask.extensions import db
+from djask.db import Model
 
 
 def test_no_admin(client):
@@ -71,6 +72,7 @@ def test_register_model(admin, client):
         pass
 
     assert TestModel in admin.models
+    db.create_all()
 
     rv = client.get("/admin/testmodel")
     assert rv.status_code == 200
@@ -93,7 +95,9 @@ def test_register_model(admin, client):
 def test_model_schema(admin, client):
     rv = client.get("/admin/User")
     assert rv.status_code == 200
-    assert "id" in rv.get_data(as_text=True)
+    rv_data = rv.get_data(as_text=True)
+    assert "id" in rv_data
+    assert str(User.query.get(1).created_at)[:4] in rv_data
 
 
 def test_blueprints(admin, client):
@@ -101,6 +105,7 @@ def test_blueprints(admin, client):
 
     @bp.model
     class TestModel(Model):
+        metadata = MetaData()
         pass
 
     # test register a blueprint multiple times

@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% from "macros.html" import render_top_panel, render_schema %}
+{% block title %}Djask - Model {{ model_name }}{% endblock %}
 {% block content %}
     {% include "aside.html" %}
     <main>
@@ -9,7 +10,40 @@
                 <div class="model-schema grid-item">
                     {{ render_schema(schema) }}
                 </div>
+                <div class="model-instances grid-item">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Created At</th>
+                                <th>Updated At</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for instance in instances %}
+                                <tr>
+                                    <td>{{ instance.id }}</td>
+                                    <td class="time" data-time="{{ instance.created_at }}"></td>
+                                    <td class="time" data-time="{{ instance.updated_at }}"></td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </main>
+{% endblock %}
+{% block extra_scripts %}
+    <script>
+        $(document).ready(function() {
+        let elements = $(".time");
+        for (let i = 0; i < elements.length; i++) {
+            let dateString = $(elements[i]).data("time");
+            dateString.replace(" ", "T");
+            dateString += "Z";
+            date = new Date(dateString);
+            elements[i].innerText = date.toLocaleString();
+        }});
+    </script>
 {% endblock %}

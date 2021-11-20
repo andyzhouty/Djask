@@ -1,7 +1,9 @@
+import sqlalchemy as sa
 from werkzeug.security import generate_password_hash, check_password_hash
-from ..extensions import db
 from sqlalchemy.ext.declarative import AbstractConcreteBase
 from flask_login.mixins import UserMixin, AnonymousUserMixin
+
+from ..extensions import db
 
 
 class AbstractUser(AbstractConcreteBase):
@@ -13,12 +15,11 @@ class AbstractUser(AbstractConcreteBase):
     .. versionadded:: 0.1.0
     """
 
-    id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(128), index=True, unique=True)
-    name = db.Column(db.String(128))
-    email = db.Column(db.String(256), unique=True)
-    password_hash = db.Column(db.String(256))
-    is_admin = db.Column(db.Boolean, default=False)
+    username = sa.Column(sa.String(128), index=True, unique=True)
+    name = sa.Column(sa.String(128))
+    email = sa.Column(sa.String(256), unique=True)
+    password_hash = sa.Column(sa.String(256))
+    is_admin = sa.Column(sa.Boolean, default=False)
 
     def set_password(self, password: str) -> None:
         """Set the password for the user

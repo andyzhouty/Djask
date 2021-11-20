@@ -30,6 +30,8 @@
     {% block content %}{% endblock %}
     {{ bootstrap.load_js() }}
     <script src="{{ url_for('djask.static', filename='js/script.js') }}"></script>
+    {% block extra_scripts %}
+    {% endblock %}
 </body>
 
 </html>

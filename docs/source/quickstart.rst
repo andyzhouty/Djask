@@ -70,7 +70,7 @@ We registered :attr:`Djask.db` directly onto :class:`Djask`, enabling you to wri
     @app.route("/")
     def index():
         print(current_app.db)
-        return "Hello World
+        return "Hello World"
 
 
 It's NOT recommended to initialize your database by using ``app.before_first_request`` and you should NEVER take this approach in production.
@@ -107,3 +107,18 @@ Then the dashboard is here for you:
    :alt: Admin Dashboard
    :align: center
    :width: 500px
+
+
+Viewing a model
+===============
+
+The admin interface of Djask enables you to view a model schema. To check out this functionality, just click on the model, or get to ``/admin/<your-model-name>``.
+For example:
+
+.. image:: _static/user_model_schema.png
+   :alt: The user model
+   :align: center
+
+Note that the instances of the model are also shown on the page.
+
+
