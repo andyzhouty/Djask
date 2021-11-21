@@ -13,7 +13,7 @@ from ..extensions import db
 
 import wtforms_sqlalchemy
 
-admin_bp = Blueprint("admin", __name__, url_prefix="/admin")
+admin_bp=Blueprint("admin", __name__, url_prefix="/admin")
 
 
 @admin_bp.route("/")
@@ -58,6 +58,8 @@ def logout():
 def specific_model(model_name: str):
     model_name = model_name.lower()
     models = current_app.models
+    for bp in current_app.blueprint_objects:
+        models.extend(bp.models)
     registered_models = [model.__name__.lower() for model in models]
     if model_name not in registered_models:
         abort(404, "Data model not defined or registered.")
@@ -66,7 +68,7 @@ def specific_model(model_name: str):
     for name, value in model.__dict__.items():
         if isinstance(value, InstrumentedAttribute):
             schema[name] = value
-
+    print(model)
     instances = model.query.all()
     return render_template(
         "admin/model.html",

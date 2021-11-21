@@ -14,15 +14,17 @@ def app():
     app.config["TESTING"] = True
     ctx = app.app_context()
     ctx.push()
-    app.db.create_all()
+    db = app.db
+    db.create_all()
     yield app
-    app.db.drop_all()
+    db.session.remove()
+    db.drop_all()
     ctx.pop()
 
 
 @pytest.fixture
 def client(app):
-    return app.test_client()
+    yield app.test_client()
 
 
 @pytest.fixture
@@ -36,9 +38,9 @@ def admin(app, client):
     db.session.commit()
 
     client.post("/admin/login", data={"username": "test", "password": "test"})
-    return app
+    yield app
 
 
 @pytest.fixture
 def runner(app):
-    return app.test_cli_runner()
+    yield app.test_cli_runner()

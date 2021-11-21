@@ -23,7 +23,6 @@ jobs:
         run: pdm run pytest
       - name: Generate xml coverage
         run: pdm run coverage xml
-      - uses: codecov/codecov-action@v2
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }} # not required for public repos
-          files: ./coverage.xml
+      - name: Upload coverage to codecov
+        if: ${{ matrix.python-version == 3.9 && matrix.os == 'ubuntu-latest' }}
+        uses: codecov/codecov-action@v2

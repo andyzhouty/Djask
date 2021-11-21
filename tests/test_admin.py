@@ -105,16 +105,19 @@ def test_blueprints(admin, client):
 
     @bp.model
     class TestModel(Model):
-        metadata = MetaData()
+        __table_args__ = {"extend_existing": True}
         pass
 
-    # test register a blueprint multiple times
+    assert TestModel in bp.models
+    db.create_all()
+    # Test register a blueprint multiple times
     admin.register_blueprint(bp)
     admin.register_blueprint(bp, url_prefix="/bp/")
-
-    print()
 
     rv = client.get("/admin/")
     rv_data = rv.get_data(as_text=True)
     assert "bp" in rv_data
     assert "TestModel" in rv_data
+
+    rv = client.get("/admin/TestModel")
+    assert rv.status_code == 200
