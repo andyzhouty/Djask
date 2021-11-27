@@ -29,7 +29,9 @@ class Admin:
     app: Djask
     blueprint: Blueprint
 
-    def __init__(self, app: t.Optional[Djask] = None, admin_prefix: t.Optional[str] = None) -> None:
+    def __init__(
+        self, app: t.Optional[Djask] = None, admin_prefix: t.Optional[str] = None
+    ) -> None:
         """
         Initialize the Admin extension.
 
