@@ -1,7 +1,7 @@
 import os.path as path
 import typing as t
 
-from flask import Blueprint
+from flask import Blueprint, abort
 from apiflask import APIFlask
 from apiflask.exceptions import HTTPError
 
@@ -9,7 +9,7 @@ from .blueprints import Blueprint as DjaskBlueprint
 from .extensions import bootstrap, compress, csrf, db
 from .globals import current_app
 from .mixins import ModelFunctionalityMixin
-from .types import Config, ErrorResponse
+from .types import Config, ErrorResponse, ModelType
 
 
 def _avoid_none(data: t.Any) -> t.Any:
@@ -25,8 +25,8 @@ def _initialize_bootstrap_icons() -> str:
 class Djask(APIFlask, ModelFunctionalityMixin):
     """
     The djask object implements an APIFlask application and acts as a central object
-    for all djask applications. You can refer to the flask documentation and the apiflask documentation
-    for more detailed information.
+    for all djask applications. You can refer to the flask documentation and the apiflask
+    documentation for more detailed information.
     Note that config class or dict can be passed directly to the __init__ function.
     I achieved this by adding an optional argument named ``config`` to the argument list.
 
@@ -136,3 +136,19 @@ class Djask(APIFlask, ModelFunctionalityMixin):
         ]
         if all(conditions):
             self.blueprint_objects.append(blueprint)
+
+    def get_model_by_name(self, name: str) -> ModelType:
+        """
+        Get a model registered by name.
+
+        .. versionadded:: 0.2.0
+            :param name: the model name to get
+        """
+        name = name.lower()
+        models = self.models
+        for bp in self.blueprint_objects:
+            models.extend(bp.models)
+        registered_models = [model.__name__.lower() for model in models]
+        if name not in registered_models:
+            abort(404, "Data model not defined or registered.")
+        return models[registered_models.index(name)]

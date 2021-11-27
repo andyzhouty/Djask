@@ -1,19 +1,23 @@
 from typing import Optional
 
 from sqlalchemy.orm.attributes import InstrumentedAttribute
-from flask import render_template, abort, flash, redirect, url_for
+from flask import render_template, flash, redirect, url_for
 from flask_login.utils import login_user, logout_user
+from flask_wtf import FlaskForm
+
+from wtforms import SubmitField
+from wtforms_sqlalchemy.orm import model_form
+
 
 from .forms import LoginForm
 from .decorators import admin_required
+from ..auth.forms import UserForm
 from ..auth.models import User
 from ..blueprints import Blueprint
 from ..globals import current_app, request
 from ..extensions import db
 
-import wtforms_sqlalchemy
-
-admin_bp = Blueprint("admin", __name__, url_prefix="/admin")
+admin_bp = Blueprint("admin", __name__)
 
 
 @admin_bp.route("/")
@@ -57,13 +61,7 @@ def logout():
 @admin_required
 def specific_model(model_name: str):
     model_name = model_name.lower()
-    models = current_app.models
-    for bp in current_app.blueprint_objects:
-        models.extend(bp.models)
-    registered_models = [model.__name__.lower() for model in models]
-    if model_name not in registered_models:
-        abort(404, "Data model not defined or registered.")
-    model = models[registered_models.index(model_name)]
+    model = current_app.get_model_by_name(model_name)
     schema = {}
     for name, value in model.__dict__.items():
         if isinstance(value, InstrumentedAttribute):
@@ -79,8 +77,32 @@ def specific_model(model_name: str):
     )
 
 
-@admin_bp.route("/<model_name>/add")
+@admin_bp.route(
+    "/<model_name>/add",
+    methods=(
+        "GET",
+        "POST",
+    ),
+)
 @admin_required
 def add_model(model_name: str):
-    # TODO: Write add_model view
-    return "Hello World"  # pragma: no cover
+    model = current_app.get_model_by_name(model_name)
+    ModelForm = model_form(model, base_class=FlaskForm)
+    ModelForm.submit = SubmitField()
+    form = ModelForm() if model != User else UserForm()
+    if form.validate_on_submit():
+        m = model()
+        for name in form._fields.keys():
+            value = form.__getattribute__(name).data
+            if not value:
+                continue
+            print(name)
+            if model == User and name == "password":
+                m.set_password(value)
+            else:
+                m.__setattr__(name, value)
+        db.session.add(m)
+        db.session.commit()
+        flash(f"A new instance of {model_name} has been created!", "success")
+        return redirect(url_for("admin.specific_model", model_name=model.__name__))
+    return render_template("admin/model_add.html", form=form, model_name=model.__name__)
