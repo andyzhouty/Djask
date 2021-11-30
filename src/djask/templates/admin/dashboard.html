@@ -18,8 +18,10 @@
                         <div class="board-header">
                             Models Not Defined in Blueprints
                         </div>
-                        {% for model in models[1:] %} {# Exclude the User model #}
-                            {{ render_model(model) }}
+                        {% for model in models %}
+                            {% if model != User %}
+                                {{ render_model(model) }}
+                            {% endif %}
                         {% endfor %}
                     </div>
                 {% endif %}

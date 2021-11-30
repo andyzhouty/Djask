@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% from "macros.html" import render_top_panel %}
+{% from "bootstrap/form.html" import render_form %}
+{% block title %} {{ model_name }} - 404 {% endblock %}
+{% block content %}
+    {% include "aside.html" %}
+    <main>
+        {{ render_top_panel(model_name+" - 404") }}
+        <div class="page-content">
+            <div class="grid-container">
+                <div class="grid-item">
+                    {{ model_name }} id {{ model_id }} not found.
+                </div>
+            </div>
+        </div>
+    </main>
+{% endblock %}
+

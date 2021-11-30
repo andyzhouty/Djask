@@ -22,7 +22,12 @@
                         <tbody>
                             {% for instance in instances %}
                                 <tr>
-                                    <td>{{ instance.id }}</td>
+                                    <td>
+                                        <a href="{{ url_for('admin.edit_model', model_id=instance.id, model_name=model_name) }}"
+                                           alt="edit {{ model_name~' '~instance.id }}">
+                                            {{ model_name~" "~instance.id }}
+                                        </a>
+                                    </td>
                                     <td class="time" data-time="{{ instance.created_at }}"></td>
                                     <td class="time" data-time="{{ instance.updated_at }}"></td>
                                 </tr>

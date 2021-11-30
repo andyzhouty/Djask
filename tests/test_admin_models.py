@@ -80,3 +80,22 @@ def test_model_add(admin, client):
     u = User.query.filter_by(username="123").first()
     assert u is not None
     assert u.check_password("abcd")
+
+
+def test_model_edit(admin, client):
+    rv = client.get("/admin/user/1/edit")
+    assert rv.status_code == 200
+
+    rv = client.post(
+        "/admin/user/1/edit",
+        data=dict(username="123", password="test"),
+        follow_redirects=True,
+    )
+    assert rv.status_code == 200
+    u = User.query.get(1)
+    assert u.username == "123"
+    assert u.check_password("test")
+
+    rv = client.get("/admin/user/10")
+    assert rv.status_code == 404
+    assert "id 10 not found" in rv.get_data(as_text=True)

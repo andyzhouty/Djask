@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% from "macros.html" import render_top_panel %}
+{% from "bootstrap/form.html" import render_form %}
+{% block title %} {{ model_name~" - Edit"~" "~model_id }} {% endblock %}
+{% block content %}
+    {% include "aside.html" %}
+    <main>
+        {{ render_top_panel(model_name~" - Edit"~" "~model_id) }}
+        <div class="page-content">
+            <div class="grid-container max-height">
+                <div class="grid-item max-height">
+                    {{ render_form(form, button_size="block") }}
+                </div>
+            </div>
+        </div>
+    </main>
+{% endblock %}
+

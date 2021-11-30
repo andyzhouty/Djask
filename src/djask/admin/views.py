@@ -1,4 +1,4 @@
-from typing import Optional
+import typing as t
 
 from sqlalchemy.orm.attributes import InstrumentedAttribute
 from flask import render_template, flash, redirect, url_for
@@ -11,6 +11,7 @@ from wtforms_sqlalchemy.orm import model_form
 
 from .forms import LoginForm
 from .decorators import admin_required
+from ..types import ModelType
 from ..auth.forms import UserForm
 from ..auth.models import User
 from ..blueprints import Blueprint
@@ -18,6 +19,13 @@ from ..globals import current_app, request
 from ..extensions import db
 
 admin_bp = Blueprint("admin", __name__)
+
+
+def get_model_form(model_name: str) -> t.Tuple[ModelType, FlaskForm]:
+    model = current_app.get_model_by_name(model_name)
+    ModelForm = model_form(model, base_class=FlaskForm) if model != User else UserForm
+    ModelForm.submit = SubmitField()
+    return model, ModelForm()
 
 
 @admin_bp.route("/")
@@ -46,7 +54,7 @@ def login():
             flash("Wrong password.", "danger")
         else:
             login_user(user, form.remember_me.data)
-            next: Optional[str] = request.args.get("next")
+            next: t.Optional[str] = request.args.get("next")
             return redirect(next or url_for("admin.index"))
     return render_template("admin/login.html", form=form)
 
@@ -86,23 +94,69 @@ def specific_model(model_name: str):
 )
 @admin_required
 def add_model(model_name: str):
-    model = current_app.get_model_by_name(model_name)
-    ModelForm = model_form(model, base_class=FlaskForm)
-    ModelForm.submit = SubmitField()
-    form = ModelForm() if model != User else UserForm()
+    model, form = get_model_form(model_name)
     if form.validate_on_submit():
         m = model()
         for name in form._fields.keys():
-            value = form.__getattribute__(name).data
+            value = getattr(form, name).data
             if not value:
                 continue
-            print(name)
             if model == User and name == "password":
                 m.set_password(value)
             else:
-                m.__setattr__(name, value)
+                setattr(m, name, value)
         db.session.add(m)
         db.session.commit()
         flash(f"A new instance of {model_name} has been created!", "success")
         return redirect(url_for("admin.specific_model", model_name=model.__name__))
     return render_template("admin/model_add.html", form=form, model_name=model.__name__)
+
+
+@admin_bp.route(
+    "/<model_name>/<int:model_id>",
+    methods=(
+        "GET",
+        "POST",
+    ),
+)
+@admin_bp.route(
+    "/<model_name>/<int:model_id>/edit",
+    methods=(
+        "GET",
+        "POST",
+    ),
+)
+@admin_required
+def edit_model(model_name: str, model_id: int):
+    model, form = get_model_form(model_name)
+    m = model.query.get(model_id)
+    if m is None:
+        return (
+            render_template(
+                "admin/model_404.html", model_id=model_id, model_name=model_name
+            ),
+            404,
+        )
+
+    if form.validate_on_submit():
+        for name in form._fields.keys():
+            value = getattr(form, name).data
+            if not value:
+                continue
+            if model == User and name == "password":
+                m.set_password(value)
+            else:
+                setattr(m, name, value)
+        db.session.commit()
+        flash(f"{model_name} id {m.id} has been modified!", "success")
+        return redirect(url_for("admin.specific_model", model_name=model.__name__))
+    for name in form._fields.keys():
+        if (
+            not (model == User and name == "password")
+            and name != "submit"
+            and name != "csrf_token"
+        ):
+            getattr(form, name).data = getattr(m, name)
+    return render_template(
+        "admin/model_edit.html", form=form, model_name=model.__name__, model_id=model_id
+    )
