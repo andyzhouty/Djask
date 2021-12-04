@@ -33,12 +33,12 @@ license = {text = "MIT"}
 name = "Djask"
 readme = "README.md"
 requires-python = ">=3.7"
-version = "0.1.0"
+version = "0.2.0"
 
 [project.urls]
-documentation = "https://djask.readthedocs.io"
-homepage = "https://github.com/z-t-y/djask"
-repository = "https://github.com/z-t-y/djask"
+Documentation = "https://djask.readthedocs.io"
+Home = "https://github.com/z-t-y/djask"
+Repo = "https://github.com/z-t-y/djask"
 
 [project.optional-dependencies]
 [build-system]
