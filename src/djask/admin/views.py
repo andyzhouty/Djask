@@ -68,13 +68,11 @@ def logout():
 @admin_bp.route("/<model_name>")
 @admin_required
 def specific_model(model_name: str):
-    model_name = model_name.lower()
     model = current_app.get_model_by_name(model_name)
     schema = {}
     for name, value in model.__dict__.items():
         if isinstance(value, InstrumentedAttribute):
             schema[name] = value
-    print(model)
     instances = model.query.all()
     return render_template(
         "admin/model.html",
