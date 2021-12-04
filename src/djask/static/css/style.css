@@ -61,6 +61,10 @@ aside {
     margin: 0 0 0 8px;
 }
 
+.blank {
+    height: 10vh;
+}
+
 @media screen and (max-width: 1366px) {
     .aside-header-text {
         display: block;
