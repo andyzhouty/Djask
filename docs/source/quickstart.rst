@@ -97,28 +97,44 @@ Head over to `localhost:5000/admin/login <localhost:5000/admin/login>`_.
 Log in the admin interface with ``test`` as username and ``password`` as password:
 
 .. image:: _static/admin_login.png
-   :alt: Admin Login
-   :align: center
-   :width: 500px
+   :alt: The admin login page
 
 Then the dashboard is here for you:
 
 .. image:: _static/admin_dashboard.png
-   :alt: Admin Dashboard
-   :align: center
-   :width: 500px
+   :alt: The admin dashboard page
 
 
 Viewing a model
 ===============
 
-The admin interface of Djask enables you to view a model schema. To check out this functionality, just click on the model, or get to ``/admin/<your-model-name>``.
+The admin interface of Djask enables you to view a model schema. To check out this functionality, just click on
+the model, or get to ``/admin/<your-model-name>``.
 For example:
 
 .. image:: _static/user_model_schema.png
    :alt: The user model
-   :align: center
-
-Note that the instances of the model are also shown on the page.
 
 
+Editing a model
+===============
+
+With just a simple click on the ``<model-name> <model-id>`` button (as shown below), you can edit the model in the UI.
+
+.. image:: _static/user_model_schema_with_circle.png
+   :alt: The user model with a circle on ``User 1``
+
+.. image:: _static/editing_user_model.png
+   :alt: Editing the user model
+
+
+Adding a model
+==============
+
+To add an instance of a model, click on either the ``+`` button on the dashboard page or the ``Add`` button on the model page (``/admin/<your-model-name>``).
+
+.. image:: _static/admin_dashboard.png
+   :alt: The admin dashboard
+
+.. image:: _static/user_model_schema.png
+   :alt: The user model
