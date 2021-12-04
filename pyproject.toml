@@ -19,16 +19,15 @@ classifiers = [
   "Topic :: Internet :: WWW/HTTP :: WSGI :: Application",
 ]
 dependencies = [
-    "apiflask~=0.10",
-    "flask-sqlalchemy~=2.5",
-    "flask-wtf~=0.15",
-    "flask-login~=0.5",
-    "bootstrap-flask~=1.8",
-    "flask-compress~=1.10",
-    "wtforms-sqlalchemy~=0.3",
+  "apiflask~=0.10",
+  "flask-sqlalchemy~=2.5",
+  "flask-wtf~=0.15",
+  "flask-login~=0.5",
+  "bootstrap-flask~=1.8",
+  "flask-compress~=1.10",
+  "wtforms-sqlalchemy~=0.3",
 ]
 description = "An enhanced django-like Flask"
-dynamic = ["classifiers"]
 keywords = ["flask", "apiflask"]
 license = {text = "MIT"}
 name = "Djask"
@@ -50,11 +49,11 @@ requires = ["pdm-pep517"]
 [tool.pdm]
 [tool.pdm.dev-dependencies]
 dev = [
-    "black<22,>=21.9b0",
-    "pytest~=6.2",
-    "pytest-cov~=3.0",
-    "sphinx~=4.2",
-    "sphinx-tabs~=3.2",
+  "black<22,>=21.9b0",
+  "pytest~=6.2",
+  "pytest-cov~=3.0",
+  "sphinx~=4.2",
+  "sphinx-tabs~=3.2",
 ]
 
 [tool.pytest.ini_options]
