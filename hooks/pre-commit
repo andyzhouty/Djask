@@ -1,0 +1,3 @@
+#! /bin/bash
+pdm export -f setuppy -o setup.py # Generate a setup.py file for compatibility with rtd
+git add setup.py
