@@ -14,6 +14,7 @@ INSTALL_REQUIRES = [
     'bootstrap-flask~=1.8',
     'flask-compress~=1.10',
     'wtforms-sqlalchemy~=0.3',
+    'flask~=2.0',
 ]
 
 setup_kwargs = {

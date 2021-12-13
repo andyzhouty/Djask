@@ -19,13 +19,14 @@ classifiers = [
   "Topic :: Internet :: WWW/HTTP :: WSGI :: Application",
 ]
 dependencies = [
-  "apiflask~=0.10",
-  "flask-sqlalchemy~=2.5",
-  "flask-wtf~=0.15",
-  "flask-login~=0.5",
-  "bootstrap-flask~=1.8",
-  "flask-compress~=1.10",
-  "wtforms-sqlalchemy~=0.3",
+    "apiflask~=0.10",
+    "flask-sqlalchemy~=2.5",
+    "flask-wtf~=0.15",
+    "flask-login~=0.5",
+    "bootstrap-flask~=1.8",
+    "flask-compress~=1.10",
+    "wtforms-sqlalchemy~=0.3",
+    "flask~=2.0",
 ]
 description = "An enhanced django-like Flask"
 keywords = ["flask", "apiflask"]

@@ -113,7 +113,7 @@ extras = ["toml"]
 requires_python = ">=3.6"
 summary = "Code coverage measurement for Python"
 dependencies = [
-    "coverage>=5.2.1",
+    "coverage==6.2",
     "tomli",
 ]
 
@@ -518,7 +518,7 @@ summary = "Backport of pathlib-compatible object wrapper for zip files"
 
 [metadata]
 lock_version = "3.1"
-content_hash = "sha256:e9fad4a0ba610e9e1a25689b0f41c87fb686b71fb6b78272d4e007fed9357942"
+content_hash = "sha256:cb8ee7547daff4087dbfe6591a2609781c54dfa47ed514f9949fe5fb5d630a7a"
 
 [metadata.files]
 "alabaster 0.7.12" = [
