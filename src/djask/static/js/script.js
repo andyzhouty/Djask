@@ -1,6 +1,7 @@
-$(document).ready(function () {
-    $("main").css("margin-left", $("aside").innerWidth());
-    $(window).resize(function () {
-        $("main").css("margin-left", $("aside").innerWidth());
-    })
-});
+let main = document.getElementsByTagName("main")[0];
+let aside = document.getElementsByTagName("aside")[0];
+main.setAttribute("style", "margin-left:" + aside.offsetWidth + "px;");
+
+window.onresize = function () {
+    main.setAttribute("style", "margin-left:" + aside.offsetWidth + "px;");
+}

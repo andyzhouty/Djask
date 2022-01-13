@@ -24,7 +24,7 @@
                                 <tr>
                                     <td>
                                         <a href="{{ url_for('admin.edit_model', model_id=instance.id, model_name=model_name) }}"
-                                           alt="edit {{ model_name~' '~instance.id }}">
+                                           alt="edit {{ model_name~' '~instance.id }}" style="text-decoration: none">
                                             {{ model_name~" "~instance.id }}
                                         </a>
                                     </td>
@@ -45,15 +45,6 @@
     </main>
 {% endblock %}
 {% block extra_scripts %}
-    <script>
-        $(document).ready(function() {
-        let elements = $(".time");
-        for (let i = 0; i < elements.length; i++) {
-            let dateString = $(elements[i]).data("time");
-            dateString.replace(" ", "T");
-            dateString += "Z";
-            date = new Date(dateString);
-            elements[i].innerText = date.toLocaleString();
-        }});
+    <script src="{{ url_for('djask.static', filename='js/model.js') }}">
     </script>
 {% endblock %}

@@ -13,8 +13,8 @@ body {
 
 aside {
     width: auto;
-    padding: 1.5vh;
-    max-width: 27vh;
+    padding: 2.5vh;
+    width: fit-content;
     position: fixed;
     background-color: rgba(0, 0, 20, 0.9);
     color: #fff;
@@ -80,18 +80,13 @@ aside {
     }
 }
 
-main {
-    overflow: auto;
-}
-
-.fixtop {
-    position: fixed;
+.header-container {
     top: 0;
     width: 100%;
     height: var(--fixtop-height);
 }
 
-.fixtop-header {
+.main-header {
     line-height: 1.7em;
     font-size: 1.7em;
     width: 100%;
@@ -100,7 +95,7 @@ main {
     padding-top: calc((var(--fixtop-height) - 1.7em) / 2) !important;
 }
 
-.fixtop-header .bi {
+.main-header .bi {
     margin: 0 0 0 10px;
 }
 
