@@ -36,7 +36,6 @@ def admin(app, client):
     user.set_password("test")
     db.session.add(user)
     db.session.commit()
-
     client.post("/admin/login", data={"username": "test", "password": "test"})
     yield app
 
