@@ -1,9 +1,11 @@
 import sqlalchemy as sa
+from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from werkzeug.security import generate_password_hash, check_password_hash
 from sqlalchemy.ext.declarative import AbstractConcreteBase
 from flask_login.mixins import UserMixin, AnonymousUserMixin
 
 from ..extensions import db
+from djask import current_app
 
 
 class AbstractUser(AbstractConcreteBase):
@@ -45,6 +47,10 @@ class User(AbstractUser, db.Model, UserMixin):
 
     def __repr__(self):  # pragma: no cover
         return f"<User {self.username}>"
+
+    def api_token(self, expiration=3600):
+        s = Serializer(current_app.config["SECRET_KEY"], expiration)
+        return s.dumps({"id": self.id}).decode("ascii")
 
 
 class AnonymousUser(AnonymousUserMixin):

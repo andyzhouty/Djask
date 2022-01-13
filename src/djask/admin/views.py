@@ -1,31 +1,21 @@
+from sys import prefix
 import typing as t
 
 from sqlalchemy.orm.attributes import InstrumentedAttribute
 from flask import render_template, flash, redirect, url_for
 from flask_login.utils import login_user, logout_user
-from flask_wtf import FlaskForm
 
-from wtforms import SubmitField
-from wtforms_sqlalchemy.orm import model_form
-
-
+from .api.views import admin_api
 from .forms import LoginForm
 from .decorators import admin_required
-from ..types import ModelType
-from ..auth.forms import UserForm
 from ..auth.models import User
 from ..blueprints import Blueprint
 from ..globals import current_app, request
 from ..extensions import db
+from ..helpers import get_model_form
 
 admin_bp = Blueprint("admin", __name__)
-
-
-def get_model_form(model_name: str) -> t.Tuple[ModelType, FlaskForm]:
-    model = current_app.get_model_by_name(model_name)
-    ModelForm = model_form(model, base_class=FlaskForm) if model != User else UserForm
-    ModelForm.submit = SubmitField()
-    return model, ModelForm()
+admin_bp.register_blueprint(admin_api, url_prefix="/api")
 
 
 @admin_bp.route("/")
