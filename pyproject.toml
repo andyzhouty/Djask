@@ -27,6 +27,7 @@ dependencies = [
   "flask-compress~=1.10",
   "wtforms-sqlalchemy~=0.3",
   "flask~=2.0",
+  "marshmallow-sqlalchemy>=0.27.0",
 ]
 description = "An enhanced django-like Flask"
 keywords = ["flask", "apiflask"]
@@ -55,13 +56,13 @@ dev = [
   "pytest-cov~=3.0",
   "sphinx~=4.2",
   "sphinx-tabs~=3.2",
+  "pytest-xdist>=2.5.0",
 ]
 
 [tool.pytest.ini_options]
-addopts = "--cov=djask"
+addopts = "--cov=djask -n auto -p no:warnings"
 testpaths = ["tests"]
 
 [tool.coverage.run]
 branch = true
 omit = ["*.html"]
-source = ["djask"]

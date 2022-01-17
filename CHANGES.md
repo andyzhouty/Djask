@@ -1,3 +1,9 @@
+# Version 0.3.0 (still under development)
+
+Changes:
+
+- Automatically generate api docs for database models
+
 # Version 0.2.0
 
 Changes:

@@ -1,6 +1,7 @@
 import os.path as path
 import typing as t
 
+from apispec import APISpec
 from flask import Blueprint, abort
 from apiflask import APIFlask
 from apiflask.exceptions import HTTPError
@@ -43,15 +44,29 @@ class Djask(APIFlask, ModelFunctionalityMixin):
         self,
         import_name: str,
         config: t.Optional[Config] = None,
-        swagger_path: t.Optional[str] = "/api/docs",
-        redoc_path: t.Optional[str] = "/api/redoc",
+        swagger_path: t.Optional[str] = "/admin/api/docs",
+        redoc_path: t.Optional[str] = "/admin/api/redoc",
+        title: t.Optional[str] = "Djask API",
+        version: t.Optional[str] = "0.3.0dev",
         *args,
         **kwargs,
     ):
         super().__init__(
-            *[import_name, *args],
-            **{"docs_path": swagger_path, "redoc_path": redoc_path, **kwargs},
+            *(
+                import_name,
+                *args,
+            ),
+            **{
+                "docs_path": swagger_path,
+                "redoc_path": redoc_path,
+                "title": title,
+                "version": version,
+                **kwargs,
+            },
         )
+
+        self._register_extensions()
+        self._register_static_files()
 
         # set default configuration for Djask.
         djask_default_config = dict(
@@ -61,10 +76,10 @@ class Djask(APIFlask, ModelFunctionalityMixin):
             COMPRESS_BR_LEVEL=9,
             SQLALCHEMY_TRACK_MODIFICATIONS=False,
             DJASK_MODELS_PER_PAGE=8,
+            DOCS_FAVICON="/djask" + self.static_url_path + "/icon/djask.ico",
         )
         for k, v in djask_default_config.items():
-            if self.config.get(k) is None:  # pragma: no cover
-                self.config[k] = v
+            self.config[k] = v
         if isinstance(config, dict):
             self.config.from_mapping(config)
         else:  # pragma: no cover
@@ -74,9 +89,6 @@ class Djask(APIFlask, ModelFunctionalityMixin):
             path.join(path.dirname(__file__), "templates")
         )
         self.jinja_env.globals["djask_bootstrap_icons"] = _initialize_bootstrap_icons
-
-        self._register_extensions()
-        self._register_static_files()
 
     def _register_extensions(self) -> None:
         """
@@ -152,3 +164,82 @@ class Djask(APIFlask, ModelFunctionalityMixin):
         if name not in registered_models:
             abort(404, "Data model not defined or registered.")
         return models[registered_models.index(name)]
+
+    def _generate_spec(self) -> APISpec:
+        """
+        Add data models to the spec.
+
+        .. versionadded:: 0.3.0
+        """
+        # call parental _generate_spec
+        spec = super()._generate_spec()
+        # get the prefix
+        custom_prefix = self.config.get("ADMIN_PREFIX")
+        prefix = custom_prefix if isinstance(custom_prefix, str) else "/admin"
+
+        for m in set(self.models):
+            m_name = m.__name__
+            if m_name == "User":
+                continue
+
+            # register the schema to spec
+            spec.components.schema(m_name, schema=m.to_schema())
+
+            # define some common parameters, responses, etc.
+            not_found = {
+                "content": {"application/json": {"schema": "HTTPError"}},
+                "description": "Not found",
+            }
+            bad_request = {
+                "content": {"application/json": {"schema": "ValidationError"}},
+                "description": "Validation error",
+            }
+            parameter_model_id = {
+                "in": "path",
+                "name": f"{m_name.lower()}_id",
+                "schema": {"type": "integer"},
+                "required": True,
+            }
+            response_model_schema = {
+                "content": {"application/json": {"schema": m_name}}
+            }
+            # register the url route
+            spec.path(
+                path="{0}/api/{1}/{{{1}_id}}".format(prefix, m_name.lower()),
+                operations=dict(
+                    get=dict(
+                        parameters=[parameter_model_id],
+                        responses={
+                            "200": response_model_schema,
+                            "404": not_found,
+                            "400": bad_request,
+                        },
+                        tags=["Admin.Admin_Api"],
+                        summary=f"returns a {m_name.lower()}",
+                    ),
+                    put=dict(
+                        parameters=[parameter_model_id],
+                        responses={
+                            "200": response_model_schema,
+                            "404": not_found,
+                            "400": bad_request,
+                        },
+                        requestBody={
+                            "content": {"application/json": {"schema": m_name}}
+                        },
+                        tags=["Admin.Admin_Api"],
+                        summary=f"updates a {m_name.lower()}",
+                    ),
+                    delete=dict(
+                        parameters=[parameter_model_id],
+                        responses={
+                            "204": {"description": "Sucessful response"},
+                            "404": not_found,
+                        },
+                        tags=["Admin.Admin_Api"],
+                        summary=f"deletes a {m_name.lower()}",
+                    ),
+                ),
+                description="Operate on {0}".format(m_name),
+            )
+        return spec

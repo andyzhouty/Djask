@@ -1,10 +1,12 @@
+import pytest
+
 from djask import Blueprint
 from djask.auth.models import User
 from djask.db.models import Model
 from djask.extensions import db
 
 
-def test_register_model(admin, client, app):
+def test_register_model(admin, client):
     @admin.model
     class TestModel(Model):
         pass

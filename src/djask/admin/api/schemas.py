@@ -1,8 +1,3 @@
-from tokenize import String
-
-from sqlalchemy import Integer
-
-
 from apiflask import Schema
 from apiflask.fields import Integer, String, Boolean
 
@@ -17,9 +12,13 @@ class TokenOutSchema(Schema):
     expires_in = Integer()
 
 
-class UserSchema(Schema):
+class UserOutSchema(Schema):
     id = Integer()
     username = String()
     name = String()
     email = String()
     is_admin = Boolean()
+
+
+class UserInSchema(UserOutSchema):
+    password = String()

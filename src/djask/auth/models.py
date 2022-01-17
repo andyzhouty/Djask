@@ -5,7 +5,7 @@ from sqlalchemy.ext.declarative import AbstractConcreteBase
 from flask_login.mixins import UserMixin, AnonymousUserMixin
 
 from ..extensions import db
-from djask import current_app
+from djask.globals import current_app
 
 
 class AbstractUser(AbstractConcreteBase):
