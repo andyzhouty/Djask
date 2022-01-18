@@ -92,9 +92,6 @@ class Djask(APIFlask, ModelFunctionalityMixin):
             self.config["AUTH_MODEL"], type(AbstractUser)
         ):  # pragma: no cover
             raise AuthModelInvalid
-        self.template_folder = path.abspath(
-            path.join(path.dirname(__file__), "templates")
-        )
         self.jinja_env.globals["djask_bootstrap_icons"] = _initialize_bootstrap_icons
 
     def _register_extensions(self) -> None:
@@ -121,6 +118,9 @@ class Djask(APIFlask, ModelFunctionalityMixin):
             __name__,
             static_folder="static",
             static_url_path="/djask" + self.static_url_path,
+            template_folder=path.abspath(
+                path.join(path.dirname(__file__), "templates")
+            ),
         )
         self.register_blueprint(blueprint=static)
 
