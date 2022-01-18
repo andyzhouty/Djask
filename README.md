@@ -17,7 +17,7 @@ Djask is a web framework for python which stands on the top of [Flask](https://f
 
 - Web API Support
 - Integrated Admin Interface
-- Integrated Bootstrap Support
+- Automatic OpenAPI spec generation
 
 More features to be done...
 
