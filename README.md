@@ -7,7 +7,7 @@
 ![Test Status](https://github.com/z-t-y/Djask/workflows/Test/badge.svg)
 ![Lint Status](https://github.com/z-t-y/Djask/workflows/Lint/badge.svg)
 ![Codecov](https://img.shields.io/codecov/c/gh/z-t-y/Djask)
-
+![![Discord](https://discord.gg/GtFcKUjmk3)](https://img.shields.io/discord/932075032409149570?color=purple&label=discord&logo=discord&logoColor=white)
 
 </div>
 
