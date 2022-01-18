@@ -6,7 +6,7 @@ from flask.views import MethodView
 from apiflask import input, output
 from apiflask.exceptions import abort
 
-from djask.auth.models import User
+from djask.auth.models import AbstractUser
 from djask.blueprints import APIBlueprint
 
 # fmt: off
@@ -16,7 +16,7 @@ from .schemas import (
 )
 # fmt: on
 from .decorators import admin_required
-from djask.globals import current_app, request
+from djask.globals import current_app, request, g
 from djask.extensions import db
 
 admin_api = APIBlueprint("admin_api", __name__)
@@ -27,19 +27,19 @@ class UserAPI(MethodView):
     decorators = [admin_required]
 
     @output(UserOutSchema)
-    def get(self, user_id: int) -> User:
+    def get(self, user_id: int) -> AbstractUser:
         """
         returns a user
         """
-        return User.query.get(user_id)
+        return g.User.query.get(user_id)
 
     @input(UserInSchema)
     @output(UserOutSchema)
-    def put(self, user_id: int, data: dict) -> User:
+    def put(self, user_id: int, data: dict) -> AbstractUser:
         """
         updates a user
         """
-        user = User.query.get_or_404(user_id)
+        user = g.User.query.get_or_404(user_id)
         for attr, value in data.items():
             setattr(user, attr, value)
         db.session.commit()
@@ -50,7 +50,7 @@ class UserAPI(MethodView):
         """
         deletes a user
         """
-        user = User.query.get_or_404(user_id)
+        user = g.User.query.get_or_404(user_id)
         db.session.delete(user)
         db.session.commit()
 
@@ -64,7 +64,7 @@ class TokenAPI(MethodView):
         returns the access token and other info
         """
         user: User = (
-            User.query.filter_by(username=data["username"])
+            g.User.query.filter_by(username=data["username"])
             .filter_by(is_admin=True)
             .first()
         )

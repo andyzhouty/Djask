@@ -11,6 +11,8 @@ from .extensions import bootstrap, compress, csrf, db
 from .globals import current_app
 from .mixins import ModelFunctionalityMixin
 from .types import Config, ErrorResponse, ModelType
+from .auth.models import User, AbstractUser
+from .exceptions import AuthModelInvalid
 
 
 def _avoid_none(data: t.Any) -> t.Any:
@@ -77,6 +79,7 @@ class Djask(APIFlask, ModelFunctionalityMixin):
             SQLALCHEMY_TRACK_MODIFICATIONS=False,
             DJASK_MODELS_PER_PAGE=8,
             DOCS_FAVICON="/djask" + self.static_url_path + "/icon/djask.ico",
+            AUTH_MODEL=User,
         )
         for k, v in djask_default_config.items():
             self.config[k] = v
@@ -85,6 +88,10 @@ class Djask(APIFlask, ModelFunctionalityMixin):
         else:  # pragma: no cover
             self.config.from_object(config)
 
+        if not isinstance(
+            self.config["AUTH_MODEL"], type(AbstractUser)
+        ):  # pragma: no cover
+            raise AuthModelInvalid
         self.template_folder = path.abspath(
             path.join(path.dirname(__file__), "templates")
         )

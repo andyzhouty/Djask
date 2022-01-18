@@ -8,14 +8,18 @@ from flask_login.utils import login_user, logout_user
 from .api.views import admin_api
 from .forms import LoginForm
 from .decorators import admin_required
-from ..auth.models import User
 from ..blueprints import Blueprint
-from ..globals import current_app, request
+from ..globals import current_app, request, g
 from ..extensions import db
 from ..helpers import get_model_form
 
 admin_bp = Blueprint("admin", __name__)
 admin_bp.register_blueprint(admin_api, url_prefix="/api")
+
+
+@admin_bp.before_request
+def before_request():
+    g.User = current_app.config["AUTH_MODEL"]
 
 
 @admin_bp.route("/")
@@ -24,7 +28,7 @@ def index():
     blueprints = current_app.blueprint_objects
     return render_template(
         "admin/dashboard.html",
-        User=User,
+        User=g.User,
         models=current_app.models,
         blueprints=blueprints,
     )
@@ -34,7 +38,7 @@ def index():
 def login():
     form = LoginForm()
     if form.validate_on_submit():
-        user = User.query.filter_by(username=form.username.data).first()
+        user = g.User.query.filter_by(username=form.username.data).first()
         # identify the user
         if not user:
             flash("User not found.", "danger")
@@ -89,7 +93,7 @@ def add_model(model_name: str):
             value = getattr(form, name).data
             if not value:
                 continue
-            if model == User and name == "password":
+            if model == g.User and name == "password":
                 m.set_password(value)
             else:
                 setattr(m, name, value)
@@ -131,7 +135,7 @@ def edit_model(model_name: str, model_id: int):
             value = getattr(form, name).data
             if not value:
                 continue
-            if model == User and name == "password":
+            if model == g.User and name == "password":
                 m.set_password(value)
             else:
                 setattr(m, name, value)
@@ -140,7 +144,7 @@ def edit_model(model_name: str, model_id: int):
         return redirect(url_for("admin.specific_model", model_name=model.__name__))
     for name in form._fields.keys():
         if (
-            not (model == User and name == "password")
+            not (model == g.User and name == "password")
             and name != "submit"
             and name != "csrf_token"
         ):

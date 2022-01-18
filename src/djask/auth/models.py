@@ -5,10 +5,10 @@ from sqlalchemy.ext.declarative import AbstractConcreteBase
 from flask_login.mixins import UserMixin, AnonymousUserMixin
 
 from ..extensions import db
-from djask.globals import current_app
+from ..globals import current_app
 
 
-class AbstractUser(AbstractConcreteBase):
+class AbstractUser(AbstractConcreteBase, UserMixin):
     """
     A base class for all user models.
 
@@ -37,8 +37,16 @@ class AbstractUser(AbstractConcreteBase):
         """
         return check_password_hash(self.password_hash, password)
 
+    def api_token(self, expiration=3600):
+        """Generate a new API token for the user
 
-class User(AbstractUser, db.Model, UserMixin):
+        :param expiration: The expiration time of the token in seconds
+        """
+        s = Serializer(current_app.config["SECRET_KEY"], expiration)
+        return s.dumps({"id": self.id}).decode("ascii")
+
+
+class User(AbstractUser, db.Model):
     """
     An implementation of the AbstractUser class used for admin interface.
 
@@ -47,10 +55,6 @@ class User(AbstractUser, db.Model, UserMixin):
 
     def __repr__(self):  # pragma: no cover
         return f"<User {self.username}>"
-
-    def api_token(self, expiration=3600):
-        s = Serializer(current_app.config["SECRET_KEY"], expiration)
-        return s.dumps({"id": self.id}).decode("ascii")
 
 
 class AnonymousUser(AnonymousUserMixin):
