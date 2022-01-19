@@ -1,5 +1,4 @@
 from functools import wraps
-from tkinter import W
 import typing as t
 
 from flask import abort

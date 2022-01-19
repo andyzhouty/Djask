@@ -14,12 +14,6 @@ from ..extensions import db
 from ..helpers import get_model_form
 
 admin_bp = Blueprint("admin", __name__)
-admin_bp.register_blueprint(admin_api, url_prefix="/api")
-
-
-@admin_bp.before_request
-def before_request():
-    g.User = current_app.config["AUTH_MODEL"]
 
 
 @admin_bp.route("/")

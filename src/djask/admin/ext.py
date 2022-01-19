@@ -9,6 +9,8 @@ from flask_login import LoginManager
 from .views import admin_bp
 from ..app import Djask, Blueprint
 from ..auth.models import User, AnonymousUser
+from ..extensions import csrf
+from .api.views import admin_api
 
 login_manager = LoginManager()
 
@@ -61,3 +63,5 @@ class Admin:
             admin_prefix = custom_prefix
         self.app.register_blueprint(admin_bp, url_prefix=admin_prefix)
         self.blueprint = admin_bp
+        self.app.register_blueprint(admin_api, url_prefix=admin_prefix + "/api")
+        csrf.exempt(admin_api)

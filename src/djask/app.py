@@ -8,7 +8,7 @@ from apiflask.exceptions import HTTPError
 
 from .blueprints import Blueprint as DjaskBlueprint
 from .extensions import bootstrap, compress, csrf, db
-from .globals import current_app
+from .globals import current_app, g
 from .mixins import ModelFunctionalityMixin
 from .types import Config, ErrorResponse, ModelType
 from .auth.models import User, AbstractUser
@@ -67,9 +67,6 @@ class Djask(APIFlask, ModelFunctionalityMixin):
             },
         )
 
-        self._register_extensions()
-        self._register_static_files()
-
         # set default configuration for Djask.
         djask_default_config = dict(
             SECRET_KEY="djask_secret_key",  # CHANGE THIS!!!
@@ -93,6 +90,10 @@ class Djask(APIFlask, ModelFunctionalityMixin):
         ):  # pragma: no cover
             raise AuthModelInvalid
         self.jinja_env.globals["djask_bootstrap_icons"] = _initialize_bootstrap_icons
+
+        self._register_extensions()
+        self._register_static_files()
+        self._register_global_user_model()
 
     def _register_extensions(self) -> None:
         """
@@ -123,6 +124,11 @@ class Djask(APIFlask, ModelFunctionalityMixin):
             ),
         )
         self.register_blueprint(blueprint=static)
+
+    def _register_global_user_model(self) -> None:
+        @self.before_first_request
+        def before_first_request():
+            g.User = self.config["AUTH_MODEL"]
 
     @staticmethod
     def _error_handler(error: HTTPError) -> ErrorResponse:
@@ -210,6 +216,7 @@ class Djask(APIFlask, ModelFunctionalityMixin):
             response_model_schema = {
                 "content": {"application/json": {"schema": m_name}}
             }
+            tag = "Admin_Api.Models"
             # register the url route
             spec.path(
                 path="{0}/api/{1}/{{{1}_id}}".format(prefix, m_name.lower()),
@@ -221,7 +228,7 @@ class Djask(APIFlask, ModelFunctionalityMixin):
                             "404": not_found,
                             "400": bad_request,
                         },
-                        tags=["Admin.Admin_Api"],
+                        tags=[tag],
                         summary=f"returns a {m_name.lower()}",
                     ),
                     put=dict(
@@ -234,7 +241,7 @@ class Djask(APIFlask, ModelFunctionalityMixin):
                         requestBody={
                             "content": {"application/json": {"schema": m_name}}
                         },
-                        tags=["Admin.Admin_Api"],
+                        tags=[tag],
                         summary=f"updates a {m_name.lower()}",
                     ),
                     delete=dict(
@@ -243,7 +250,7 @@ class Djask(APIFlask, ModelFunctionalityMixin):
                             "204": {"description": "Sucessful response"},
                             "404": not_found,
                         },
-                        tags=["Admin.Admin_Api"],
+                        tags=[tag],
                         summary=f"deletes a {m_name.lower()}",
                     ),
                 ),
