@@ -1,4 +1,6 @@
 import typing as t
+
+from click import decorators
 from apiflask.decorators import doc
 
 from flask import jsonify
@@ -84,7 +86,7 @@ class TokenAPI(MethodView):
 
 @admin_api.route("/<model>/<int:model_id>")
 class ModelAPI(MethodView):
-    decorators = [doc(hide=True)]
+    decorators = [doc(hide=True), admin_required]
 
     def get(self, model: str, model_id: int):
         model = current_app.get_model_by_name(model)
