@@ -63,7 +63,7 @@ class TokenAPI(MethodView):
         """
         returns the access token and other info
         """
-        user: User = (
+        user = (
             g.User.query.filter_by(username=data["username"])
             .filter_by(is_admin=True)
             .first()
