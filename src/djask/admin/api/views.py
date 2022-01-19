@@ -59,7 +59,7 @@ class UserAPI(MethodView):
 @admin_api.route("/user")
 class UserCreateAPI(MethodView):
     decorators = [admin_required]
-    
+
     @input(UserInSchema)
     @output(UserOutSchema, 201)
     def post(self, data: dict) -> AbstractUser:
@@ -144,4 +144,7 @@ class ModelCreateAPI(MethodView):
             instance.__setattr__(attr, value)
         db.session.add(instance)
         db.session.commit()
+
+        # Line below refresh the instance, similar to line 123
+        instance = model.query.get(instance.id)
         return instance.to_dict(), 201
