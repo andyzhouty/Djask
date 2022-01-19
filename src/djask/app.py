@@ -126,8 +126,8 @@ class Djask(APIFlask, ModelFunctionalityMixin):
         self.register_blueprint(blueprint=static)
 
     def _register_global_user_model(self) -> None:
-        @self.before_first_request
-        def before_first_request():
+        @self.before_request
+        def before_request():
             g.User = self.config["AUTH_MODEL"]
 
     @staticmethod
