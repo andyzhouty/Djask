@@ -20,5 +20,9 @@ class UserOutSchema(Schema):
     is_admin = Boolean()
 
 
-class UserInSchema(UserOutSchema):
-    password = String()
+class UserInSchema(Schema):
+    username = String(required=True)
+    name = String()
+    email = String()
+    is_admin = Boolean(dump_default=False)
+    password = String(required=True)

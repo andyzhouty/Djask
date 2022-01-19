@@ -44,6 +44,15 @@ def test_token(admin, client):
     assert resp.status_code == 200
 
 
+def test_create_user(admin, client):
+    resp = client.post(
+        f"/admin/api/user",
+        headers=admin_headers(client),
+        json={"username": "abc", "password": "abc"},
+    )
+    assert resp.status_code == 201
+
+
 def test_get_user(admin, client):
     u = User.query.filter_by(username="test").first()
     resp = client.get(f"/admin/api/user/{u.id}", headers=admin_headers(client))
@@ -76,9 +85,26 @@ def test_new_model(admin, client):
         content = db.Column(db.Text)
 
     db.create_all()
-    p = Post(title="abc", content="lorem ipsum")
-    db.session.add(p)
-    db.session.commit()
+    resp = client.post(
+        f"/admin/api/post",
+        headers=admin_headers(client),
+        json={
+            "title": "abc",
+            "content": "lorem ipsum",
+        },
+    )
+    assert resp.status_code == 201
+    p = Post.query.filter_by(title="abc").first()
+    assert not (p is None)
+
+    resp = client.post(
+        f"/admin/api/post",
+        headers=admin_headers(client),
+        json={"title": "xyz", "content": "lorem ipsum", "unexpected": "data"},
+    )
+    assert resp.status_code == 400
+    p2 = Post.query.filter_by(title="xyz").first()
+    assert p2 is None
 
     resp = client.get(f"/admin/api/post/{p.id}", headers=admin_headers(client))
     assert resp.status_code == 200

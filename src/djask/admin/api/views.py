@@ -1,6 +1,5 @@
 import typing as t
 
-from click import decorators
 from apiflask.decorators import doc
 
 from flask import jsonify
@@ -35,7 +34,7 @@ class UserAPI(MethodView):
         """
         return g.User.query.get(user_id)
 
-    @input(UserInSchema)
+    @input(UserInSchema(partial=True))
     @output(UserOutSchema)
     def put(self, user_id: int, data: dict) -> AbstractUser:
         """
@@ -55,6 +54,24 @@ class UserAPI(MethodView):
         user = g.User.query.get_or_404(user_id)
         db.session.delete(user)
         db.session.commit()
+
+
+@admin_api.route("/user")
+class UserCreateAPI(MethodView):
+    decorators = [admin_required]
+    
+    @input(UserInSchema)
+    @output(UserOutSchema, 201)
+    def post(self, data: dict) -> AbstractUser:
+        """
+        creates a user
+        """
+        user = g.User()
+        for attr, value in data.items():
+            user.__setattr__(attr, value)
+        db.session.add(user)
+        db.session.commit()
+        return user
 
 
 @admin_api.route("/token")
@@ -112,3 +129,19 @@ class ModelAPI(MethodView):
         db.session.delete(instance)
         db.session.commit()
         return {}, 204
+
+
+@admin_api.route("/<model>")
+class ModelCreateAPI(MethodView):
+    decorators = [doc(hide=True), admin_required]
+
+    def post(self, model: str):
+        model = current_app.get_model_by_name(model)
+        instance = model()
+        for attr, value in request.get_json().items():
+            if attr not in [column.key for column in model.__table__.columns]:
+                abort(400, f"Model {model} has no attribute {attr}.")
+            instance.__setattr__(attr, value)
+        db.session.add(instance)
+        db.session.commit()
+        return instance.to_dict(), 201

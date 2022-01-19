@@ -233,13 +233,13 @@ class Djask(APIFlask, ModelFunctionalityMixin):
                     ),
                     put=dict(
                         parameters=[parameter_model_id],
+                        requestBody={
+                            "content": {"application/json": {"schema": m_name}}
+                        },
                         responses={
                             "200": response_model_schema,
                             "404": not_found,
                             "400": bad_request,
-                        },
-                        requestBody={
-                            "content": {"application/json": {"schema": m_name}}
                         },
                         tags=[tag],
                         summary=f"updates a {m_name.lower()}",
@@ -247,13 +247,28 @@ class Djask(APIFlask, ModelFunctionalityMixin):
                     delete=dict(
                         parameters=[parameter_model_id],
                         responses={
-                            "204": {"description": "Sucessful response"},
+                            "204": {"description": "Successful response"},
                             "404": not_found,
                         },
                         tags=[tag],
                         summary=f"deletes a {m_name.lower()}",
                     ),
                 ),
-                description="Operate on {0}".format(m_name),
+                description="Operate on {}".format(m_name),
+            ).path(
+                path="{}/api/{}".format(prefix, m_name.lower()),
+                operations=dict(
+                    post=dict(
+                        requestBody={
+                            "content": {"application/json": {"schema": m_name}}
+                        },
+                        responses={
+                            "201": response_model_schema,
+                            "400": bad_request,
+                        },
+                        tags=[tag],
+                        summary=f"creates a {m_name.lower()}",
+                    )
+                ),
             )
         return spec
