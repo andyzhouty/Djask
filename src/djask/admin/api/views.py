@@ -16,7 +16,7 @@ from .schemas import (
     UserInSchema, UserOutSchema
 )
 # fmt: on
-from .decorators import admin_required
+from .decorators import admin_required_api
 from djask.globals import current_app, request, g
 from djask.extensions import db
 
@@ -25,21 +25,17 @@ admin_api = APIBlueprint("admin_api", __name__)
 
 @admin_api.route("/user/<int:user_id>")
 class UserAPI(MethodView):
-    decorators = [admin_required]
+    decorators = [admin_required_api]
 
     @output(UserOutSchema)
     def get(self, user_id: int) -> AbstractUser:
-        """
-        returns a user
-        """
+        """Retrieve a user."""
         return g.User.query.get(user_id)
 
     @input(UserInSchema(partial=True))
     @output(UserOutSchema)
     def put(self, user_id: int, data: dict) -> AbstractUser:
-        """
-        updates a user
-        """
+        """Update a user."""
         user = g.User.query.get_or_404(user_id)
         for attr, value in data.items():
             setattr(user, attr, value)
@@ -48,9 +44,7 @@ class UserAPI(MethodView):
 
     @output({}, 204)
     def delete(self, user_id: int):
-        """
-        deletes a user
-        """
+        """Delete a user."""
         user = g.User.query.get_or_404(user_id)
         db.session.delete(user)
         db.session.commit()
@@ -58,14 +52,12 @@ class UserAPI(MethodView):
 
 @admin_api.route("/user")
 class UserCreateAPI(MethodView):
-    decorators = [admin_required]
+    decorators = [admin_required_api]
 
     @input(UserInSchema)
     @output(UserOutSchema, 201)
     def post(self, data: dict) -> AbstractUser:
-        """
-        creates a user
-        """
+        """Create a user."""
         user = g.User()
         for attr, value in data.items():
             user.__setattr__(attr, value)
@@ -79,9 +71,7 @@ class TokenAPI(MethodView):
     @input(TokenInSchema, location="form")
     @output(TokenOutSchema)
     def post(self, data):
-        """
-        returns the access token and other info
-        """
+        """Return the access token and expiration."""
         user = (
             g.User.query.filter_by(username=data["username"])
             .filter_by(is_admin=True)
@@ -103,14 +93,16 @@ class TokenAPI(MethodView):
 
 @admin_api.route("/<model>/<int:model_id>")
 class ModelAPI(MethodView):
-    decorators = [doc(hide=True), admin_required]
+    decorators = [doc(hide=True), admin_required_api]
 
     def get(self, model: str, model_id: int):
+        """Retrieve an instance of a model."""
         model = current_app.get_model_by_name(model)
         instance = model.query.get_or_404(model_id)
         return instance.to_dict()
 
     def put(self, model: str, model_id: int):
+        """Update an instance of a model."""
         model = current_app.get_model_by_name(model)
         instance = model.query.get_or_404(model_id)
         for attr, value in request.get_json().items():
@@ -119,11 +111,10 @@ class ModelAPI(MethodView):
             instance.__setattr__(attr, value)
         db.session.commit()
 
-        # 'refresh' the instance
-        instance = model.query.get_or_404(model_id)
         return instance.to_dict()
 
     def delete(self, model: str, model_id: int):
+        """Delete an instance of a model."""
         model = current_app.get_model_by_name(model)
         instance = model.query.get_or_404(model_id)
         db.session.delete(instance)
@@ -133,9 +124,10 @@ class ModelAPI(MethodView):
 
 @admin_api.route("/<model>")
 class ModelCreateAPI(MethodView):
-    decorators = [doc(hide=True), admin_required]
+    decorators = [doc(hide=True), admin_required_api]
 
     def post(self, model: str):
+        """Create an instance of a model."""
         model = current_app.get_model_by_name(model)
         instance = model()
         for attr, value in request.get_json().items():
@@ -145,6 +137,4 @@ class ModelCreateAPI(MethodView):
         db.session.add(instance)
         db.session.commit()
 
-        # Line below refresh the instance, similar to line 123
-        instance = model.query.get(instance.id)
         return instance.to_dict(), 201
