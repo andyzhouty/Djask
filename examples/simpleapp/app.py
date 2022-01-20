@@ -14,14 +14,17 @@ db = app.db
 
 
 class Post(Model):
+    title = sa.Column(sa.String(255), index=True)
     content = sa.Column(sa.Text)
 
 
 @app.before_first_request
 def init_db():
+    db.drop_all()
     app.register_model(Post)
     db.create_all()
     admin = User(username="test", is_admin=True)
     admin.set_password("password")
     db.session.add(admin)
     db.session.commit()
+    db.create_all()

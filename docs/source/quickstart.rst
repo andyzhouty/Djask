@@ -1,8 +1,8 @@
 Quickstart
 ----------
 
-This part of documentation will give a good introduction to Djask.
-We assume that you have used Flask before.
+This part of documentation will give an introduction to Djask.
+We assume that you have used Flask for a period of time before.
 
 Installation
 ============
@@ -138,3 +138,10 @@ To add an instance of a model, click on either the ``+`` button on the dashboard
 
 .. image:: _static/user_model_schema.png
    :alt: The user model
+
+
+Explore models
+==============
+
+Wanna explore what Djask can do with your SQLAlchemy models?
+See :doc:'diving_into_models'.

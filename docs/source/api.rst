@@ -27,7 +27,7 @@ Admin Functionalities
 .. autofunction:: djask.admin.decorators.admin_required
 
 More Information
---------------------
+----------------
 
 This documentation only gives new functionalities and differences between those implemented in Djask
 and those in Flask and APIFlask.

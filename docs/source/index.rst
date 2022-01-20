@@ -15,12 +15,13 @@ Djask is full-featured Python Web framework based on the famous project `Flask <
 It aims to be *a Django in Flask*. It features a pluggable admin interface just like Django. Also based on `Grey Li <https://greyli.com>`_'s project `APIFlask <https://apiflask.com>`_,
 Djask comes with a full support of Web APIs.
 
-Djask is closely bound to the powerful ORM `SQLAlchemy <https://www.sqlalchemy.org>`_, giving you best experiences.
+Djask is closely bound to the powerful ORM `SQLAlchemy <https://www.sqlalchemy.org>`_, giving you a great experience.
 
 User's Guide
 ------------
 .. toctree::
    quickstart
+   diving_into_models
 
 
 API Reference

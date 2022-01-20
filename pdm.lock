@@ -283,6 +283,17 @@ dependencies = [
 ]
 
 [[package]]
+name = "pallets-sphinx-themes"
+version = "2.0.2"
+requires_python = ">=3.6"
+summary = "Sphinx themes for Pallets and related projects."
+dependencies = [
+    "Sphinx",
+    "importlib-metadata; python_version < \"3.8\"",
+    "packaging",
+]
+
+[[package]]
 name = "pathspec"
 version = "0.9.0"
 summary = "Utility library for gitignore style pattern matching of file paths."
@@ -557,7 +568,7 @@ summary = "Backport of pathlib-compatible object wrapper for zip files"
 
 [metadata]
 lock_version = "3.1"
-content_hash = "sha256:4446dbec33428ea3e6a39db7fbf06b5905c3e9e90cc9c8e7103227998733289b"
+content_hash = "sha256:1582fd668f092ed5dc1d37d344eb79136f519c86db156b58506a2a7b49ab5cf3"
 
 [metadata.files]
 "alabaster 0.7.12" = [
@@ -909,6 +920,10 @@ content_hash = "sha256:4446dbec33428ea3e6a39db7fbf06b5905c3e9e90cc9c8e7103227998
 "packaging 21.3" = [
     {file = "packaging-21.3-py3-none-any.whl", hash = "sha256:ef103e05f519cdc783ae24ea4e2e0f508a9c99b2d4969652eed6a2e1ea5bd522"},
     {file = "packaging-21.3.tar.gz", hash = "sha256:dd47c42927d89ab911e606518907cc2d3a1f38bbd026385970643f9c5b8ecfeb"},
+]
+"pallets-sphinx-themes 2.0.2" = [
+    {file = "Pallets_Sphinx_Themes-2.0.2-py3-none-any.whl", hash = "sha256:70cff6456b1889b5fa11bc422c53fe677b684b4593414397341e59476776992e"},
+    {file = "Pallets-Sphinx-Themes-2.0.2.tar.gz", hash = "sha256:6d62f8ea421b035698748850ccaa6c2ee126b3bd9ed575ae558b4a99b0eed1e1"},
 ]
 "pathspec 0.9.0" = [
     {file = "pathspec-0.9.0-py2.py3-none-any.whl", hash = "sha256:7d15c4ddb0b5c802d161efc417ec1a2558ea2653c2e8ad9c19098201dc1c993a"},
