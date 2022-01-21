@@ -3,19 +3,16 @@ import typing as t
 
 from flask import abort
 
-from djask.auth.models import User
-from djask.globals import request
-from djask.helpers import get_user_from_token
+from djask.helpers import get_user_from_headers
 
 
-def get_user_from_headers() -> t.Union[User, None]:
-    token = request.headers.get("Authorization")
-    if token is not None:
-        return get_user_from_token(token)
-    return None  # pragma: no cover
+def admin_required_api(f: t.Callable) -> t.Callable:
+    """Require admin access in web api
 
+    :param f: The view function/method to be decorated
+    :return: The view function
+    """
 
-def admin_required(f: t.Callable) -> t.Callable:
     @wraps(f)
     def decorator(*args, **kwargs) -> t.Callable:
         user = get_user_from_headers()

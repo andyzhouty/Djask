@@ -11,7 +11,7 @@ from .extensions import bootstrap, compress, csrf, db
 from .globals import current_app, g
 from .mixins import ModelFunctionalityMixin
 from .types import Config, ErrorResponse, ModelType
-from .auth.models import User, AbstractUser
+from .auth.abstract import AbstractUser
 from .exceptions import AuthModelInvalid
 
 
@@ -76,7 +76,6 @@ class Djask(APIFlask, ModelFunctionalityMixin):
             SQLALCHEMY_TRACK_MODIFICATIONS=False,
             DJASK_MODELS_PER_PAGE=8,
             DOCS_FAVICON="/djask" + self.static_url_path + "/icon/djask.ico",
-            AUTH_MODEL=User,
         )
         for k, v in djask_default_config.items():
             self.config[k] = v
@@ -85,10 +84,15 @@ class Djask(APIFlask, ModelFunctionalityMixin):
         else:  # pragma: no cover
             self.config.from_object(config)
 
-        if not isinstance(
-            self.config["AUTH_MODEL"], type(AbstractUser)
+        if self.config.get("AUTH_MODEL") is None:
+            from .auth.models import User
+
+            self.config["AUTH_MODEL"] = User
+        elif not isinstance(
+            self.config.get("AUTH_MODEL"), type(AbstractUser)
         ):  # pragma: no cover
             raise AuthModelInvalid
+
         self.jinja_env.globals["djask_bootstrap_icons"] = _initialize_bootstrap_icons
 
         self._register_extensions()
@@ -111,8 +115,9 @@ class Djask(APIFlask, ModelFunctionalityMixin):
         self.db = db
 
     def _register_static_files(self) -> None:
-        """
-        Register the built-in static files
+        """Register the built-in static files
+
+        .. versionadded:: 0.1.0
         """
         static = Blueprint(
             "djask",
@@ -126,14 +131,18 @@ class Djask(APIFlask, ModelFunctionalityMixin):
         self.register_blueprint(blueprint=static)
 
     def _register_global_user_model(self) -> None:
+        """Make a shortcut to the ``app.config["AUTH_MODEL"]``
+
+        .. versionadded:: 0.3.0
+        """
+
         @self.before_request
         def before_request():
             g.User = self.config["AUTH_MODEL"]
 
     @staticmethod
     def _error_handler(error: HTTPError) -> ErrorResponse:
-        """
-        Override the default error handler in APIFlask.
+        """Override the default error handler in APIFlask.
 
         .. versionadded:: 0.1.0
         :param error: The error object.
@@ -147,8 +156,7 @@ class Djask(APIFlask, ModelFunctionalityMixin):
         return body, error.status_code, error.headers
 
     def register_blueprint(self, blueprint: Blueprint, **options: t.Any) -> None:
-        """
-        Bound blueprint objects to the app instead of strings
+        """Bind blueprint objects to the app instead of strings
 
         .. versionadded:: 0.1.0
             :param blueprint: the blueprint object to register
@@ -163,8 +171,7 @@ class Djask(APIFlask, ModelFunctionalityMixin):
             self.blueprint_objects.append(blueprint)
 
     def get_model_by_name(self, name: str) -> ModelType:
-        """
-        Get a model registered by name.
+        """Get a model registered by name.
 
         .. versionadded:: 0.2.0
             :param name: the model name to get
@@ -179,8 +186,7 @@ class Djask(APIFlask, ModelFunctionalityMixin):
         return models[registered_models.index(name)]
 
     def _generate_spec(self) -> APISpec:
-        """
-        Add data models to the spec.
+        """Add data models to the spec.
 
         .. versionadded:: 0.3.0
         """
@@ -192,7 +198,7 @@ class Djask(APIFlask, ModelFunctionalityMixin):
 
         for m in set(self.models):
             m_name = m.__name__
-            if m_name == "User":
+            if m_name.lower() == self.config["AUTH_MODEL"].__name__.lower():
                 continue
 
             # register the schema to spec

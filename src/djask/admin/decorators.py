@@ -6,8 +6,7 @@ from flask import Response, redirect, url_for
 
 
 def admin_required(func: t.Callable) -> t.Callable:
-    """
-    Decorator to require admin access.
+    """Decorator to require admin access.
 
     .. versionadded:: 0.1.0
 

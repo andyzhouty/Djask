@@ -1,7 +1,6 @@
 import click
 
 from .views import admin_bp
-from ..auth.models import User
 from ..globals import current_app
 
 
@@ -18,6 +17,7 @@ admin_bp.cli.help = "Create a super user."
     help="The password for the admin",
 )
 def create_superuser(username, password):
+    User = current_app.config["AUTH_MODEL"]
     user = User(username=username, is_admin=True)
     user.set_password(password)
     current_app.db.session.add(user)

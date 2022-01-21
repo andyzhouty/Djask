@@ -7,7 +7,7 @@ from flask.views import MethodView
 from apiflask import input, output
 from apiflask.exceptions import abort
 
-from djask.auth.models import AbstractUser
+from djask.auth.abstract import AbstractUser
 from djask.blueprints import APIBlueprint
 
 # fmt: off

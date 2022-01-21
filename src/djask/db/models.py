@@ -26,7 +26,7 @@ class Model:
     def to_dict(self) -> t.Dict[str, t.Any]:
         """Convert Model to dict.
 
-        :return: [description]
+        :return: A dict
         :rtype: t.Dict[str, t.Any]
         """
         return {c.key: getattr(self, c.key) for c in self.__table__.columns}

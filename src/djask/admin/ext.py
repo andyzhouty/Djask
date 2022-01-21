@@ -1,14 +1,13 @@
-"""
-Provide a pluggable admin interface for Djask.
-"""
+"""Provide a pluggable admin interface for Djask."""
 
 import typing as t
+from djask import current_app
 
 from flask_login import LoginManager
 
 from .views import admin_bp
 from ..app import Djask, Blueprint
-from ..auth.models import User, AnonymousUser
+from ..auth.anonymous import AnonymousUser
 from ..extensions import csrf
 from .api.views import admin_api
 
@@ -16,13 +15,13 @@ login_manager = LoginManager()
 
 
 @login_manager.user_loader
-def load_user(user_id: int) -> User:
-    return User.query.get(user_id)
+def load_user(user_id: int):
+    return current_app.config["AUTH_MODEL"].query.get(user_id)
 
 
 class Admin:
     """
-    The admin interface for Djask applications
+    The admin interface for Djask applications.
 
     .. versionadded: 0.1.0
     :param app: The app to wrap.
@@ -57,7 +56,7 @@ class Admin:
         login_manager.init_app(app)
         login_manager.anonymous_user = AnonymousUser
 
-        self.app.models.append(User)
+        self.app.models.append(app.config["AUTH_MODEL"])
         custom_prefix = self.app.config.get("ADMIN_PREFIX")
         if isinstance(custom_prefix, str):  # pragma: no cover
             admin_prefix = custom_prefix

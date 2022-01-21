@@ -5,7 +5,6 @@ from sqlalchemy.orm.attributes import InstrumentedAttribute
 from flask import render_template, flash, redirect, url_for
 from flask_login.utils import login_user, logout_user
 
-from .api.views import admin_api
 from .forms import LoginForm
 from .decorators import admin_required
 from ..blueprints import Blueprint
@@ -60,7 +59,11 @@ def specific_model(model_name: str):
     schema = {}
     for name, value in model.__dict__.items():
         if isinstance(value, InstrumentedAttribute):
-            schema[name] = value
+            try:
+                type = value.type.__repr__()
+            except Exception:  # pragma: no cover
+                type = f"Relationship({value.prop.argument})"
+            schema[name] = type
     instances = model.query.all()
     return render_template(
         "admin/model.html",
