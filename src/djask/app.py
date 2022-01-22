@@ -198,8 +198,6 @@ class Djask(APIFlask, ModelFunctionalityMixin):
 
         for m in set(self.models):
             m_name = m.__name__
-            if m_name.lower() == self.config["AUTH_MODEL"].__name__.lower():
-                continue
 
             # register the schema to spec
             spec.components.schema(m_name, schema=m.to_schema())

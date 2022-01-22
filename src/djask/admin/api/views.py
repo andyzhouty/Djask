@@ -27,43 +27,50 @@ admin_api = APIBlueprint("admin_api", __name__)
 class UserAPI(MethodView):
     decorators = [admin_required_api]
 
-    @output(UserOutSchema)
     def get(self, user_id: int) -> AbstractUser:
         """Retrieve a user."""
-        return g.User.query.get(user_id)
+        return g.User.query.get(user_id).to_dict()
 
-    @input(UserInSchema(partial=True))
-    @output(UserOutSchema)
-    def put(self, user_id: int, data: dict) -> AbstractUser:
+    def put(self, user_id: int) -> AbstractUser:
         """Update a user."""
         user = g.User.query.get_or_404(user_id)
-        for attr, value in data.items():
-            setattr(user, attr, value)
+        for attr, value in request.get_json().items():
+            if not hasattr(user, attr) and attr != "password":
+                abort(400, f"User model has no attribute {attr}.")
+            elif attr == "password":
+                user.set_password(value)
+                continue
+            user.__setattr__(attr, value)
         db.session.commit()
-        return user
+        user = g.User.query.get(user_id)
+        return user.to_dict()
 
-    @output({}, 204)
     def delete(self, user_id: int):
         """Delete a user."""
         user = g.User.query.get_or_404(user_id)
         db.session.delete(user)
         db.session.commit()
+        return {}, 204
 
 
 @admin_api.route("/user")
 class UserCreateAPI(MethodView):
     decorators = [admin_required_api]
 
-    @input(UserInSchema)
-    @output(UserOutSchema, 201)
-    def post(self, data: dict) -> AbstractUser:
+    def post(self) -> AbstractUser:
         """Create a user."""
         user = g.User()
-        for attr, value in data.items():
+        for attr, value in request.get_json().items():
+            if not hasattr(user, attr) and attr != "password":
+                abort(400, f"User model has no attribute {attr}.")
+            elif attr == "password":
+                user.set_password(value)
+                continue
             user.__setattr__(attr, value)
         db.session.add(user)
         db.session.commit()
-        return user
+        user = g.User.query.get(user.id)
+        return user.to_dict(), 201
 
 
 @admin_api.route("/token")
@@ -110,7 +117,7 @@ class ModelAPI(MethodView):
                 abort(400, f"Model {model} has no attribute {attr}.")
             instance.__setattr__(attr, value)
         db.session.commit()
-
+        instance = model.query.get(model_id)
         return instance.to_dict()
 
     def delete(self, model: str, model_id: int):
@@ -136,5 +143,5 @@ class ModelCreateAPI(MethodView):
             instance.__setattr__(attr, value)
         db.session.add(instance)
         db.session.commit()
-
+        instance = model.query.get(instance.id)
         return instance.to_dict(), 201

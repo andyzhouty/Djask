@@ -4,6 +4,7 @@ import typing as t
 import sqlalchemy as sa
 from sqlalchemy.orm import as_declarative
 from sqlalchemy.ext.declarative import declared_attr
+from djask.auth.abstract import AbstractUser
 
 from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
 
@@ -29,7 +30,10 @@ class Model:
         :return: A dict
         :rtype: t.Dict[str, t.Any]
         """
-        return {c.key: getattr(self, c.key) for c in self.__table__.columns}
+        def inspect(a: dict) -> None:
+            for k, v in a.items():
+                print(f"{k}: {v}")
+        return {k: v for k,v in self.__dict__.items() if not k.startswith("_")}
 
     @classmethod
     def to_schema(cls) -> t.Type[SQLAlchemyAutoSchema]:
