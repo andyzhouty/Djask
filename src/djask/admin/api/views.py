@@ -40,6 +40,8 @@ class UserAPI(MethodView):
             elif attr == "password":
                 user.set_password(value)
                 continue
+            if attr == "password_hash":
+                abort(400, "You should not hard-code the password hash.")
             user.__setattr__(attr, value)
         db.session.commit()
         user = g.User.query.get(user_id)
@@ -66,6 +68,8 @@ class UserCreateAPI(MethodView):
             elif attr == "password":
                 user.set_password(value)
                 continue
+            if attr == "password_hash":
+                abort(400, "You should not hard-code the password hash.")
             user.__setattr__(attr, value)
         db.session.add(user)
         db.session.commit()

@@ -30,9 +30,13 @@ class Model:
         :return: A dict
         :rtype: t.Dict[str, t.Any]
         """
-        def inspect(a: dict) -> None:
-            for k, v in a.items():
-                print(f"{k}: {v}")
+        if isinstance(self, AbstractUser):
+            result = {
+                k: v
+                for k, v in self.__dict__.items()
+                if (not k.startswith("_")) and (k != "password_hash")
+            }
+            return result
         return {k: v for k,v in self.__dict__.items() if not k.startswith("_")}
 
     @classmethod
