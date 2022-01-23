@@ -6,11 +6,12 @@ sys.path.insert(0, os.path.abspath("../src/djask"))
 project = "Djask"
 copyright = "2021, Andy Zhou"
 author = "Andy Zhou"
-release = "0.2.0"
+release = "0.3.0"
 
 extensions = [
     "sphinx.ext.autodoc",
     "sphinx.ext.intersphinx",
+    "sphinx.ext.viewcode",
     "sphinx_tabs.tabs",
     "pallets_sphinx_themes",
 ]

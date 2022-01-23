@@ -8,44 +8,78 @@ Preparations
 
 Above all, let's start with a simple demo.
 
+Our demo
+########
+
 .. code-block:: python
 
+    """
+    This app.py is just a simple demo. Do not write code like this in production.
+    """
     from djask import Djask
     from djask.admin import Admin
     from djask.db import Model
-    from djask.auth.models import User
+    from djask.auth.abstract import AbstractUser
     import sqlalchemy as sa
-
-    app = Djask(__name__)
-    admin_ext = Admin()  # initialize the admin site
-    admin_ext.init_app(app)
-    db = app.db
 
 
     class Post(Model):
         title = sa.Column(sa.String(255), index=True)
         content = sa.Column(sa.Text)
+        author = sa.orm.relationship("User", back_populates="posts")
+        author_id = sa.Column(sa.ForeignKey("user.id"))
+
+
+    class User(AbstractUser, Model):
+        posts = sa.orm.relationship("Post", back_populates="author")
+
+
+    # 1
+    app = Djask(__name__, {"AUTH_MODEL": User})
+    admin_ext = Admin()  # initialize the admin site
+    admin_ext.init_app(app)
+    db = app.db
+
+    app.config["AUTH_MODEL"] = User
 
 
     @app.before_first_request
     def init_db():
-        app.register_model(Post)
+        db.drop_all()
+        app.register_model(Post) # 2
         db.create_all()
         admin = User(username="test", is_admin=True)
         admin.set_password("password")
         db.session.add(admin)
         db.session.commit()
+        db.create_all()
 
+Some explanations
+#################
+
+Here are some explanations to the demo above.
+
+``# 1``: We passed a config dict directly to the app.
+Inside the dict, we declared the customized ``AUTH_MODEL``, if
+you don't specify it, :class:`~djask.auth.models.User` is the default.
+Djask will automatically register this model for you.
+
+``# 2``: We registered the ``Post`` model.
+
+Other preparations
+##################
 
 Djask automatically generates a web API for your models.
-In this documentation, we will use `httpie <https://httpie.io/>`_ to test our web API.
-You can install it using your system's package manager or `pipx <https://pypa.github.io/pipx/installation/>`_.
+In this documentation, we will use `httpie <https://httpie.io/>`_
+to test our web API. You can install it using your system's package
+manager or `pipx <https://pypa.github.io/pipx/installation/>`_.
 
 Authentication & the user API
 =============================
 
 Djask's default web api uses bearer tokens to authenticate users.
-Note that if the user doesn't have admin access, the authentication will fail.
+Note that if the user doesn't have admin access, the authentication
+will fail.
 
 Getting your token
 ##################
@@ -60,14 +94,14 @@ You'll see something like this:
 
     HTTP/1.0 200 OK
     Cache-Control: no-store
-    Content-Length: 203
+    Content-Length: 213
     Content-Type: application/json
-    Date: Wed, 19 Jan 2022 04:42:29 GMT
+    Date: Sun, 23 Jan 2022 04:33:59 GMT
     Pragma: no-cache
     Server: Werkzeug/2.0.2 Python/3.9.9
 
     {
-        "access_token": "eyJhbGciOiJIUzUxMiIsImlhdCI6MTY0MjU2NzM0OSwiZXhwIjoxNjQyNTcwOTQ5fQ.eyJpZCI6MX0.E7Mr_9tWdaGK_Kz4JBoJXJkmSNdKgb2QA4xGBl0JlQnJMFt-cG1GHhxhrSq61ip9NiY5czYeWxfo1FUNJB-flw",
+        "access_token": "eyJhbGciOiJIUzUxMiIsImlhdCI6MTY0MjkxMjQzOSwiZXhwIjoxNjQyOTE2MDM5fQ.eyJpZCI6MX0.70UFeHYAsPc12G002_3skcbi88_Q_oTG08uBxdC7dfJJ-uxkwpJ9wHvNz2Occ1APL_8xtVNXEkXiaq_VZms-Wg",
         "expires_in": 3600
     }
 
@@ -81,39 +115,43 @@ Copy the ``access_token`` above and save it into a session.
     http --json :5000/admin/api/user username=test2 password=password Authorization:"eyJhbGciOiJIUzUxMiIsImlhdCI6MTY0MjU2NzM0OSwiZXhwIjoxNjQyNTcwOTQ5fQ.eyJpZCI6MX0.E7Mr_9tWdaGK_Kz4JBoJXJkmSNdKgb2QA4xGBl0JlQnJMFt-cG1GHhxhrSq61ip9NiY5czYeWxfo1FUNJB-flw" --session=Authorization
 
     HTTP/1.0 201 CREATED
-    Content-Length: 95
+    Content-Length: 211
     Content-Type: application/json
-    Date: Wed, 19 Jan 2022 23:39:04 GMT
+    Date: Sun, 23 Jan 2022 04:36:22 GMT
     Server: Werkzeug/2.0.2 Python/3.9.9
 
     {
+        "created_at": "Sun, 23 Jan 2022 04:36:22 GMT",
         "email": null,
         "id": 2,
         "is_admin": false,
         "name": null,
+        "posts": [],
+        "updated_at": "Sun, 23 Jan 2022 04:36:22 GMT",
         "username": "test2"
     }
 
-
-
 Retrieving a user
-##############
+#################
 
 .. code-block:: text
 
     http GET :5000/admin/api/user/1 --session=Authorization
 
     HTTP/1.0 200 OK
-    Content-Length: 93
+    Content-Length: 209
     Content-Type: application/json
-    Date: Wed, 19 Jan 2022 05:35:56 GMT
+    Date: Sun, 23 Jan 2022 05:00:04 GMT
     Server: Werkzeug/2.0.2 Python/3.9.9
 
     {
+        "created_at": "Sun, 23 Jan 2022 04:37:59 GMT",
         "email": null,
         "id": 1,
         "is_admin": true,
         "name": null,
+        "posts": [],
+        "updated_at": "Sun, 23 Jan 2022 04:37:59 GMT",
         "username": "test"
     }
 
@@ -128,16 +166,19 @@ Updating a user
     http --json PUT :5000/admin/api/user/1 username="abc" --session=Authorization
 
     HTTP/1.0 200 OK
-    Content-Length: 92
+    Content-Length: 208
     Content-Type: application/json
-    Date: Wed, 19 Jan 2022 08:54:37 GMT
+    Date: Sun, 23 Jan 2022 05:00:39 GMT
     Server: Werkzeug/2.0.2 Python/3.9.9
 
     {
+        "created_at": "Sun, 23 Jan 2022 04:37:59 GMT",
         "email": null,
         "id": 1,
         "is_admin": true,
         "name": null,
+        "posts": [],
+        "updated_at": "Sun, 23 Jan 2022 04:37:59 GMT",
         "username": "abc"
     }
 
@@ -151,11 +192,11 @@ Deleting a user
 
 .. code-block:: text
 
-    http DELETE :5000/admin/api/user/1 --session=Authorization
+    http DELETE :5000/admin/api/user/2 --session=Authorization
 
     HTTP/1.0 204 NO CONTENT
     Content-Type: application/json
-    Date: Wed, 19 Jan 2022 09:09:38 GMT
+    Date: Sun, 23 Jan 2022 05:03:32 GMT
     Server: Werkzeug/2.0.2 Python/3.9.9
 
 
@@ -177,20 +218,30 @@ Creating an instance
 
 .. code-block:: text
 
-    http --json POST :5000/admin/api/post title=hello content=world --session=Authorization
+    http --json POST :5000/admin/api/post title=hello content=world author_id=1 --session=Authorization
 
     HTTP/1.0 201 CREATED
-    Content-Length: 158
+    Content-Length: 399
     Content-Type: application/json
-    Date: Wed, 19 Jan 2022 23:44:15 GMT
+    Date: Sun, 23 Jan 2022 05:03:51 GMT
     Server: Werkzeug/2.0.2 Python/3.9.9
 
     {
+        "author": {
+            "created_at": "Sun, 23 Jan 2022 04:37:59 GMT",
+            "email": null,
+            "id": 1,
+            "is_admin": true,
+            "name": null,
+            "updated_at": "Sun, 23 Jan 2022 04:37:59 GMT",
+            "username": "abc"
+        },
+        "author_id": 1,
         "content": "world",
-        "created_at": "Wed, 19 Jan 2022 23:44:15 GMT",
+        "created_at": "Sun, 23 Jan 2022 05:03:51 GMT",
         "id": 1,
         "title": "hello",
-        "updated_at": "Wed, 19 Jan 2022 23:44:15 GMT"
+        "updated_at": "Sun, 23 Jan 2022 05:03:51 GMT"
     }
 
 Retrieving an instance
@@ -201,17 +252,18 @@ Retrieving an instance
     http GET :5000/admin/api/post/1 --session=Authorization
 
     HTTP/1.0 200 OK
-    Content-Length: 158
+    Content-Length: 177
     Content-Type: application/json
-    Date: Wed, 19 Jan 2022 23:52:12 GMT
+    Date: Fri, 21 Jan 2022 03:29:02 GMT
     Server: Werkzeug/2.0.2 Python/3.9.9
 
     {
+        "author_id": 1,
         "content": "world",
-        "created_at": "Wed, 19 Jan 2022 23:51:52 GMT",
+        "created_at": "Fri, 21 Jan 2022 03:28:17 GMT",
         "id": 1,
         "title": "hello",
-        "updated_at": "Wed, 19 Jan 2022 23:51:52 GMT"
+        "updated_at": "Fri, 21 Jan 2022 03:28:17 GMT"
     }
 
 Updating an instance
@@ -222,17 +274,27 @@ Updating an instance
     http --json PUT :5000/admin/api/post/1 title=hello2 content=world2 --session=Authorization
 
     HTTP/1.0 200 OK
-    Content-Length: 160
+    Content-Length: 399
     Content-Type: application/json
-    Date: Wed, 19 Jan 2022 23:59:33 GMT
+    Date: Sun, 23 Jan 2022 05:04:20 GMT
     Server: Werkzeug/2.0.2 Python/3.9.9
 
     {
-        "content": "world2",
-        "created_at": "Wed, 19 Jan 2022 23:51:52 GMT",
+        "author": {
+            "created_at": "Sun, 23 Jan 2022 04:37:59 GMT",
+            "email": null,
+            "id": 1,
+            "is_admin": true,
+            "name": null,
+            "updated_at": "Sun, 23 Jan 2022 04:37:59 GMT",
+            "username": "abc"
+        },
+        "author_id": 1,
+        "content": "world",
+        "created_at": "Sun, 23 Jan 2022 05:03:51 GMT",
         "id": 1,
-        "title": "hello2",
-        "updated_at": "Wed, 19 Jan 2022 23:51:52 GMT"
+        "title": "hello",
+        "updated_at": "Sun, 23 Jan 2022 05:03:51 GMT"
     }
 
 Deleting an instance
@@ -244,13 +306,15 @@ Deleting an instance
 
     HTTP/1.0 204 NO CONTENT
     Content-Type: application/json
-    Date: Thu, 20 Jan 2022 00:00:57 GMT
+    Date: Sun, 23 Jan 2022 05:04:46 GMT
     Server: Werkzeug/2.0.2 Python/3.9.9
 
 API Docs
 ========
 
 Djask extends APIFlask to provide API documentation for all registered models.
+Currently, Djask's API documentation will not reflect the relationships between
+models.
 
 `Here <http://andyzhou.pythonanywhere.com/admin/api/docs>`_ is a demo.
 
