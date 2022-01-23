@@ -3,7 +3,9 @@ import typing as t
 
 import sqlalchemy as sa
 from sqlalchemy.orm import as_declarative
+from sqlalchemy.orm.collections import InstrumentedList
 from sqlalchemy.ext.declarative import declared_attr
+from sqlalchemy.inspection import inspect
 from djask.auth.abstract import AbstractUser
 
 from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
@@ -24,20 +26,29 @@ class Model:
     def __tablename__(cls):
         return cls.__name__.lower()
 
-    def to_dict(self) -> t.Dict[str, t.Any]:
+    def to_dict(self, exclude: t.Tuple[str] = None) -> t.Dict[str, t.Any]:
         """Convert Model to dict.
 
-        :return: A dict
-        :rtype: t.Dict[str, t.Any]
+        .. versionadded:: 0.3.0
         """
-        if isinstance(self, AbstractUser):
-            result = {
-                k: v
-                for k, v in self.__dict__.items()
-                if (not k.startswith("_")) and (k != "password_hash")
-            }
-            return result
-        return {k: v for k,v in self.__dict__.items() if not k.startswith("_")}
+        result = {}
+        for k, v in self.__dict__.items():
+            conditions = (
+                k.startswith("_"),
+                isinstance(self, AbstractUser) and k == "password_hash",
+                exclude is not None and k in exclude,
+            )
+            if any(conditions):
+                continue
+            result[k] = v
+        for k, v in inspect(type(self)).relationships.items():
+            if exclude is None or k not in exclude:
+                attribute = self.__getattribute__(k)
+                if isinstance(attribute, InstrumentedList):
+                    result[k] = [item.to_dict(exclude=v.back_populates) for item in attribute]
+                else:
+                    result[k] = attribute.to_dict(exclude=(v.back_populates))
+        return result
 
     @classmethod
     def to_schema(cls) -> t.Type[SQLAlchemyAutoSchema]:
