@@ -12,15 +12,16 @@ INSTALL_REQUIRES = [
     'flask-sqlalchemy~=2.5',
     'flask-wtf~=0.15',
     'flask-login~=0.5',
-    'bootstrap-flask~=1.8',
+    'bootstrap-flask~=2.0',
     'flask-compress~=1.10',
     'wtforms-sqlalchemy~=0.3',
     'flask~=2.0',
+    'marshmallow-sqlalchemy>=0.27.0',
 ]
 
 setup_kwargs = {
     'name': 'Djask',
-    'version': '0.2.0',
+    'version': '0.3.0',
     'description': 'An enhanced django-like Flask',
     'long_description': long_description,
     'license': 'MIT',
@@ -31,9 +32,10 @@ setup_kwargs = {
     'url': '',
     'packages': [
         'djask',
-        'djask.admin',
         'djask.auth',
         'djask.db',
+        'djask.admin',
+        'djask.admin.api',
     ],
     'package_dir': {'': 'src'},
     'package_data': {'': ['*']},
