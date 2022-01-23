@@ -2,11 +2,12 @@ import typing as t
 
 from flask_wtf import FlaskForm
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
-from wtforms import SubmitField
+from wtforms import SubmitField, PasswordField
 from wtforms_sqlalchemy.orm import model_form
 
-from .auth.forms import UserForm
+
 from .auth.abstract import AbstractUser
+from .extensions import db
 from .globals import current_app, request, g
 from .types import ModelType
 
@@ -19,7 +20,16 @@ def get_model_form(model_name: str) -> t.Tuple[ModelType, FlaskForm]:
     .. versionadded: 0.1.0
     """
     model = current_app.get_model_by_name(model_name)
-    ModelForm = model_form(model, base_class=FlaskForm) if model != g.User else UserForm
+    if model != g.User:  # pragma: no cover
+        ModelForm = model_form(model, base_class=FlaskForm, db_session=db.session)
+    else:
+        ModelForm = model_form(
+            model,
+            base_class=FlaskForm,
+            exclude=("password_hash",),
+            db_session=db.session,
+        )
+        ModelForm.password = PasswordField("password")
     ModelForm.submit = SubmitField()
     return model, ModelForm()
 
