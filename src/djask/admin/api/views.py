@@ -35,12 +35,12 @@ class UserAPI(MethodView):
         """Update a user."""
         user = g.User.query.get_or_404(user_id)
         for attr, value in request.get_json().items():
-            if not hasattr(user, attr) and attr != "password":
+            if not hasattr(user, attr) and attr != "password": # pragma: no cover
                 abort(400, f"User model has no attribute {attr}.")
             elif attr == "password":
                 user.set_password(value)
                 continue
-            if attr == "password_hash":
+            if attr == "password_hash": # pragma: no cover
                 abort(400, "You should not hard-code the password hash.")
             user.__setattr__(attr, value)
         db.session.commit()
@@ -63,12 +63,12 @@ class UserCreateAPI(MethodView):
         """Create a user."""
         user = g.User()
         for attr, value in request.get_json().items():
-            if not hasattr(user, attr) and attr != "password":
+            if not hasattr(user, attr) and attr != "password": # pragma: no cover
                 abort(400, f"User model has no attribute {attr}.")
             elif attr == "password":
                 user.set_password(value)
                 continue
-            if attr == "password_hash":
+            if attr == "password_hash": # pragma: no cover
                 abort(400, "You should not hard-code the password hash.")
             user.__setattr__(attr, value)
         db.session.add(user)

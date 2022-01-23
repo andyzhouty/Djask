@@ -44,7 +44,7 @@ class Model:
         for k, v in inspect(type(self)).relationships.items():
             if exclude is None or k not in exclude:
                 attribute = self.__getattribute__(k)
-                if isinstance(attribute, InstrumentedList):
+                if isinstance(attribute, InstrumentedList): # pragma: no cover
                     result[k] = [item.to_dict(exclude=v.back_populates) for item in attribute]
                 else:
                     result[k] = attribute.to_dict(exclude=(v.back_populates))

@@ -69,6 +69,14 @@ def test_update_user(admin, client):
     )
     assert resp.status_code == 200
     assert resp.get_json()["username"] == "abc"
+    
+    resp = client.put(
+        f"/admin/api/user/{u.id}",
+        json={"password": "new"},
+        headers=admin_headers(client, username="abc")
+    )
+    assert resp.status_code == 200
+    assert u.check_password("new")    
 
 
 def test_delete_user(admin, client):
