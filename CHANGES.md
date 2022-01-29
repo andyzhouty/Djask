@@ -1,4 +1,10 @@
-# Version 0.3.0 (still under development)
+# Version 0.3.1
+
+Changes:
+
+- Register `login_manager` to the app
+
+# Version 0.3.0
 
 Changes:
 
@@ -8,7 +14,7 @@ Changes:
 
 Changes:
 
-- Support adding and editing models in the admin interface.
+- Support adding and editing models in the admin interface
 
 # Version 0.1.0
 

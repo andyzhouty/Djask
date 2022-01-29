@@ -23,6 +23,6 @@ jobs:
           password: ${{ secrets.PYPI_API_TOKEN }}
       - name: Publish to GitHub
         run: |
-          gh release create v$(pdm show --version) ./dist/* -F CHANGES.md
+          gh release create v$(pdm show --version) ./dist/* --generate-notes
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
