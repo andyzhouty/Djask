@@ -7,7 +7,7 @@ from apiflask import APIFlask
 from apiflask.exceptions import HTTPError
 
 from .blueprints import Blueprint as DjaskBlueprint
-from .extensions import bootstrap, compress, csrf, db
+from .extensions import bootstrap, compress, csrf, db, login_manager
 from .globals import current_app, g
 from .mixins import ModelFunctionalityMixin
 from .types import Config, ErrorResponse, ModelType
@@ -110,9 +110,11 @@ class Djask(APIFlask, ModelFunctionalityMixin):
             compress,
             csrf,
             db,
+            login_manager,
         ):
             ext.init_app(self)
         self.db = db
+        self.login_manager = login_manager
 
     def _register_static_files(self) -> None:
         """Register the built-in static files
