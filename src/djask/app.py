@@ -171,7 +171,7 @@ class Djask(APIFlask, ModelFunctionalityMixin):
             and "bootstrap" not in self.blueprint_objects
             and "djask_bootstrap" not in self.blueprints
         ):
-            blueprint.name = "djask_bootstrap" # add a prefix to the blueprint
+            blueprint.name = "djask_bootstrap"  # add a prefix to the blueprint
         super().register_blueprint(blueprint, **options)
         conditions = [
             blueprint not in self.blueprint_objects,
