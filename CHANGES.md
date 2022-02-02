@@ -1,3 +1,9 @@
+# Version 0.3.2
+
+Changes:
+
+- Fix re-registration for the bootstrap extension
+
 # Version 0.3.1
 
 Changes:

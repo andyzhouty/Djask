@@ -35,7 +35,7 @@ license = {text = "MIT"}
 name = "Djask"
 readme = "README.md"
 requires-python = ">=3.7"
-version = "0.3.1"
+version = "0.3.2"
 
 [project.urls]
 Documentation = "https://djask.readthedocs.io"
