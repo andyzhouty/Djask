@@ -161,10 +161,18 @@ class Djask(APIFlask, ModelFunctionalityMixin):
         """Bind blueprint objects to the app instead of strings
 
         .. versionadded:: 0.1.0
+        .. versionchanged:: 0.3.2
             :param blueprint: the blueprint object to register
             :param options: other options such as url_prefix
         """
-        blueprint.register(self, options)
+        # register the built-in bootstrap blueprint as `djask_bootstrap`.
+        if (
+            blueprint.name == "bootstrap"
+            and "bootstrap" not in self.blueprint_objects
+            and "djask_bootstrap" not in self.blueprints
+        ):
+            blueprint.name = "djask_bootstrap" # add a prefix to the blueprint
+        super().register_blueprint(blueprint, **options)
         conditions = [
             blueprint not in self.blueprint_objects,
             isinstance(blueprint, DjaskBlueprint),
