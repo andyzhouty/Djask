@@ -4,7 +4,7 @@ from .globals import current_app, g, session, request
 from .blueprints import Blueprint, APIBlueprint
 from .app import Djask
 
-__version__ = "0.3.0dev"
+__version__ = "0.3.2"
 __all__ = [
     "abort",
     "flash",
