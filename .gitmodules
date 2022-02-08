@@ -1,0 +1,3 @@
+[submodule "src/djask/project_template/cookiecutter-djask"]
+	path = src/djask/project_template/cookiecutter-djask
+	url = https://github.com/z-t-y/cookiecutter-djask

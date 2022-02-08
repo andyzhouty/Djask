@@ -1,11 +1,18 @@
+import os
 import os.path as path
 import typing as t
 
 from apispec import APISpec
 from flask import Blueprint, abort
+from flask.helpers import (
+    get_env,
+    get_debug_flag,
+    get_load_dotenv,
+)
 from apiflask import APIFlask
 from apiflask.exceptions import HTTPError
 
+from . import cli
 from .blueprints import Blueprint as DjaskBlueprint
 from .extensions import bootstrap, compress, csrf, db, login_manager
 from .globals import current_app, g
@@ -194,6 +201,87 @@ class Djask(APIFlask, ModelFunctionalityMixin):
         if name not in registered_models:
             abort(404, "Data model not defined or registered.")
         return models[registered_models.index(name)]
+
+    def run(
+        self,
+        host: t.Optional[str] = None,
+        port: t.Optional[int] = None,
+        debug: t.Optional[bool] = None,
+        load_dotenv: bool = True,
+        **options: t.Any,
+    ):  # pragma: no cover
+        """Runs the application on a local development server.
+
+        Do not use ``run()`` in a production setting. It is not intended to
+        meet security and performance requirements for a production server.
+        Instead, see :doc:`/deploying/index` for WSGI server recommendations.
+
+        If the :attr:`debug` flag is set the server will automatically reload
+        for code changes and show a debugger in case an exception happened.
+
+        If you want to run the application in debug mode, but disable the
+        code execution on the interactive debugger, you can pass
+        ``use_evalex=False`` as parameter.  This will keep the debugger's
+        traceback screen active, but disable code execution.
+
+        It is not recommended to use this function for development with
+        automatic reloading as this is badly supported.  Instead you should
+        be using the :command:`djask` command line script's ``run`` support.
+        """
+        if os.environ.get("FLASK_RUN_FROM_CLI") == "true":
+            from flask.debughelpers import explain_ignored_app_run
+
+            explain_ignored_app_run()
+            return
+
+        if get_load_dotenv(load_dotenv):
+            cli.load_dotenv()
+
+            # if set, let env vars override previous values
+            if "FLASK_ENV" in os.environ:
+                self.env = get_env()
+                self.debug = get_debug_flag()
+            elif "FLASK_DEBUG" in os.environ:
+                self.debug = get_debug_flag()
+
+        # debug passed to method overrides all other sources
+        if debug is not None:
+            self.debug = bool(debug)
+
+        server_name = self.config.get("SERVER_NAME")
+        sn_host = sn_port = None
+
+        if server_name:
+            sn_host, _, sn_port = server_name.partition(":")
+
+        if not host:
+            if sn_host:
+                host = sn_host
+            else:
+                host = "127.0.0.1"
+
+        if port or port == 0:
+            port = int(port)
+        elif sn_port:
+            port = int(sn_port)
+        else:
+            port = 5000
+
+        options.setdefault("use_reloader", self.debug)
+        options.setdefault("use_debugger", self.debug)
+        options.setdefault("threaded", True)
+
+        cli.show_server_banner(self.env, self.debug, self.name, False)
+
+        from werkzeug.serving import run_simple
+
+        try:
+            run_simple(t.cast(str, host), port, self, **options)
+        finally:
+            # reset the first request information if the development server
+            # reset normally.  This makes it possible to restart the server
+            # without reloader and that stuff from an interactive shell.
+            self._got_first_request = False
 
     def _generate_spec(self) -> APISpec:
         """Add data models to the spec.

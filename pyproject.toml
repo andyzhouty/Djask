@@ -19,15 +19,17 @@ classifiers = [
   "Topic :: Internet :: WWW/HTTP :: WSGI :: Application",
 ]
 dependencies = [
-  "apiflask~=0.10",
-  "flask-sqlalchemy~=2.5",
-  "flask-wtf~=0.15",
-  "flask-login~=0.5",
-  "bootstrap-flask~=2.0",
-  "flask-compress~=1.10",
-  "wtforms-sqlalchemy~=0.3",
-  "flask~=2.0",
-  "marshmallow-sqlalchemy>=0.27.0",
+    "apiflask~=0.10",
+    "flask-sqlalchemy~=2.5",
+    "flask-wtf~=0.15",
+    "flask-login~=0.5",
+    "bootstrap-flask~=2.0",
+    "flask-compress~=1.10",
+    "wtforms-sqlalchemy~=0.3",
+    "flask~=2.0",
+    "marshmallow-sqlalchemy>=0.27.0",
+    "python-dotenv>=0.19.2",
+    "cookiecutter>=1.7.3",
 ]
 description = "An enhanced django-like Flask"
 keywords = ["flask", "apiflask"]
@@ -36,7 +38,7 @@ name = "Djask"
 readme = "README.md"
 license_files = "LICENSE"
 requires-python = ">=3.7"
-version = "0.3.2"
+version = "0.4.0"
 
 [project.urls]
 Documentation = "https://djask.readthedocs.io"
@@ -47,6 +49,9 @@ Repo = "https://github.com/z-t-y/djask"
 [build-system]
 build-backend = "pdm.pep517.api"
 requires = ["pdm-pep517"]
+
+[project.scripts]
+djask = "djask.cli:main"
 
 [tool]
 [tool.pdm]
@@ -67,4 +72,10 @@ testpaths = ["tests"]
 
 [tool.coverage.run]
 branch = true
-omit = ["*.html"]
+omit = ["*.html", "*/__main__.py", "*/cli.py"]
+
+[tool.black]
+include = ".py"
+extend-exclude = """
+src/djask/project_template
+"""

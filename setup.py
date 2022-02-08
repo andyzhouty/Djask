@@ -17,11 +17,18 @@ INSTALL_REQUIRES = [
     'wtforms-sqlalchemy~=0.3',
     'flask~=2.0',
     'marshmallow-sqlalchemy>=0.27.0',
+    'python-dotenv>=0.19.2',
+    'cookiecutter>=1.7.3',
 ]
+ENTRY_POINTS = {
+    'console_scripts': [
+        'djask = djask.cli:main',
+    ],
+}
 
 setup_kwargs = {
     'name': 'Djask',
-    'version': '0.3.2',
+    'version': '0.4.0',
     'description': 'An enhanced django-like Flask',
     'long_description': long_description,
     'license': 'MIT',
@@ -59,6 +66,7 @@ setup_kwargs = {
     ],
     'install_requires': INSTALL_REQUIRES,
     'python_requires': '>=3.7',
+    'entry_points': ENTRY_POINTS,
 
 }
 

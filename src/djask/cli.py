@@ -33,6 +33,8 @@ from flask.helpers import get_debug_flag
 from flask.helpers import get_env
 from flask.helpers import get_load_dotenv
 
+from .custom_commands import create_app_command
+
 
 try:
     import dotenv
@@ -356,6 +358,7 @@ class DjaskGroup(FlaskGroup):
             self.add_command(run_command)
             self.add_command(shell_command)
             self.add_command(routes_command)
+            self.add_command(create_app_command)
 
         self._loaded_plugin_commands = False
 
