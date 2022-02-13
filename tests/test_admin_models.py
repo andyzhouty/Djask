@@ -3,7 +3,19 @@ import pytest
 from djask import Blueprint
 from djask.auth.models import User
 from djask.db.models import Model
+from djask.exceptions import ModelTypeError
 from djask.extensions import db
+
+
+def test_register_invalid_model(admin, client):
+    class InvalidModel:
+        pass
+    try:
+        admin.register_model(InvalidModel)
+    except TypeError as e:
+        assert e == ModelTypeError
+    else:
+        pytest.fail("Should raise a TypeError")
 
 
 def test_register_model(admin, client):

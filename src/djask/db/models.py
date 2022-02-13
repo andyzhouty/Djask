@@ -11,25 +11,16 @@ from djask.auth.abstract import AbstractUser
 from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
 
 
-@as_declarative()
-class Model:
-    """The base model class.
+class BaseModel:
+    """Provide a base model class which has no pre-defined columns.
 
-    .. versionadded:: 0.1.0
+    ..versionadded:: 0.4.1
     """
 
-    id = sa.Column(sa.Integer, primary_key=True)
-    created_at = sa.Column(sa.DateTime, default=dt.datetime.utcnow)
-    updated_at = sa.Column(sa.DateTime, default=dt.datetime.utcnow)
-
-    @declared_attr
-    def __tablename__(cls):
-        return cls.__name__.lower()
-
-    def to_dict(self, exclude: t.Tuple[str] = None) -> t.Dict[str, t.Any]:
+    def to_dict(self, exclude: t.Iterable[str] = None) -> t.Dict[str, t.Any]:
         """Convert Model to dict.
 
-        .. versionadded:: 0.3.0
+        .. versionadded:: 0.4.1
         """
         result = {}
         for k, v in self.__dict__.items():
@@ -46,18 +37,20 @@ class Model:
                 attribute = self.__getattribute__(k)
                 if isinstance(attribute, InstrumentedList):  # pragma: no cover
                     result[k] = [
-                        item.to_dict(exclude=v.back_populates) for item in attribute
+                        item.to_dict(exclude=v.back_populates)
+                        for item in attribute
+                        if hasattr(item, "to_dict")
                     ]
                 else:
-                    result[k] = attribute.to_dict(exclude=(v.back_populates))
+                    if hasattr(attribute, "to_dict"):  # pragma: no cover
+                        result[k] = attribute.to_dict(exclude=(v.back_populates))
         return result
 
     @classmethod
     def to_schema(cls) -> t.Type[SQLAlchemyAutoSchema]:
         """Convert Model to a marshmallow schema.
 
-        :return: [description]
-        :rtype: t.Type[SQLAlchemyAutoSchema]
+        .. versionadded:: 0.4.1
         """
 
         class Schema(SQLAlchemyAutoSchema):
@@ -68,3 +61,29 @@ class Model:
                 include_fk = True
 
         return Schema
+
+
+@as_declarative()
+class PureModel(BaseModel):
+    """Provide a base model class with no pre-built columns.
+
+    .. versionadded:: 0.4.1
+    """
+
+    pass
+
+
+@as_declarative()
+class Model(BaseModel):
+    """The base model class.
+
+    .. versionadded:: 0.1.0
+    """
+
+    id = sa.Column(sa.Integer, primary_key=True)
+    created_at = sa.Column(sa.DateTime, default=dt.datetime.utcnow)
+    updated_at = sa.Column(sa.DateTime, default=dt.datetime.utcnow)
+
+    @declared_attr
+    def __tablename__(cls):
+        return cls.__name__.lower()
