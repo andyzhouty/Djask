@@ -28,7 +28,7 @@ ENTRY_POINTS = {
 
 setup_kwargs = {
     'name': 'Djask',
-    'version': '0.4.0',
+    'version': '0.4.1',
     'description': 'An enhanced django-like Flask',
     'long_description': long_description,
     'license': 'MIT',

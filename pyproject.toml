@@ -38,7 +38,7 @@ name = "Djask"
 readme = "README.md"
 license_files = "LICENSE"
 requires-python = ">=3.7"
-version = "0.4.0"
+version = "0.4.1"
 
 [project.urls]
 Documentation = "https://djask.readthedocs.io"
