@@ -21,7 +21,7 @@ User's Guide
 ------------
 .. toctree::
    quickstart
-   diving_into_models
+   models_and_web_api
 
 
 API Reference

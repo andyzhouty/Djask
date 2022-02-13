@@ -1,3 +1,15 @@
+# Version 0.4.1 (in development)
+
+Changes:
+
+- Provide a base model class with no pre-built columns
+
+# Version 0.4.0
+
+Changes:
+
+- Support new project generation within the cli
+
 # Version 0.3.2
 
 Changes:

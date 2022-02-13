@@ -82,8 +82,8 @@ The admin interface
 
 After a quick walk-through, we are going to check out the admin interface.
 
-The default admin interface has a url prefix ``/admin``, which is unchangeable currently.
-You'll able to change this default prefix in future releases.
+The default admin interface has a url prefix ``/admin``. You are able to change
+by setting ``app.config["ADMIN_PREFIX"]``.
 
 Note that we are still using the same application as the previous section.
 
@@ -91,7 +91,7 @@ Make sure you have set up your environment. Then let's run the app:
 
 .. code-block:: text
 
-   $ flask run
+   $ djask run
 
 Head over to `localhost:5000/admin/login <localhost:5000/admin/login>`_.
 Log in the admin interface with ``test`` as username and ``password`` as password:
@@ -144,4 +144,4 @@ Explore models
 ==============
 
 Wanna explore what Djask can do with your SQLAlchemy models?
-See :doc:'diving_into_models'.
+See :doc:'models_and_web_api'.

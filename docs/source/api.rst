@@ -1,16 +1,16 @@
 API
-===
+---
 
 .. module:: djask
 
 Application Object
-------------------
+==================
 
 .. autoclass:: Djask
    :members: model, register_model, register_models
 
 Blueprint Objects
------------------
+=================
 
 .. autoclass:: Blueprint
    :members: model, register_model, register_models
@@ -19,7 +19,7 @@ Blueprint Objects
    :members: model, register_model, register_models
 
 Admin Decorators
-----------------
+================
 
 .. autoclass:: djask.admin.ext.Admin
    :members:
@@ -29,13 +29,13 @@ Admin Decorators
 .. autofunction:: djask.admin.api.decorators.admin_required_api
 
 Helper Functions
-----------------
+================
 
 .. automodule:: djask.helpers
    :members:
 
 Models
-------
+======
 
 .. automodule:: djask.auth.models
    :members:
@@ -46,6 +46,9 @@ Models
 .. automodule:: djask.auth.anonymous
    :members:
 
+.. autoclass:: djask.db.models.PureModel
+   :members: to_dict, to_schema
+
 .. autoclass:: djask.db.models.Model
    :members: to_dict, to_schema
 
@@ -55,7 +58,7 @@ Models
 
 
 More Information
-----------------
+================
 
 This documentation only gives new functionalities and differences between those implemented in Djask
 and those in Flask and APIFlask.

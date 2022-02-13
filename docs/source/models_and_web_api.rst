@@ -1,4 +1,4 @@
-Diving into Models
+Models and Web API
 ------------------
 
 This part of documentation will explore all what Djask can do with your SQLAlchemy models.
@@ -73,6 +73,19 @@ Djask automatically generates a web API for your models.
 In this documentation, we will use `httpie <https://httpie.io/>`_
 to test our web API. You can install it using your system's package
 manager or `pipx <https://pypa.github.io/pipx/installation/>`_.
+
+
+Models
+======
+
+Djask provides two types of base models, :class:`~djask.db.models.Model` and :class:`~djask.db.models.PureModel`.
+
+:class:`~djask.db.models.Model` is initialized with three columns, ``id``, ``created_at`` and ``updated_at``, and
+instances of this class can be registered by ``app.register_model()`` or ``blueprint.register_model()``.
+:class:`~djask.db.models.PureModel` is similar to :class:`~djask.db.models.Model`, but it has no columns when it's created.
+Therefore, it CANNOT be registered to the admin interface by ``app.register_model()`` or ``blueprint.register_model()``. If
+it's passed to ``app.register_model()`` or ``blueprint.register_model()``, it will raise an error.
+
 
 Authentication & the user API
 =============================
