@@ -5,7 +5,6 @@ from .types import ModelList, ModelType
 from .exceptions import ModelTypeError
 
 
-
 class ModelFunctionalityMixin:
     """
     A mixin that adds some SQL functionalities to the classes which inherit it.
