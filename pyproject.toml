@@ -30,15 +30,15 @@ dependencies = [
     "marshmallow-sqlalchemy>=0.27.0",
     "python-dotenv>=0.19.2",
     "cookiecutter>=1.7.3",
+    "authlib>=1.0.1",
 ]
 description = "An enhanced django-like Flask"
 keywords = ["flask", "apiflask"]
 license = {text = "MIT"}
 name = "Djask"
 readme = "README.md"
-license_files = "LICENSE"
 requires-python = ">=3.7"
-version = "0.4.1"
+version = "0.4.2"
 
 [project.urls]
 Documentation = "https://djask.readthedocs.io"

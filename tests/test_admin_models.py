@@ -70,7 +70,7 @@ def test_blueprints(admin, client):
     db.create_all()
     # Test register a blueprint multiple times
     admin.register_blueprint(bp)
-    admin.register_blueprint(bp, url_prefix="/bp/")
+    admin.register_blueprint(bp, url_prefix="/bp/", name="bp2")
 
     resp = client.get("/admin/")
     rv_data = resp.get_data(as_text=True)

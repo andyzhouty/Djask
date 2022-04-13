@@ -1,8 +1,6 @@
-from apiflask.decorators import doc
-
 from flask import jsonify
 from flask.views import MethodView
-from apiflask import input, output
+from apiflask import input, output, doc
 from apiflask.exceptions import abort
 
 from djask.auth.abstract import AbstractUser

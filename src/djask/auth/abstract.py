@@ -2,8 +2,8 @@ import typing as t
 import sqlalchemy as sa
 
 from apiflask.exceptions import abort
+from authlib.jose import jwt
 from flask_login.mixins import UserMixin
-from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from sqlalchemy.ext.declarative import AbstractConcreteBase
 from werkzeug.security import generate_password_hash, check_password_hash
 
@@ -47,15 +47,17 @@ class AbstractUser(AbstractConcreteBase, UserMixin):
         """
         return check_password_hash(self.password_hash, password)
 
-    def api_token(self, expiration=3600) -> str:
+    def api_token(self) -> str:
         """Generate a new API token for the user.
 
         :param expiration: The expiration time of the token in seconds
         :returns: The API token
         .. versionadded:: 0.3.0
+        .. versionchanged:: 0.4.2
         """
-        s = Serializer(current_app.config["SECRET_KEY"], expiration)
-        return s.dumps({"id": self.id}).decode("ascii")
+        header = {"alg": "HS256"}
+        data = {"id": self.id}
+        return jwt.encode(header, data, current_app.config["SECRET_KEY"]).decode()
 
     def update(self, data: t.Dict[str, t.Any]) -> None:
         """Update the user with the given dict.
