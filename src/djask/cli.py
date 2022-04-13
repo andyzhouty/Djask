@@ -179,8 +179,9 @@ def get_version(ctx, param, value):
     from . import __version__
 
     click.echo(
-        f"Python {platform.python_version()}\n" f"Werkzeug {werkzeug.__version__}\n",
-        f"Flask {flask.__version__}\n",
+        f"Python {platform.python_version()}\n"
+        f"Werkzeug {werkzeug.__version__}\n"
+        f"Flask {flask.__version__}\n"
         f"Djask {__version__}\n",
         color=ctx.color,
     )
@@ -230,11 +231,11 @@ class ScriptInfo(FlaskScriptInfo):
                     re.split(r":(?![\\/])", self.app_import_path, 1) + [None]
                 )[:2]
                 import_name = prepare_import(path)
-                app = locate_app(self, import_name, name)
+                app = locate_app(import_name, name)
             else:
                 for path in ("wsgi.py", "app.py"):
                     import_name = prepare_import(path)
-                    app = locate_app(self, import_name, None, raise_if_not_found=False)
+                    app = locate_app(import_name, None, raise_if_not_found=False)
 
                     if app:
                         break
