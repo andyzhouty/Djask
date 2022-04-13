@@ -1,5 +1,4 @@
 from .abstract import AbstractUser
-
 from ..db import Model
 
 

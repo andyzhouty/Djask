@@ -1,14 +1,13 @@
 import datetime as dt
 import typing as t
 
+from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
 import sqlalchemy as sa
 from sqlalchemy.orm import as_declarative
 from sqlalchemy.orm.collections import InstrumentedList
 from sqlalchemy.ext.declarative import declared_attr
 from sqlalchemy.inspection import inspect
-from djask.auth.abstract import AbstractUser
 
-from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
 
 
 class BaseModel:
@@ -22,6 +21,7 @@ class BaseModel:
 
         .. versionadded:: 0.4.1
         """
+        from ..auth.abstract import AbstractUser
         result = {}
         for k, v in self.__dict__.items():
             conditions = (

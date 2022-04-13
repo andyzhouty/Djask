@@ -1,5 +1,3 @@
-import typing as t
-
 from apiflask.decorators import doc
 
 from flask import jsonify
@@ -13,7 +11,6 @@ from djask.blueprints import APIBlueprint
 # fmt: off
 from .schemas import (
     TokenInSchema, TokenOutSchema,
-    UserInSchema, UserOutSchema
 )
 # fmt: on
 from .decorators import admin_required_api
@@ -34,16 +31,7 @@ class UserAPI(MethodView):
     def put(self, user_id: int) -> AbstractUser:
         """Update a user."""
         user = g.User.query.get_or_404(user_id)
-        for attr, value in request.get_json().items():
-            if not hasattr(user, attr) and attr != "password":  # pragma: no cover
-                abort(400, f"User model has no attribute {attr}.")
-            elif attr == "password":
-                user.set_password(value)
-                continue
-            if attr == "password_hash":  # pragma: no cover
-                abort(400, "You should not hard-code the password hash.")
-            user.__setattr__(attr, value)
-        db.session.commit()
+        user.update(request.get_json())
         user = g.User.query.get(user_id)
         return user.to_dict()
 
@@ -62,17 +50,7 @@ class UserCreateAPI(MethodView):
     def post(self) -> AbstractUser:
         """Create a user."""
         user = g.User()
-        for attr, value in request.get_json().items():
-            if not hasattr(user, attr) and attr != "password":  # pragma: no cover
-                abort(400, f"User model has no attribute {attr}.")
-            elif attr == "password":
-                user.set_password(value)
-                continue
-            if attr == "password_hash":  # pragma: no cover
-                abort(400, "You should not hard-code the password hash.")
-            user.__setattr__(attr, value)
-        db.session.add(user)
-        db.session.commit()
+        user.update(request.get_json())
         user = g.User.query.get(user.id)
         return user.to_dict(), 201
 

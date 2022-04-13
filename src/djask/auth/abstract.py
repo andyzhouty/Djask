@@ -1,10 +1,14 @@
+import typing as t
 import sqlalchemy as sa
-from sqlalchemy.ext.declarative import AbstractConcreteBase
-from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
-from werkzeug.security import generate_password_hash, check_password_hash
+
+from apiflask.exceptions import abort
 from flask_login.mixins import UserMixin
+from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
+from sqlalchemy.ext.declarative import AbstractConcreteBase
+from werkzeug.security import generate_password_hash, check_password_hash
 
 from ..globals import current_app
+from ..extensions import db
 
 
 class AbstractUser(AbstractConcreteBase, UserMixin):
@@ -52,3 +56,21 @@ class AbstractUser(AbstractConcreteBase, UserMixin):
         """
         s = Serializer(current_app.config["SECRET_KEY"], expiration)
         return s.dumps({"id": self.id}).decode("ascii")
+
+    def update(self, data: t.Dict[str, t.Any]) -> None:
+        """Update the user with the given dict.
+
+        :param data: The dict containing user data
+        .. versionadded::
+        """
+        for attr, value in data.items():
+            if not hasattr(self, attr) and attr != "password":  # pragma: no cover
+                abort(400, f"User model has no attribute {attr}.")
+            elif attr == "password":
+                self.set_password(value)
+                continue
+            if attr == "password_hash":  # pragma: no cover
+                abort(400, "You should not hard-code the password hash.")
+            self.__setattr__(attr, value)
+        db.session.add(self)
+        db.session.commit()

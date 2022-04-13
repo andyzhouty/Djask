@@ -22,10 +22,6 @@ from .auth.abstract import AbstractUser
 from .exceptions import AuthModelInvalid
 
 
-def _avoid_none(data: t.Any) -> t.Any:
-    return data if data else ""
-
-
 def _initialize_bootstrap_icons() -> str:
     if current_app.debug:  # pragma: no cover
         return "/djask/static/css/bootstrap-icons.css"
@@ -156,12 +152,14 @@ class Djask(APIFlask, ModelFunctionalityMixin):
         .. versionadded:: 0.1.0
         :param error: The error object.
         """
-        status_code, message = (
-            _avoid_none(error.status_code),
-            _avoid_none(error.message),
-        )
+        status_code, message = tuple(map(
+            lambda x: x if x else "",
+            (error.status_code, error.message)
+        ))
         detail: t.Union[t.Dict, t.Any] = error.detail
-        body = f"{status_code} {message}{'<br />' + str(detail) if detail else ''}"
+        body = "{} {}<br /> {}".format(
+            status_code, message, str(detail) if detail else ""
+        )
         return body, error.status_code, error.headers
 
     def register_blueprint(self, blueprint: Blueprint, **options: t.Any) -> None:
