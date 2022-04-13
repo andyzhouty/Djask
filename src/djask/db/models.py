@@ -9,7 +9,6 @@ from sqlalchemy.ext.declarative import declared_attr
 from sqlalchemy.inspection import inspect
 
 
-
 class BaseModel:
     """Provide a base model class which has no pre-defined columns.
 
@@ -22,6 +21,7 @@ class BaseModel:
         .. versionadded:: 0.4.1
         """
         from ..auth.abstract import AbstractUser
+
         result = {}
         for k, v in self.__dict__.items():
             conditions = (

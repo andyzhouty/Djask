@@ -152,10 +152,9 @@ class Djask(APIFlask, ModelFunctionalityMixin):
         .. versionadded:: 0.1.0
         :param error: The error object.
         """
-        status_code, message = tuple(map(
-            lambda x: x if x else "",
-            (error.status_code, error.message)
-        ))
+        status_code, message = tuple(
+            map(lambda x: x if x else "", (error.status_code, error.message))
+        )
         detail: t.Union[t.Dict, t.Any] = error.detail
         body = "{} {}<br /> {}".format(
             status_code, message, str(detail) if detail else ""
