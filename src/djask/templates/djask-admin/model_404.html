@@ -1,8 +1,8 @@
-{% extends "base.html" %}
-{% from "macros.html" import render_top_panel %}
+{% extends "djask-admin/base.html" %}
+{% from "djask-admin/macros.html" import render_top_panel %}
 {% block title %} {{ model_name }} - 404 {% endblock %}
 {% block content %}
-    {% include "aside.html" %}
+    {% include "djask-admin/aside.html" %}
     <main>
         {{ render_top_panel(model_name+" - 404") }}
         <div class="page-content">

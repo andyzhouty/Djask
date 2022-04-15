@@ -1,4 +1,3 @@
-from sys import prefix
 import typing as t
 
 from sqlalchemy.orm.attributes import InstrumentedAttribute
@@ -20,7 +19,7 @@ admin_bp = Blueprint("admin", __name__)
 def index():
     blueprints = current_app.blueprint_objects
     return render_template(
-        "admin/dashboard.html",
+        "djask-admin/dashboard.html",
         User=g.User,
         models=current_app.models,
         blueprints=blueprints,
@@ -43,7 +42,7 @@ def login():
             login_user(user, form.remember_me.data)
             next: t.Optional[str] = request.args.get("next")
             return redirect(next or url_for("admin.index"))
-    return render_template("admin/login.html", form=form)
+    return render_template("djask-admin/login.html", form=form)
 
 
 @admin_bp.route("/logout")
@@ -66,7 +65,7 @@ def specific_model(model_name: str):
             schema[name] = type
     instances = model.query.all()
     return render_template(
-        "admin/model.html",
+        "djask-admin/model.html",
         model=model,
         model_name=model.__name__,
         schema=schema,
@@ -98,7 +97,9 @@ def add_model(model_name: str):
         db.session.commit()
         flash(f"A new instance of {model_name} has been created!", "success")
         return redirect(url_for("admin.specific_model", model_name=model.__name__))
-    return render_template("admin/model_add.html", form=form, model_name=model.__name__)
+    return render_template(
+        "djask-admin/model_add.html", form=form, model_name=model.__name__
+    )
 
 
 @admin_bp.route(
@@ -122,7 +123,7 @@ def edit_model(model_name: str, model_id: int):
     if m is None:
         return (
             render_template(
-                "admin/model_404.html", model_id=model_id, model_name=model_name
+                "djask-admin/model_404.html", model_id=model_id, model_name=model_name
             ),
             404,
         )
@@ -147,5 +148,8 @@ def edit_model(model_name: str, model_id: int):
         ):
             getattr(form, name).data = getattr(m, name)
     return render_template(
-        "admin/model_edit.html", form=form, model_name=model.__name__, model_id=model_id
+        "djask-admin/model_edit.html",
+        form=form,
+        model_name=model.__name__,
+        model_id=model_id,
     )

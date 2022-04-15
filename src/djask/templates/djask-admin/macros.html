@@ -1,0 +1,39 @@
+{% macro render_model(model) %}
+    {% set model_name = model.__name__ %}
+    <div class="model model-{{ model_name | lower }} d-flex">
+        <a
+          href="{{ url_for('admin.specific_model', model_name=model_name) }}"
+          alt="{{ model_name }} Model"
+          class="model-link flex-fill"
+        >
+        {{ model_name }}
+        </a>
+        <a
+          href="{{ url_for('admin.add_model', model_name=model_name) }}"
+          alt="{{ model_name }} Model Add"
+          class="model-link"
+        >
+            <i class="bi bi-plus-square"></i>
+            Add
+        </a>
+    </div>
+{% endmacro %}
+
+{% macro render_top_panel(content, icon="grid-1x2") %}
+    <div class="d-flex align-content-center m-0 p-0 header-container">
+        <h2 class="main-header">
+            <i class="bi bi-{{ icon }}"></i>
+            {{ content }}
+        </h2>
+    </div>
+{% endmacro %}
+
+{% macro render_schema(schema) %}
+    <h1>Schema</h1>
+    {% for k, v in schema.items() %}
+    <div class="column">
+        <div class="column-name">{{ k }}</div>
+        <div class="column-type">{{ v }}</div>
+    </div>
+    {% endfor %}
+{% endmacro %}

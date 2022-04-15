@@ -52,7 +52,7 @@ class Djask(APIFlask, ModelFunctionalityMixin):
         swagger_path: t.Optional[str] = "/admin/api/docs",
         redoc_path: t.Optional[str] = "/admin/api/redoc",
         title: t.Optional[str] = "Djask API",
-        version: t.Optional[str] = "0.3.0dev",
+        version: t.Optional[str] = "0.4.4",
         *args,
         **kwargs,
     ):
@@ -78,7 +78,7 @@ class Djask(APIFlask, ModelFunctionalityMixin):
             COMPRESS_BR_LEVEL=9,
             SQLALCHEMY_TRACK_MODIFICATIONS=False,
             DJASK_MODELS_PER_PAGE=8,
-            DOCS_FAVICON="/djask" + self.static_url_path + "/icon/djask.ico",
+            DOCS_FAVICON="/djask" + (self.static_url_path or "") + "/icon/djask.ico",
         )
         for k, v in djask_default_config.items():
             self.config[k] = v
@@ -128,7 +128,7 @@ class Djask(APIFlask, ModelFunctionalityMixin):
             "djask",
             __name__,
             static_folder="static",
-            static_url_path="/djask" + self.static_url_path,
+            static_url_path="/djask" + (self.static_url_path or ""),
             template_folder=path.abspath(
                 path.join(path.dirname(__file__), "templates")
             ),

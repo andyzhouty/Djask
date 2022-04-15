@@ -1,10 +1,11 @@
 """Provide a pluggable admin interface for Djask."""
 
 import typing as t
-from djask import current_app
+from pathlib import Path
 
 from flask_login import LoginManager
 
+from djask import current_app
 from .views import admin_bp
 from ..app import Djask, Blueprint
 from ..auth.anonymous import AnonymousUser
@@ -60,7 +61,11 @@ class Admin:
         custom_prefix = self.app.config.get("ADMIN_PREFIX")
         if isinstance(custom_prefix, str):  # pragma: no cover
             admin_prefix = custom_prefix
-        self.app.register_blueprint(admin_bp, url_prefix=admin_prefix)
+        self.app.register_blueprint(
+            admin_bp,
+            url_prefix=admin_prefix,
+            template_folder=(Path(__file__).parents[1] / "templates"),
+        )
         self.blueprint = admin_bp
         self.app.register_blueprint(admin_api, url_prefix=admin_prefix + "/api")
         csrf.exempt(admin_api)
