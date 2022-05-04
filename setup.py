@@ -19,6 +19,7 @@ INSTALL_REQUIRES = [
     'marshmallow-sqlalchemy>=0.27.0',
     'python-dotenv>=0.19.2',
     'cookiecutter>=1.7.3',
+    'authlib>=1.0.1',
 ]
 ENTRY_POINTS = {
     'console_scripts': [
@@ -28,7 +29,7 @@ ENTRY_POINTS = {
 
 setup_kwargs = {
     'name': 'Djask',
-    'version': '0.4.1',
+    'version': '0.4.4',
     'description': 'An enhanced django-like Flask',
     'long_description': long_description,
     'license': 'MIT',
@@ -40,8 +41,8 @@ setup_kwargs = {
     'packages': [
         'djask',
         'djask.auth',
-        'djask.db',
         'djask.admin',
+        'djask.db',
         'djask.admin.api',
     ],
     'package_dir': {'': 'src'},
