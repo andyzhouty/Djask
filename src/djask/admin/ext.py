@@ -3,6 +3,7 @@ Provide a pluggable admin interface for Djask.
 """
 
 import typing as t
+
 # support python 3.7
 from typing_extensions import Literal
 import importlib
