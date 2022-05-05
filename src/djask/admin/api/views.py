@@ -1,6 +1,5 @@
 from flask import jsonify
 from flask.views import MethodView
-from apiflask import input, output, doc
 from apiflask.exceptions import abort
 
 from djask.auth.abstract import AbstractUser
@@ -55,8 +54,8 @@ class UserCreateAPI(MethodView):
 
 @admin_bp.route("/token")
 class TokenAPI(MethodView):
-    @input(TokenInSchema, location="form")
-    @output(TokenOutSchema)
+    @admin_bp.input(TokenInSchema, location="form")
+    @admin_bp.output(TokenOutSchema)
     def post(self, data):
         """Return the access token and expiration."""
         user = (
@@ -80,7 +79,7 @@ class TokenAPI(MethodView):
 
 @admin_bp.route("/<model>/<int:model_id>")
 class ModelAPI(MethodView):
-    decorators = [doc(hide=True), admin_required_api]
+    decorators = [admin_bp.doc(hide=True), admin_required_api]
 
     def get(self, model: str, model_id: int):
         """Retrieve an instance of a model."""
@@ -111,7 +110,7 @@ class ModelAPI(MethodView):
 
 @admin_bp.route("/<model>")
 class ModelCreateAPI(MethodView):
-    decorators = [doc(hide=True), admin_required_api]
+    decorators = [admin_bp.doc(hide=True), admin_required_api]
 
     def post(self, model: str):
         """Create an instance of a model."""

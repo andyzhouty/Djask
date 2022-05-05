@@ -8,7 +8,7 @@ import codecs
 with codecs.open('README.md', encoding="utf-8") as fp:
     long_description = fp.read()
 INSTALL_REQUIRES = [
-    'apiflask~=0.10',
+    'apiflask~=1.0',
     'flask-sqlalchemy~=2.5',
     'flask-wtf~=0.15',
     'flask-login~=0.5',

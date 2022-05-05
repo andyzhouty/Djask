@@ -5,7 +5,7 @@ summary = "A configurable sidebar-enabled Sphinx theme"
 
 [[package]]
 name = "apiflask"
-version = "0.12.0"
+version = "1.0.0"
 requires_python = ">=3.7"
 summary = "A lightweight web API framework based on Flask and marshmallow-code projects."
 dependencies = [
@@ -718,16 +718,16 @@ summary = "Backport of pathlib-compatible object wrapper for zip files"
 
 [metadata]
 lock_version = "3.1"
-content_hash = "sha256:7c38c3f966e18324fd5cbca7c3231ebaf90eb5b756d806452c2484f35b0541f0"
+content_hash = "sha256:932a8f0079c81e22576487d0c87ad4d4d5448f957a5924d8a00af8ff0d214fd6"
 
 [metadata.files]
 "alabaster 0.7.12" = [
     {file = "alabaster-0.7.12-py2.py3-none-any.whl", hash = "sha256:446438bdcca0e05bd45ea2de1668c1d9b032e1a9154c2c259092d77031ddd359"},
     {file = "alabaster-0.7.12.tar.gz", hash = "sha256:a661d72d58e6ea8a57f7a86e37d86716863ee5e92788398526d58b26a4e4dc02"},
 ]
-"apiflask 0.12.0" = [
-    {file = "APIFlask-0.12.0-py3-none-any.whl", hash = "sha256:f61be53b4da528a1c098ee24d3e7601a7741d886f956082bb59cf9fc975dc60f"},
-    {file = "APIFlask-0.12.0.tar.gz", hash = "sha256:00e75a9d0b73d9318e6d4a708b6cc865e024da7b3bf420701254e73c4ae407ba"},
+"apiflask 1.0.0" = [
+    {file = "APIFlask-1.0.0-py3-none-any.whl", hash = "sha256:be248a1976c7645dac6f0dbca4f2974816c4c8a77a74656feddbe8baf5ab4411"},
+    {file = "APIFlask-1.0.0.tar.gz", hash = "sha256:bb5d5344283532b6bbf9a44e7e550ff3218f9774744ffa347c6b5594684f8d38"},
 ]
 "apispec 5.2.1" = [
     {file = "apispec-5.2.1-py3-none-any.whl", hash = "sha256:b6bd81e8b80d025608c375897ed7f84c2d2e9cef459e58d0991fe8cf8fb23fb4"},
