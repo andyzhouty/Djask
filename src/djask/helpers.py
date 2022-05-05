@@ -1,6 +1,6 @@
 import typing as t
 
-from authlib.jose import jwt
+from authlib.jose import jwt, JoseError
 from flask_wtf import FlaskForm
 from wtforms import SubmitField, PasswordField
 from wtforms_sqlalchemy.orm import model_form
@@ -43,7 +43,7 @@ def get_user_from_token(token: str) -> t.Union[AbstractUser, None]:
     """
     try:
         data = jwt.decode(token.encode("ascii"), current_app.config["SECRET_KEY"])
-    except:  # pragma: no cover
+    except JoseError:  # pragma: no cover
         return None
     return g.User.query.get(data.get("id"))
 

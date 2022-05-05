@@ -37,6 +37,7 @@ class Djask(APIFlask, ModelFunctionalityMixin):
     I achieved this by adding an optional argument named ``config`` to the argument list.
 
     .. versionadded:: 0.1.0
+
     :param swagger_path: The url path to swagger-ui web api documentation.
     :param redoc_path: The url path to redoc web api documentation.
     :param config: The config object for the application, can be a dict or another Python object.
@@ -52,7 +53,7 @@ class Djask(APIFlask, ModelFunctionalityMixin):
         swagger_path: t.Optional[str] = "/admin/api/docs",
         redoc_path: t.Optional[str] = "/admin/api/redoc",
         title: t.Optional[str] = "Djask API",
-        version: t.Optional[str] = "0.4.4",
+        version: t.Optional[str] = "0.5.0",
         *args,
         **kwargs,
     ):

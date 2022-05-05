@@ -1,16 +1,16 @@
-"""Provide a pluggable admin interface for Djask."""
+"""
+Provide a pluggable admin interface for Djask.
+"""
 
 import typing as t
-from pathlib import Path
+import importlib
 
 from flask_login import LoginManager
 
 from djask import current_app
-from .views import admin_bp
 from ..app import Djask, Blueprint
 from ..auth.anonymous import AnonymousUser
 from ..extensions import csrf
-from .api.views import admin_api
 
 login_manager = LoginManager()
 
@@ -20,36 +20,58 @@ def load_user(user_id: int):
     return current_app.config["AUTH_MODEL"].query.get(user_id)
 
 
+ModeLiteral = t.Literal["api", "ui"]
+ModeArg = t.Union[
+    ModeLiteral,
+    t.Iterable[ModeLiteral],
+]
+
+
+class AdminModeError(Exception):
+    def __init__(self):
+        super().__init__("Expecting mode to be either 'api' or 'ui'")
+
+
 class Admin:
     """
     The admin interface for Djask applications.
 
     .. versionadded: 0.1.0
-    :param app: The app to wrap.
+
+        :param app: The app to wrap.
     """
 
     app: Djask
     blueprint: Blueprint
 
     def __init__(
-        self, app: t.Optional[Djask] = None, admin_prefix: t.Optional[str] = None
+        self,
+        app: t.Optional[Djask] = None,
+        admin_prefix: t.Optional[str] = None,
+        mode: ModeArg = None,
     ) -> None:
         """
         Initialize the Admin extension.
 
         .. versionadded:: 0.1.0
+        .. versionchanged:: 0.5.0
         :param app: A Djask app
         """
         if app is not None:  # pragma: no cover
-            self.init_app(app, admin_prefix)
+            self.init_app(app, admin_prefix, mode)
 
-    def init_app(self, app: Djask, admin_prefix: t.Optional[str] = "/admin") -> None:
+    def init_app(
+        self,
+        app: Djask,
+        admin_prefix: t.Optional[str] = "/admin",
+        mode: t.Optional[ModeArg] = ("api", "ui"),
+    ) -> None:
         """
         Another way to initialize the Admin extension.
 
-        .. versionchanged:: 0.2.0
-
         .. versionadded:: 0.1.0
+
+        .. versionchanged:: 0.5.0
         """
         self.app = app
         if not hasattr(app, "extensions") or app.extensions is None:  # pragma: no cover
@@ -59,13 +81,24 @@ class Admin:
 
         self.app.models.append(app.config["AUTH_MODEL"])
         custom_prefix = self.app.config.get("ADMIN_PREFIX")
-        if isinstance(custom_prefix, str):  # pragma: no cover
-            admin_prefix = custom_prefix
+        admin_prefix = custom_prefix or "/admin"
+
+        print(mode)
+        if isinstance(mode, str):
+            self._register_bp(mode, admin_prefix)
+        elif isinstance(mode, t.Iterable):
+            if len(mode) == 0:
+                raise AdminModeError
+            for m in mode:
+                self._register_bp(m, admin_prefix)
+        else:  # pragma: no cover
+            raise AdminModeError
+
+    def _register_bp(self, mode: ModeLiteral, admin_prefix: str):
+        module = importlib.import_module(f".admin.{mode}.views", "djask")
         self.app.register_blueprint(
-            admin_bp,
-            url_prefix=admin_prefix,
-            template_folder=(Path(__file__).parents[1] / "templates"),
+            module.admin_bp,
+            url_prefix=admin_prefix if mode == "ui" else (admin_prefix + "/api"),
         )
-        self.blueprint = admin_bp
-        self.app.register_blueprint(admin_api, url_prefix=admin_prefix + "/api")
-        csrf.exempt(admin_api)
+        if mode == "api":
+            csrf.exempt(module.admin_bp)

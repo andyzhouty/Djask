@@ -24,7 +24,7 @@ Admin Decorators
 .. autoclass:: djask.admin.ext.Admin
    :members:
 
-.. autofunction:: djask.admin.decorators.admin_required
+.. autofunction:: djask.admin.ui.decorators.admin_required
 
 .. autofunction:: djask.admin.api.decorators.admin_required_api
 

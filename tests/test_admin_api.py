@@ -1,6 +1,5 @@
 import typing as t
 
-from flask.testing import FlaskClient
 from djask.auth.models import User
 from djask.extensions import db
 from djask.db import Model
@@ -46,7 +45,7 @@ def test_token(admin, client):
 
 def test_create_user(admin, client):
     resp = client.post(
-        f"/admin/api/user",
+        "/admin/api/user",
         headers=admin_headers(client),
         json={"username": "abc", "password": "abc"},
     )
@@ -69,14 +68,14 @@ def test_update_user(admin, client):
     )
     assert resp.status_code == 200
     assert resp.get_json()["username"] == "abc"
-    
+
     resp = client.put(
         f"/admin/api/user/{u.id}",
         json={"password": "new"},
         headers=admin_headers(client, username="abc")
     )
     assert resp.status_code == 200
-    assert u.check_password("new")    
+    assert u.check_password("new")
 
 
 def test_delete_user(admin, client):
@@ -94,7 +93,7 @@ def test_new_model(admin, client):
 
     db.create_all()
     resp = client.post(
-        f"/admin/api/post",
+        "/admin/api/post",
         headers=admin_headers(client),
         json={
             "title": "abc",
@@ -106,7 +105,7 @@ def test_new_model(admin, client):
     assert not (p is None)
 
     resp = client.post(
-        f"/admin/api/post",
+        "/admin/api/post",
         headers=admin_headers(client),
         json={"title": "xyz", "content": "lorem ipsum", "unexpected": "data"},
     )
@@ -140,5 +139,5 @@ def test_new_model(admin, client):
 
 
 def test_model_not_existing(admin, client):
-    resp = client.get(f"/admin/api/fake/1", headers=admin_headers(client))
+    resp = client.get("/admin/api/fake/1", headers=admin_headers(client))
     assert resp.status_code == 404

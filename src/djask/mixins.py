@@ -8,10 +8,13 @@ from .exceptions import ModelTypeError
 class ModelFunctionalityMixin:
     """
     A mixin that adds some SQL functionalities to the classes which inherit it.
-    Those classes which inherit it are expected to be subclasses of :class:`~flask.Blueprint` or :class:`~flask.Flask`.
+    Those classes which inherit it are expected to be subclasses
+    of :class:`~flask.Blueprint` or :class:`~flask.Flask`.
 
-    .. versionadded:: 0.4.1
+
     .. versionadded:: 0.1.0
+
+    .. versionchanged:: 0.4.0
     """
 
     models: ModelList = []
@@ -29,6 +32,7 @@ class ModelFunctionalityMixin:
     def register_model(self, model: ModelType) -> None:
         """
         Register a model.
+
         :param model: The model to register
         :return: None
         """
@@ -39,6 +43,7 @@ class ModelFunctionalityMixin:
     def register_models(self, models: t.Iterable[ModelType]) -> None:
         """
         Register multiple models at a time.
+
         :param models: The models to register
         :return: None
         """

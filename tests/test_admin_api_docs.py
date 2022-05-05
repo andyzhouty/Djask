@@ -1,5 +1,4 @@
 from djask.db import Model
-from djask.extensions import db
 
 
 def test_new_model(app):

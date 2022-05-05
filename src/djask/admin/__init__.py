@@ -1,5 +1,5 @@
 from .ext import Admin
-from .decorators import admin_required
+from .ui.decorators import admin_required
 from .api.decorators import admin_required_api
 from . import cli
 

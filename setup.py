@@ -29,7 +29,7 @@ ENTRY_POINTS = {
 
 setup_kwargs = {
     'name': 'Djask',
-    'version': '0.4.4',
+    'version': '0.5.0dev',
     'description': 'An enhanced django-like Flask',
     'long_description': long_description,
     'license': 'MIT',
@@ -43,6 +43,7 @@ setup_kwargs = {
         'djask.auth',
         'djask.admin',
         'djask.db',
+        'djask.admin.ui',
         'djask.admin.api',
     ],
     'package_dir': {'': 'src'},

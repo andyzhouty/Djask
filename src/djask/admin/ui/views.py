@@ -6,10 +6,10 @@ from flask_login.utils import login_user, logout_user
 
 from .forms import LoginForm
 from .decorators import admin_required
-from ..blueprints import Blueprint
-from ..globals import current_app, request, g
-from ..extensions import db
-from ..helpers import get_model_form
+from ...blueprints import Blueprint
+from ...globals import current_app, request, g
+from ...extensions import db
+from ...helpers import get_model_form
 
 admin_bp = Blueprint("admin", __name__)
 

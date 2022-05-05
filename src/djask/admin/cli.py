@@ -1,6 +1,6 @@
 import click
 
-from .views import admin_bp
+from .ui.views import admin_bp
 from ..globals import current_app
 
 

@@ -15,10 +15,10 @@ from .decorators import admin_required_api
 from djask.globals import current_app, request, g
 from djask.extensions import db
 
-admin_api = APIBlueprint("admin_api", __name__)
+admin_bp = APIBlueprint("admin_api", __name__)
 
 
-@admin_api.route("/user/<int:user_id>")
+@admin_bp.route("/user/<int:user_id>")
 class UserAPI(MethodView):
     decorators = [admin_required_api]
 
@@ -41,7 +41,7 @@ class UserAPI(MethodView):
         return {}, 204
 
 
-@admin_api.route("/user")
+@admin_bp.route("/user")
 class UserCreateAPI(MethodView):
     decorators = [admin_required_api]
 
@@ -53,7 +53,7 @@ class UserCreateAPI(MethodView):
         return user.to_dict(), 201
 
 
-@admin_api.route("/token")
+@admin_bp.route("/token")
 class TokenAPI(MethodView):
     @input(TokenInSchema, location="form")
     @output(TokenOutSchema)
@@ -78,7 +78,7 @@ class TokenAPI(MethodView):
         return response
 
 
-@admin_api.route("/<model>/<int:model_id>")
+@admin_bp.route("/<model>/<int:model_id>")
 class ModelAPI(MethodView):
     decorators = [doc(hide=True), admin_required_api]
 
@@ -109,7 +109,7 @@ class ModelAPI(MethodView):
         return {}, 204
 
 
-@admin_api.route("/<model>")
+@admin_bp.route("/<model>")
 class ModelCreateAPI(MethodView):
     decorators = [doc(hide=True), admin_required_api]
 

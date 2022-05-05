@@ -63,7 +63,7 @@ class AbstractUser(AbstractConcreteBase, UserMixin):
         """Update the user with the given dict.
 
         :param data: The dict containing user data
-        .. versionadded::
+        .. versionadded:: 0.4.2
         """
         for attr, value in data.items():
             if not hasattr(self, attr) and attr != "password":  # pragma: no cover
