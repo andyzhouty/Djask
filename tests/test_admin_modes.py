@@ -18,6 +18,7 @@ def test_ui(app_with_user, client):
 
     @app.model
     class TestModel(Model):
+        __table_args__ = {"extend_existing": True}
         pass
 
     app.db.create_all()
