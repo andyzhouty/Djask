@@ -3,6 +3,8 @@ Provide a pluggable admin interface for Djask.
 """
 
 import typing as t
+# support python 3.7
+from typing_extensions import Literal
 import importlib
 
 from flask_login import LoginManager
@@ -20,7 +22,7 @@ def load_user(user_id: int):
     return current_app.config["AUTH_MODEL"].query.get(user_id)
 
 
-ModeLiteral = t.Literal["api", "ui"]
+ModeLiteral = Literal["api", "ui"]
 ModeArg = t.Union[
     ModeLiteral,
     t.Iterable[ModeLiteral],
