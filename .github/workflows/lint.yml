@@ -22,5 +22,5 @@ jobs:
       - name: Lint with mypy
         run: |
           pip install mypy
-          mypy --install-types
-          mypy src/djask
+          yes | mypy src --install-types || true
+          mypy src
