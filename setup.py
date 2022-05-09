@@ -20,7 +20,7 @@ INSTALL_REQUIRES = [
     'python-dotenv>=0.19.2',
     'cookiecutter>=1.7.3',
     'authlib>=1.0.1',
-    'typing-extensions>=4.2.0',
+    'typing-extensions>=4.2.0; python_version < "3.8"',
 ]
 ENTRY_POINTS = {
     'console_scripts': [

@@ -90,4 +90,3 @@ exclude = [
     "src/djask/admin/api/views.py"
 ]
 ignore_missing_imports = true
-plugins = ["sqlalchemy.ext.mypy.plugin"]
