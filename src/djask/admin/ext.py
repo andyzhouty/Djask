@@ -1,19 +1,18 @@
 """
 Provide a pluggable admin interface for Djask.
 """
-
-import typing as t
-
-# support python 3.7
-from typing_extensions import Literal
 import importlib
-
+import typing as t
 from flask_login import LoginManager
+from typing_extensions import Literal
 
-from djask import current_app
-from ..app import Djask, Blueprint
+from ..app import Blueprint
+from ..app import Djask
 from ..auth.anonymous import AnonymousUser
 from ..extensions import csrf
+from djask import current_app
+
+# support python 3.7
 
 login_manager = LoginManager()
 
@@ -26,7 +25,7 @@ def load_user(user_id: int):
 ModeLiteral = Literal["api", "ui"]
 ModeArg = t.Union[
     ModeLiteral,
-    t.Iterable[ModeLiteral],
+    t.Sequence[ModeLiteral],
 ]
 
 
@@ -86,14 +85,13 @@ class Admin:
         custom_prefix = self.app.config.get("ADMIN_PREFIX")
         admin_prefix = custom_prefix or "/admin"
 
-        print(mode)
         if isinstance(mode, str):
             self._register_bp(mode, admin_prefix)
-        elif isinstance(mode, t.Iterable):
+        elif isinstance(mode, t.Sequence):
             if len(mode) == 0:
                 raise AdminModeError
             for m in mode:
-                self._register_bp(m, admin_prefix)
+                self._register_bp(m, admin_prefix)  # type: ignore
         else:  # pragma: no cover
             raise AdminModeError
 

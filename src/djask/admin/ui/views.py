@@ -1,15 +1,20 @@
 import typing as t
-
+from flask import flash
+from flask import redirect
+from flask import render_template
+from flask import url_for
+from flask_login.utils import login_user
+from flask_login.utils import logout_user
 from sqlalchemy.orm.attributes import InstrumentedAttribute
-from flask import render_template, flash, redirect, url_for
-from flask_login.utils import login_user, logout_user
 
-from .forms import LoginForm
-from .decorators import admin_required
 from ...blueprints import Blueprint
-from ...globals import current_app, request, g
 from ...extensions import db
+from ...globals import current_app
+from ...globals import g
+from ...globals import request
 from ...helpers import get_model_form
+from .decorators import admin_required
+from .forms import LoginForm
 
 admin_bp = Blueprint("admin", __name__)
 
@@ -90,7 +95,7 @@ def add_model(model_name: str):
             if not value:
                 continue
             if model == g.User and name == "password":
-                m.set_password(value)
+                m.set_password(value)  # type: ignore
             else:
                 setattr(m, name, value)
         db.session.add(m)
@@ -119,7 +124,7 @@ def add_model(model_name: str):
 @admin_required
 def edit_model(model_name: str, model_id: int):
     model, form = get_model_form(model_name)
-    m = model.query.get(model_id)
+    m = model.query.get(model_id)  # type: ignore
     if m is None:
         return (
             render_template(
