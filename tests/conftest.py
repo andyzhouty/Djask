@@ -5,7 +5,7 @@ from djask.admin import Admin
 from djask.auth.models import User
 
 
-@pytest.fixture(scope="class")
+@pytest.fixture
 def app():
     app = Djask(__name__, {"TESTING": True, "WTF_CSRF_ENABLED": False})
     ctx = app.app_context()

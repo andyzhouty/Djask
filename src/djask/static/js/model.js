@@ -1,9 +1,8 @@
-window.onload = function () {
+window.onload = () => {
     let elements = document.getElementsByClassName("time");
-    for (let i = 0; i < elements.length; i++) {
+    for (let i in elements) {
         let dateString = elements[i].getAttribute("data-time");
-        dateString.replace(" ", "T");
-        dateString += "Z";
+        dateString = dateString.replace(" ", "T") + "Z";
         date = new Date(dateString);
         elements[i].innerText = date.toLocaleString();
     }

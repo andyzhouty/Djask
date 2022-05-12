@@ -1,7 +1,9 @@
 import pytest
-from djask.admin.ext import Admin, AdminModeError
-from djask.db.models import Model
+
+from djask.admin.ext import Admin
+from djask.admin.ext import AdminModeError
 from djask.auth.models import User
+from djask.db.models import Model
 
 
 @pytest.fixture
@@ -18,7 +20,6 @@ def test_ui(app_with_user, client):
 
     @app.model
     class TestModel(Model):
-        __table_args__ = {"extend_existing": True}
         pass
 
     app.db.create_all()

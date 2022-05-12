@@ -1,5 +1,5 @@
-from flask import abort
 from apiflask import HTTPError
+from flask import abort
 
 
 def test_default_error_processor(app, client):
@@ -27,4 +27,4 @@ def test_custom_error_processor(app, client):
 
     resp = client.get("/404")
     assert resp.status_code == 404
-    assert resp.get_json()["error_message"] == "Not Found"
+    assert resp.json["error_message"] == "Not Found"

@@ -1,7 +1,7 @@
-let main = document.getElementsByTagName("main")[0];
-let aside = document.getElementsByTagName("aside")[0];
+const main = document.getElementsByTagName("main")[0];
+const aside = document.getElementsByTagName("aside")[0];
 main.setAttribute("style", "margin-left:" + aside.offsetWidth + "px;");
 
-window.onresize = function () {
+window.onresize = () => {
     main.setAttribute("style", "margin-left:" + aside.offsetWidth + "px;");
 }

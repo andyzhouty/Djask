@@ -1,8 +1,8 @@
 import typing as t
 
 from djask.auth.models import User
-from djask.extensions import db
 from djask.db import Model
+from djask.extensions import db
 
 
 def admin_headers(
@@ -17,7 +17,7 @@ def admin_headers(
             "password": password,
         },
     )
-    token = resp.get_json()["access_token"]
+    token = resp.json["access_token"]
     return {
         "Authorization": token,
         "Accept": "application/json",
@@ -56,7 +56,7 @@ def test_get_user(admin, client):
     u = User.query.filter_by(username="test").first()
     resp = client.get(f"/admin/api/user/{u.id}", headers=admin_headers(client))
     assert resp.status_code == 200
-    assert resp.get_json()["username"] == "test"
+    assert resp.json["username"] == "test"
 
 
 def test_update_user(admin, client):
@@ -67,12 +67,12 @@ def test_update_user(admin, client):
         headers=admin_headers(client),
     )
     assert resp.status_code == 200
-    assert resp.get_json()["username"] == "abc"
+    assert resp.json["username"] == "abc"
 
     resp = client.put(
         f"/admin/api/user/{u.id}",
         json={"password": "new"},
-        headers=admin_headers(client, username="abc")
+        headers=admin_headers(client, username="abc"),
     )
     assert resp.status_code == 200
     assert u.check_password("new")
@@ -115,7 +115,7 @@ def test_new_model(admin, client):
 
     resp = client.get(f"/admin/api/post/{p.id}", headers=admin_headers(client))
     assert resp.status_code == 200
-    assert resp.get_json()["title"] == "abc"
+    assert resp.json["title"] == "abc"
 
     resp = client.put(
         f"/admin/api/post/{p.id}",
@@ -123,7 +123,7 @@ def test_new_model(admin, client):
         headers=admin_headers(client),
     )
     assert resp.status_code == 200
-    assert resp.get_json()["title"] == "new"
+    assert resp.json["title"] == "new"
 
     # test bad request
     resp = client.put(

@@ -10,6 +10,7 @@ from djask.extensions import db
 def test_register_invalid_model(admin, client):
     class InvalidModel:
         pass
+
     try:
         admin.register_model(InvalidModel)
     except TypeError as e:
@@ -63,7 +64,6 @@ def test_blueprints(admin, client):
 
     @bp.model
     class TestModel(Model):
-        __table_args__ = {"extend_existing": True}
         pass
 
     assert TestModel in bp.models
