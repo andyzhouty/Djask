@@ -71,13 +71,18 @@ dev = [
 ]
 
 [tool.pytest.ini_options]
-addopts = "-s -n auto -p no:warnings"
+addopts = "--cov=src/djask -s -n auto -p no:warnings"
 testpaths = ["tests"]
 
 [tool.coverage.run]
 branch = true
-source = "src/djask"
-omit = ["*.html", "*/__main__.py", "*/cli.py"]
+source = ["src/djask"]
+omit = [
+    "*.html",
+    "*/__main__.py",
+    "*/cli.py",
+    "*/project_template/*"
+]
 
 [tool.black]
 include = ".py"
