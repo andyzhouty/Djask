@@ -1,25 +1,32 @@
 import os
 import os.path as path
 import typing as t
-
-from apispec import APISpec
-from flask import Blueprint, abort
-from flask.helpers import (
-    get_env,
-    get_debug_flag,
-    get_load_dotenv,
-)
 from apiflask import APIFlask
 from apiflask.exceptions import HTTPError
+from apispec import APISpec
+from flask import abort
+from flask import Blueprint
+from flask.helpers import get_debug_flag
+from flask.helpers import get_env
+from flask.helpers import get_load_dotenv
 
 from . import cli
-from .blueprints import Blueprint as DjaskBlueprint
-from .extensions import bootstrap, compress, csrf, db, login_manager
-from .globals import current_app, g
-from .mixins import ModelFunctionalityMixin
-from .types import Config, ErrorResponse, ModelType
 from .auth.abstract import AbstractUser
+from .blueprints import Blueprint as DjaskBlueprint
 from .exceptions import AuthModelInvalid
+from .extensions import bootstrap
+from .extensions import compress
+from .extensions import csrf
+from .extensions import db
+from .extensions import login_manager
+from .globals import current_app as current_app
+from .globals import g as g
+from .globals import request as request  # noqa
+from .globals import session as session  # noqa
+from .mixins import ModelFunctionalityMixin
+from .types import Config
+from .types import ErrorResponse
+from .types import ModelType
 
 
 def _initialize_bootstrap_icons() -> str:
@@ -354,9 +361,9 @@ class Djask(APIFlask, ModelFunctionalityMixin):
                         summary=f"deletes a {m_name.lower()}",
                     ),
                 ),
-                description="Operate on {}".format(m_name),
+                description=f"Operate on {m_name}",
             ).path(
-                path="{}/api/{}".format(prefix, m_name.lower()),
+                path=f"{prefix}/api/{m_name.lower()}",
                 operations=dict(
                     post=dict(
                         requestBody={

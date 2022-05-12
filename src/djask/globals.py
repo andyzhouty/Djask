@@ -1,5 +1,8 @@
 # flake8: noqa
-from flask.globals import current_app, g, session, request
+from flask.globals import current_app
+from flask.globals import g as g
+from flask.globals import request as request
+from flask.globals import session as session
 
 from .app import Djask
 
