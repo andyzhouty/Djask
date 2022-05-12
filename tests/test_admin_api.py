@@ -88,6 +88,7 @@ def test_delete_user(admin, client):
 def test_new_model(admin, client):
     @admin.model
     class Post(Model):
+        __table_args__ = {"extend_existing": True}
         title = db.Column(db.String(255))
         content = db.Column(db.Text)
 

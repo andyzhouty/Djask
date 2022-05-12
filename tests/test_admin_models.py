@@ -22,6 +22,7 @@ def test_register_invalid_model(admin, client):
 def test_register_model(admin, client):
     @admin.model
     class TestModel(Model):
+        __table_args__ = {"extend_existing": True}
         pass
 
     class TestModel2(Model):
@@ -64,7 +65,7 @@ def test_blueprints(admin, client):
 
     @bp.model
     class TestModel(Model):
-        pass
+        __table_args__ = {"extend_existing": True}
 
     assert TestModel in bp.models
     db.create_all()
