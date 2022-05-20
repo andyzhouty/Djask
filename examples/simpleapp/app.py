@@ -21,7 +21,7 @@ class User(AbstractUser, Model):
 
 app = Djask(__name__, {"AUTH_MODEL": User})
 admin_ext = Admin()  # initialize the admin site
-admin_ext.init_app(app)
+admin_ext.init_app(app, mode="api")
 db = app.db
 
 app.config["AUTH_MODEL"] = User

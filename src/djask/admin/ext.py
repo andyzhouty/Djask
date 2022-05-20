@@ -57,6 +57,8 @@ class Admin:
 
         .. versionadded:: 0.1.0
         .. versionchanged:: 0.5.0
+            Add mode support.
+
         :param app: A Djask app
         """
         if app is not None:  # pragma: no cover

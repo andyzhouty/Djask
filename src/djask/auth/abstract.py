@@ -1,13 +1,12 @@
-import typing as t
 import sqlalchemy as sa
-
+import typing as t
 from apiflask.exceptions import abort
 from authlib.jose import jwt
 from flask_login.mixins import UserMixin
 from sqlalchemy.ext.declarative import AbstractConcreteBase
-from werkzeug.security import generate_password_hash, check_password_hash
+from werkzeug.security import check_password_hash
+from werkzeug.security import generate_password_hash
 
-from ..globals import current_app
 from ..extensions import db
 
 
@@ -55,6 +54,8 @@ class AbstractUser(AbstractConcreteBase, UserMixin):
         .. versionadded:: 0.3.0
         .. versionchanged:: 0.4.2
         """
+        from ..globals import current_app  # noreorder
+
         header = {"alg": "HS256"}
         data = {"id": self.id}
         return jwt.encode(header, data, current_app.config["SECRET_KEY"]).decode()

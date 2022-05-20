@@ -37,7 +37,7 @@ Our demo
     # 1
     app = Djask(__name__, {"AUTH_MODEL": User})
     admin_ext = Admin()  # initialize the admin site
-    admin_ext.init_app(app)
+    admin_ext.init_app(app, mode="api") # 2
     db = app.db
 
     app.config["AUTH_MODEL"] = User
@@ -46,7 +46,7 @@ Our demo
     @app.before_first_request
     def init_db():
         db.drop_all()
-        app.register_model(Post) # 2
+        app.register_model(Post) # 3
         db.create_all()
         admin = User(username="test", is_admin=True)
         admin.set_password("password")
@@ -64,7 +64,12 @@ Inside the dict, we declared the customized ``AUTH_MODEL``, if
 you don't specify it, :class:`~djask.auth.models.User` is the default.
 Djask will automatically register this model for you.
 
-``# 2``: We registered the ``Post`` model.
+``# 2``: We selected a mode named ``api``, another available
+option is ``ui`` which stands for the admin frontend interface.
+The default value passed is ``("api", "ui")`` which contains both
+web api and admin frontend interface.
+
+``# 3``: We registered the ``Post`` model.
 
 Other preparations
 ##################

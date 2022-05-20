@@ -1,4 +1,10 @@
-# Version 0.4.1 (in development)
+# Version 0.5.0
+
+Changes:
+
+- Allow users to select from `api` and `ui` modes.
+
+# Version 0.4.1
 
 Changes:
 
