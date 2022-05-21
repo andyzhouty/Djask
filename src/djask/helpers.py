@@ -1,14 +1,17 @@
 import typing as t
-
-from authlib.jose import jwt, JoseError
+from authlib.jose import JoseError
+from authlib.jose import jwt
 from flask_wtf import FlaskForm
-from wtforms import SubmitField, PasswordField
+from time import time
+from wtforms import PasswordField
+from wtforms import SubmitField
 from wtforms_sqlalchemy.orm import model_form
-
 
 from .auth.abstract import AbstractUser
 from .extensions import db
-from .globals import current_app, request, g
+from .globals import current_app
+from .globals import g
+from .globals import request
 from .types import ModelType
 
 
@@ -43,6 +46,13 @@ def get_user_from_token(token: str) -> t.Union[AbstractUser, None]:
     """
     try:
         data = jwt.decode(token.encode("ascii"), current_app.config["SECRET_KEY"])
+        current = time()
+        expiration = int(data.get("expiration", -1))
+        created = int(data.get("created", current))
+        if current > created + expiration:  # pragma: no cover
+            raise JoseError("Token expired.")
+    except ValueError:  # pragma: no cover
+        return None
     except JoseError:  # pragma: no cover
         return None
     return g.User.query.get(data.get("id"))

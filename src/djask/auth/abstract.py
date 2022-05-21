@@ -4,6 +4,7 @@ from apiflask.exceptions import abort
 from authlib.jose import jwt
 from flask_login.mixins import UserMixin
 from sqlalchemy.ext.declarative import AbstractConcreteBase
+from time import time
 from werkzeug.security import check_password_hash
 from werkzeug.security import generate_password_hash
 
@@ -46,7 +47,7 @@ class AbstractUser(AbstractConcreteBase, UserMixin):
         """
         return check_password_hash(self.password_hash, password)
 
-    def api_token(self) -> str:
+    def api_token(self, expiration=3600 * 24 * 7) -> str:
         """Generate a new API token for the user.
 
         :param expiration: The expiration time of the token in seconds
@@ -57,7 +58,7 @@ class AbstractUser(AbstractConcreteBase, UserMixin):
         from ..globals import current_app  # noreorder
 
         header = {"alg": "HS256"}
-        data = {"id": self.id}
+        data = {"id": self.id, "created": time(), "expiration": expiration}
         return jwt.encode(header, data, current_app.config["SECRET_KEY"]).decode()
 
     def update(self, data: t.Dict[str, t.Any]) -> None:
