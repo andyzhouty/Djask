@@ -1,0 +1,6 @@
+-r docs.in
+-r tests.in
+-r typing.in
+-r linting.in
+pip-compile-multi
+pre-commit

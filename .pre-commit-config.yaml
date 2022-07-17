@@ -26,11 +26,7 @@ repos:
       - id: fix-byte-order-marker
       - id: trailing-whitespace
       - id: end-of-file-fixer
-  - repo: local
+  - repo: https://github.com/peterdemin/pip-compile-multi
+    rev: v2.4.6
     hooks:
-      - id: generate setup.py
-        name: generate setup.py
-        entry: sh gen_setup.sh
-        language: system
-        always_run: true
-        pass_filenames: false
+      - id: pip-compile-multi-verify

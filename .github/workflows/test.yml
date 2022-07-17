@@ -18,18 +18,22 @@ jobs:
       - uses: actions/checkout@v3
         with:
           submodules: recursive
-      - uses: pdm-project/setup-pdm@main
-        name: Setup PDM
+      - name: Set up Python
+        uses: actions/setup-python@v3
         with:
-          python-version: ${{ matrix.python }}
-          architecture: x64
-          enable-pep582: true
-      - name: Install dependencies
-        run: pdm install --dev
+          python-version: '3.10'
+      - name: Initialize venv
+        run: |
+          python3 -m venv venv
+          . venv/bin/activate
+      - name: Install deps
+        run: |
+          pip3 install -e .
+          pip3 install -r requirements/tests.txt
       - name: Run pytest
         run: pdm run pytest
       - name: Generate xml coverage
         run: pdm run coverage xml
       - name: Upload coverage to codecov
-        if: ${{ matrix.python == 3.9 && matrix.os == 'ubuntu-latest' }}
+        if: ${{ matrix.python == 3.10 && matrix.os == 'ubuntu-latest' }}
         uses: codecov/codecov-action@v2

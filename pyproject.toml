@@ -54,24 +54,8 @@ requires = ["pdm-pep517"]
 [project.scripts]
 djask = "djask.cli:main"
 
-[tool]
-[tool.pdm]
-[tool.pdm.dev-dependencies]
-dev = [
-    "pytest~=6.2",
-    "pytest-cov~=3.0",
-    "sphinx~=4.2",
-    "sphinx-tabs~=3.2",
-    "pytest-xdist>=2.5.0",
-    "pallets-sphinx-themes>=2.0.2",
-    "pre-commit>=2.19.0",
-    "mypy>=0.950",
-    "flake8>=4.0.1",
-    "types-Flask-SQLAlchemy>=2.5.1",
-]
-
 [tool.pytest.ini_options]
-addopts = "--cov=src/djask -s -n auto -p no:warnings"
+addopts = "--cov=src/djask -p no:warnings"
 testpaths = ["tests"]
 
 [tool.coverage.run]
