@@ -1,4 +1,3 @@
-import typing as t
 from apiflask.exceptions import abort
 from flask import jsonify
 from flask.views import MethodView
@@ -12,9 +11,6 @@ from djask.extensions import db
 from djask.globals import current_app
 from djask.globals import g
 from djask.globals import request
-
-# fmt: off
-# fmt: on
 
 admin_bp = APIBlueprint("admin_api", __name__)
 
@@ -46,7 +42,7 @@ class UserAPI(MethodView):
 class UserCreateAPI(MethodView):
     decorators = [admin_required_api]
 
-    def post(self) -> t.Tuple[AbstractUser, int]:
+    def post(self) -> tuple[AbstractUser, int]:
         """Create a user."""
         user = g.User()
         user.update(request.get_json())

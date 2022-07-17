@@ -2,17 +2,19 @@
 Provide a pluggable admin interface for Djask.
 """
 import importlib
-import typing as t
+from typing import Optional
+from typing import Sequence
+
 from flask_login import LoginManager
-from typing_extensions import Literal
 
 from ..app import Blueprint
 from ..app import Djask
 from ..auth.anonymous import AnonymousUser
 from ..extensions import csrf
+from ..types import ModeArg
+from ..types import ModeLiteral
 from djask import current_app
 
-# support python 3.7
 
 login_manager = LoginManager()
 
@@ -20,13 +22,6 @@ login_manager = LoginManager()
 @login_manager.user_loader
 def load_user(user_id: int):
     return current_app.config["AUTH_MODEL"].query.get(user_id)
-
-
-ModeLiteral = Literal["api", "ui"]
-ModeArg = t.Union[
-    ModeLiteral,
-    t.Sequence[ModeLiteral],
-]
 
 
 class AdminModeError(Exception):
@@ -48,8 +43,8 @@ class Admin:
 
     def __init__(
         self,
-        app: t.Optional[Djask] = None,
-        admin_prefix: t.Optional[str] = None,
+        app: Optional[Djask] = None,
+        admin_prefix: Optional[str] = None,
         mode: ModeArg = None,
     ) -> None:
         """
@@ -67,8 +62,8 @@ class Admin:
     def init_app(
         self,
         app: Djask,
-        admin_prefix: t.Optional[str] = "/admin",
-        mode: t.Optional[ModeArg] = ("api", "ui"),
+        admin_prefix: Optional[str] = "/admin",
+        mode: Optional[ModeArg] = ("api", "ui"),  # type: ignore
     ) -> None:
         """
         Another way to initialize the Admin extension.
@@ -89,10 +84,10 @@ class Admin:
 
         if isinstance(mode, str):
             self._register_bp(mode, admin_prefix)
-        elif isinstance(mode, t.Sequence):
+        elif isinstance(mode, Sequence):
             if len(mode) == 0:
                 raise AdminModeError
-            for m in mode:
+            for m in mode:  # type: ignore
                 self._register_bp(m, admin_prefix)  # type: ignore
         else:  # pragma: no cover
             raise AdminModeError

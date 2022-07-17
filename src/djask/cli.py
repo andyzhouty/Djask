@@ -9,26 +9,21 @@ import traceback
 from functools import update_wrapper
 
 import click
-
 import flask
-from flask.cli import (
-    locate_app,
-    prepare_import,
-    _called_with_wrong_args,
-    _validate_key,
-)
-from flask.cli import (
-    DispatchingApp,
-    ScriptInfo as FlaskScriptInfo,
-    FlaskGroup,
-    AppGroup,
-    CertParamType,
-    SeparatedPathType,
-    NoAppException,
-)
+from flask.cli import _called_with_wrong_args
+from flask.cli import _validate_key
+from flask.cli import AppGroup
+from flask.cli import CertParamType
+from flask.cli import DispatchingApp
+from flask.cli import FlaskGroup
+from flask.cli import locate_app
+from flask.cli import NoAppException
+from flask.cli import prepare_import
 from flask.cli import (
     routes_command,
 )
+from flask.cli import ScriptInfo as FlaskScriptInfo
+from flask.cli import SeparatedPathType
 from flask.helpers import get_debug_flag
 from flask.helpers import get_env
 from flask.helpers import get_load_dotenv
@@ -39,7 +34,7 @@ from .custom_commands import create_app_command
 try:
     import dotenv
 except ImportError:
-    dotenv = None
+    dotenv = None  # type: ignore
 
 
 def find_best_app(module):
@@ -367,7 +362,7 @@ class DjaskGroup(FlaskGroup):
         if self._loaded_plugin_commands:
             return
         try:
-            import pkg_resources
+            import pkg_resources  # type: ignore
         except ImportError:
             self._loaded_plugin_commands = True
             return

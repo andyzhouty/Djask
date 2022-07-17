@@ -1,12 +1,15 @@
-import datetime as dt
-import typing as t
+from __future__ import annotations
 
-from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
+import datetime as dt
+from typing import Any
+from typing import Iterable
+
 import sqlalchemy as sa
-from sqlalchemy.orm import as_declarative
-from sqlalchemy.orm.collections import InstrumentedList
+from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
 from sqlalchemy.ext.declarative import declared_attr
 from sqlalchemy.inspection import inspect
+from sqlalchemy.orm import as_declarative
+from sqlalchemy.orm.collections import InstrumentedList
 
 
 class BaseModel:
@@ -15,7 +18,7 @@ class BaseModel:
     ..versionadded:: 0.4.1
     """
 
-    def to_dict(self, exclude: t.Iterable[str] = None) -> t.Dict[str, t.Any]:
+    def to_dict(self, exclude: Iterable[str] = None) -> dict[str, Any]:
         """Convert Model to dict.
 
         .. versionadded:: 0.4.1
@@ -47,7 +50,7 @@ class BaseModel:
         return result
 
     @classmethod
-    def to_schema(cls) -> t.Type[SQLAlchemyAutoSchema]:
+    def to_schema(cls) -> type[SQLAlchemyAutoSchema]:
         """Convert Model to a marshmallow schema.
 
         .. versionadded:: 0.4.1

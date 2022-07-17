@@ -1,8 +1,10 @@
 import typing as t
 from functools import wraps
 
+from flask import redirect
+from flask import url_for
 from flask_login import current_user
-from flask import Response, redirect, url_for
+from werkzeug.wrappers.response import Response
 
 
 def admin_required(func: t.Callable) -> t.Callable:

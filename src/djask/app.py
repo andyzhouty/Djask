@@ -1,6 +1,7 @@
 import os
 import os.path as path
 import typing as t
+
 from apiflask import APIFlask
 from apiflask.exceptions import HTTPError
 from apispec import APISpec
@@ -69,14 +70,14 @@ class Djask(APIFlask, ModelFunctionalityMixin):
                 import_name,
                 *args,
             ),
-            **{
+            **{  # type: ignore
                 "docs_path": swagger_path,
                 "redoc_path": redoc_path,
                 "title": title,
                 "version": version,
                 **kwargs,
             },
-        )
+        )  # type: ignore
 
         # set default configuration for Djask.
         djask_default_config = dict(
@@ -167,7 +168,7 @@ class Djask(APIFlask, ModelFunctionalityMixin):
         body = "{} {}<br /> {}".format(
             status_code, message, str(detail) if detail else ""
         )
-        return body, error.status_code, error.headers
+        return body, error.status_code, error.headers  # type: ignore
 
     def register_blueprint(self, blueprint: Blueprint, **options: t.Any) -> None:
         """Bind blueprint objects to the app instead of strings
@@ -201,7 +202,7 @@ class Djask(APIFlask, ModelFunctionalityMixin):
         name = name.lower()
         models = self.models
         for bp in self.blueprint_objects:
-            models.extend(bp.models)
+            models.extend(bp.models)  # type: ignore
         registered_models = [model.__name__.lower() for model in models]
         if name not in registered_models:
             abort(404, "Data model not defined or registered.")

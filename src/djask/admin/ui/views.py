@@ -1,4 +1,5 @@
 import typing as t
+
 from flask import flash
 from flask import redirect
 from flask import render_template
@@ -59,7 +60,7 @@ def logout():
 @admin_bp.route("/<model_name>")
 @admin_required
 def specific_model(model_name: str):
-    model = current_app.get_model_by_name(model_name)
+    model = current_app.get_model_by_name(model_name)  # type: ignore
     schema = {}
     for name, value in model.__dict__.items():
         if isinstance(value, InstrumentedAttribute):

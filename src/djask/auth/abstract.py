@@ -1,10 +1,13 @@
+from __future__ import annotations
+
+from time import time
+from typing import Any
+
 import sqlalchemy as sa
-import typing as t
 from apiflask.exceptions import abort
 from authlib.jose import jwt
 from flask_login.mixins import UserMixin
 from sqlalchemy.ext.declarative import AbstractConcreteBase
-from time import time
 from werkzeug.security import check_password_hash
 from werkzeug.security import generate_password_hash
 
@@ -61,7 +64,7 @@ class AbstractUser(AbstractConcreteBase, UserMixin):
         data = {"id": self.id, "created": time(), "expiration": expiration}
         return jwt.encode(header, data, current_app.config["SECRET_KEY"]).decode()
 
-    def update(self, data: t.Dict[str, t.Any]) -> None:
+    def update(self, data: dict[str, Any]) -> None:
         """Update the user with the given dict.
 
         :param data: The dict containing user data

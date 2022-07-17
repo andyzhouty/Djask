@@ -1,8 +1,9 @@
-import typing as t
+from typing import Iterable
 
-from djask.db.models import Model
-from .types import ModelList, ModelType
 from .exceptions import ModelTypeError
+from .types import ModelList
+from .types import ModelType
+from djask.db.models import Model
 
 
 class ModelFunctionalityMixin:
@@ -40,7 +41,7 @@ class ModelFunctionalityMixin:
             raise ModelTypeError
         self.models.append(model)
 
-    def register_models(self, models: t.Iterable[ModelType]) -> None:
+    def register_models(self, models: Iterable[ModelType]) -> None:
         """
         Register multiple models at a time.
 

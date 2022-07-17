@@ -1,8 +1,10 @@
-import typing as t
+from __future__ import annotations
+
+from time import time
+
 from authlib.jose import JoseError
 from authlib.jose import jwt
 from flask_wtf import FlaskForm
-from time import time
 from wtforms import PasswordField
 from wtforms import SubmitField
 from wtforms_sqlalchemy.orm import model_form
@@ -15,14 +17,14 @@ from .globals import request
 from .types import ModelType
 
 
-def get_model_form(model_name: str) -> t.Tuple[ModelType, FlaskForm]:
+def get_model_form(model_name: str) -> tuple[ModelType, FlaskForm]:
     """Generate and return a form for a model
 
     :param model_name: The name of the model
     :return: A tuple of the model and the form
     .. versionadded: 0.1.0
     """
-    model = current_app.get_model_by_name(model_name)
+    model = current_app.get_model_by_name(model_name)  # type: ignore
     if model != g.User:  # pragma: no cover
         ModelForm = model_form(model, base_class=FlaskForm, db_session=db.session)
     else:
@@ -37,7 +39,7 @@ def get_model_form(model_name: str) -> t.Tuple[ModelType, FlaskForm]:
     return model, ModelForm()
 
 
-def get_user_from_token(token: str) -> t.Union[AbstractUser, None]:
+def get_user_from_token(token: str) -> AbstractUser | None:
     """Get the user from an access token
 
     :param token: The access token
@@ -58,7 +60,7 @@ def get_user_from_token(token: str) -> t.Union[AbstractUser, None]:
     return g.User.query.get(data.get("id"))
 
 
-def get_user_from_headers() -> t.Union[AbstractUser, None]:
+def get_user_from_headers() -> AbstractUser | None:
     """Get the user from the request headers.
     Expected to be called from the web api.
 
