@@ -21,10 +21,16 @@ jobs:
         uses: actions/setup-python@v3
         with:
           python-version: '3.10'
-      - name: Initialize venv
+      - name: Initialize venv on unix
+        if: ${{ matrix.os != 'windows-latest' }}
         run: |
           python3 -m venv venv
           . venv/bin/activate
+      - name: Initialize venv on windows
+        if: ${{ matrix.os == 'windows.latest' }}
+        run: |
+          python -m venv venv
+          venv\Scripts\activate
       - name: Install deps
         run: |
           pip3 install -e .
