@@ -1,5 +1,5 @@
-from flask import Blueprint as Bp
 from apiflask import APIBlueprint as APIBp
+from flask import Blueprint as Bp
 
 from .mixins import ModelFunctionalityMixin
 

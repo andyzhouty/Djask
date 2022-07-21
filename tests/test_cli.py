@@ -1,7 +1,8 @@
 import pathlib
 import shutil
-from djask.auth.models import User
+
 from djask.admin.cli import create_superuser
+from djask.auth.models import User
 from djask.cli import create_app_command
 
 

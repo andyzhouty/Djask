@@ -1,5 +1,5 @@
-from functools import wraps
 import typing as t
+from functools import wraps
 
 from flask import abort
 

@@ -1,11 +1,11 @@
-import sqlalchemy as sa
 import pytest
+import sqlalchemy as sa
 
+from .test_admin_api import admin_headers
 from djask import Djask
+from djask.admin.ext import Admin
 from djask.auth.abstract import AbstractUser
 from djask.db.models import Model
-from djask.admin.ext import Admin
-from .test_admin_api import admin_headers
 
 
 class CustomUser(AbstractUser, Model):

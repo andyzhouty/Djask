@@ -1,5 +1,5 @@
-from .abstract import AbstractUser
 from ..db import Model
+from .abstract import AbstractUser
 
 
 class User(AbstractUser, Model):

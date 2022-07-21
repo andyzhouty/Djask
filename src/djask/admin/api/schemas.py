@@ -1,5 +1,7 @@
 from apiflask import Schema
-from apiflask.fields import Integer, String, Boolean
+from apiflask.fields import Boolean
+from apiflask.fields import Integer
+from apiflask.fields import String
 
 
 class TokenInSchema(Schema):

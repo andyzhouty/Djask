@@ -7,7 +7,7 @@ Introduction
 ============
 
 Since Djask is based on Flask, its CLI utility inherits from Flask. Therefore,
-the three basic commands - ``routes``, ``run`` and ``shell`` are nearly the 
+the three basic commands - ``routes``, ``run`` and ``shell`` are nearly the
 same as those in Flask and you can skip the first section if you are familiar with Flask.
 
 It won't be hard for you to migrate from Flask since Djask is fully compatible with Flask.
