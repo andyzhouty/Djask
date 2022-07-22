@@ -29,7 +29,7 @@ the ``app`` object is available in the shell.
 Creating a new app
 ==================
 
-Djask CLI has a command ``djask createapp`` for you to quickly initialize a new app.
+Djask CLI has a command ``djask create-app`` for you to quickly initialize a new app.
 
 It receives an argument ``app_name`` which is the name of your app.
 
@@ -41,7 +41,8 @@ Here is an example, make sure you've installed Djask globally through ``pipx`` o
 
       .. code-block:: text
 
-         ~ $ djask createapp myapp
+         ~ $ djask create-app myapp
+         Djask app 'myapp' created ✔
          ~ $ cd myapp
          ~/myapp $ ls
          myapp  requirements  tests  wsgi.py
@@ -51,9 +52,55 @@ Here is an example, make sure you've installed Djask globally through ``pipx`` o
       .. code-block:: text
 
          ~ >
-         ~ > djask createapp myapp
+         ~ > djask create-app myapp
+         Djask app 'myapp' created ✔
+         ~ > cd myapp
          ~\myapp > ls
          myapp\
          requirements\
          tests\
          wsgi.py
+
+Creating a new blueprint
+========================
+
+Djask CLI provides ``djask create-bp`` for you to create a new blueprint from the template.
+
+
+.. tabs::
+
+   .. group-tab:: Mac OS X | Linux
+
+      .. code-block:: text
+
+         ~ $ cd myapp
+         ~/myapp $ ls
+         myapp  requirements  tests  wsgi.py
+         ~/myapp $ djask create-bp auth
+         Blueprint 'auth' created ✔
+         ~/myapp $ ls myapp
+         auth __init__.py settings.py templates
+         ~/myapp $ ls myapp/auth
+         __init__.py  views.py
+
+
+   .. group-tab:: MS-Windows
+
+      .. code-block:: text
+
+         ~ > cd myapp
+         ~\myapp > ls
+         myapp\
+         requirements\
+         tests\
+         wsgi.py
+         ~\myapp > djask create-bp auth
+         Blueprint 'auth' created ✔
+         ~\myapp > ls myapp
+         auth\
+         templates\
+         __init__.py
+         settings.py
+         ~\myapp > ls myapp/auth
+         __init__.py
+         views.py

@@ -22,6 +22,7 @@ User's Guide
 .. toctree::
    quickstart
    models_and_web_api
+   cli
 
 
 API Reference

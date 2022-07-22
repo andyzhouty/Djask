@@ -3,6 +3,7 @@ pallets-sphinx-themes
 sphinx
 sphinx-tabs
 sphinxcontrib-applehelp
+sphinx-autobuild
 sphinxcontrib-devhelp
 sphinxcontrib-htmlhelp
 sphinxcontrib-jsmath
