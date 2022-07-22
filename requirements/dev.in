@@ -2,5 +2,6 @@
 -r tests.in
 -r typing.in
 -r linting.in
+-r coloring.in
 pip-compile-multi
 pre-commit

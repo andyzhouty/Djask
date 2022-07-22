@@ -29,6 +29,7 @@ from flask.helpers import get_env
 from flask.helpers import get_load_dotenv
 
 from .custom_commands import create_app_command
+from .custom_commands import create_bp_command
 
 
 try:
@@ -355,6 +356,7 @@ class DjaskGroup(FlaskGroup):
             self.add_command(shell_command)
             self.add_command(routes_command)
             self.add_command(create_app_command)
+            self.add_command(create_bp_command)
 
         self._loaded_plugin_commands = False
 
