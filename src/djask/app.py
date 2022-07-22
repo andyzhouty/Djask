@@ -61,7 +61,7 @@ class Djask(APIFlask, ModelFunctionalityMixin):
         swagger_path: t.Optional[str] = "/admin/api/docs",
         redoc_path: t.Optional[str] = "/admin/api/redoc",
         title: t.Optional[str] = "Djask API",
-        version: t.Optional[str] = "0.5.0",
+        version: t.Optional[str] = "0.1.0",
         *args,
         **kwargs,
     ):

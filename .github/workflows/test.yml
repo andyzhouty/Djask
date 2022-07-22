@@ -34,7 +34,7 @@ jobs:
       - name: Install deps
         run: |
           pip3 install -e .
-          pip3 install -r requirements/tests.txt
+          pip3 install -r requirements/dev.txt
       - name: Run pytest
         run: pytest
       - name: Generate xml coverage
