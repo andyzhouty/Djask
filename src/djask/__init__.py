@@ -11,7 +11,7 @@ from .globals import g as g
 from .globals import request as request
 from .globals import session as session
 
-__version__ = "0.6.0"
+__version__ = "0.6.1"
 __all__ = [
     "abort",
     "flash",

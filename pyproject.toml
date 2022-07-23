@@ -31,6 +31,7 @@ dependencies = [
     "python-dotenv>=0.19.2",
     "cookiecutter>=1.7.3",
     "authlib>=1.0.1",
+    "colorama>=0.4.5",
 ]
 description = "An enhanced django-like Flask"
 keywords = ["flask", "apiflask"]
@@ -38,7 +39,7 @@ license = {text = "MIT"}
 name = "Djask"
 readme = "README.md"
 requires-python = ">=3.8"
-version = "0.6.0"
+version = "0.6.1"
 
 [project.urls]
 Documentation = "https://djask.readthedocs.io"
