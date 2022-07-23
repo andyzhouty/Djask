@@ -28,7 +28,7 @@ def create_app_command(app_name: str) -> None:
         no_input=True,
         extra_context={"app_name": app_name},
     )
-    print(Fore.GREEN + f"Djask app '{app_name}' created ✔" + Style.RESET_ALL)
+    print(Fore.GREEN + f"Djask app '{app_name}' created ✓" + Style.RESET_ALL)
 
 
 @click.command("create-bp", short_help="Create a new Blueprint.")
@@ -71,6 +71,6 @@ def create_bp_command(bp_name: str, api: bool):
         Fore.GREEN
         + ("APIBlueprint" if api else "Blueprint")
         + f" '{bp_name}' "
-        + "created ✔"
+        + "created ✓"
         + Style.RESET_ALL
     )
