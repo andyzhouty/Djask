@@ -55,7 +55,7 @@ requires = ["pdm-pep517"]
 djask = "djask.cli:main"
 
 [tool.pytest.ini_options]
-addopts = "--cov=src/djask -n auto -p no:warnings"
+addopts = "--ignore=src/djask/project_template --cov=src/djask -n auto -p no:warnings"
 testpaths = ["tests"]
 
 [tool.coverage.run]
