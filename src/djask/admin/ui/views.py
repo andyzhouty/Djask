@@ -17,7 +17,7 @@ from ...helpers import get_model_form
 from .decorators import admin_required
 from .forms import LoginForm
 
-admin_bp = Blueprint("admin", __name__)
+admin_bp = Blueprint("admin", __name__, template_folder="../../templates")
 
 
 @admin_bp.route("/")
