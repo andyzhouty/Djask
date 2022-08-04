@@ -1,6 +1,7 @@
 import pytest
 
 from djask import Blueprint
+from djask.admin import Admin
 from djask.auth.models import User
 from djask.db.models import Model
 from djask.exceptions import ModelTypeError
@@ -60,7 +61,16 @@ def test_model_schema(admin, client):
     assert str(User.query.get(1).created_at)[:4] in rv_data
 
 
-def test_blueprints(admin, client):
+def test_blueprints(app, client):
+    # Avoid AssertionError: setup method 'register_blueprint' can no longer
+    # be called on the application.
+    admin_ext = Admin()
+    admin_ext.init_app(app)
+    db = app.db
+    user = User(username="test", is_admin=True)
+    user.set_password("test")
+    db.session.add(user)
+    db.session.commit()
     bp = Blueprint("bp", __name__)
 
     @bp.model
@@ -70,9 +80,10 @@ def test_blueprints(admin, client):
     assert TestModel in bp.models
     db.create_all()
     # Test register a blueprint multiple times
-    admin.register_blueprint(bp)
-    admin.register_blueprint(bp, url_prefix="/bp/", name="bp2")
+    app.register_blueprint(bp)
+    app.register_blueprint(bp, url_prefix="/bp/", name="bp2")
 
+    client.post("/admin/login", data={"username": "test", "password": "test"})
     resp = client.get("/admin/")
     rv_data = resp.get_data(as_text=True)
     assert "bp" in rv_data
