@@ -84,6 +84,8 @@ sphinxcontrib-serializinghtml==1.1.5
     # via
     #   -r docs/requirements.in
     #   sphinx
+tomli==2.0.1
+    # via -r docs/requirements.in
 tornado==6.2
     # via livereload
 urllib3==1.26.11

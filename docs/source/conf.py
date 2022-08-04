@@ -1,12 +1,16 @@
 import os
 import sys
 
-sys.path.insert(0, os.path.abspath("../src/djask"))
+import tomli
+
+sys.path.insert(0, os.path.abspath("../../src/djask"))
 
 project = "Djask"
-copyright = "2021, Andy Zhou"
+copyright = "2022, Andy Zhou"
 author = "Andy Zhou"
-release = "0.6.1"
+pyproject_file = open("../../pyproject.toml", "rb")
+release = tomli.load(pyproject_file)["project"]["version"]
+pyproject_file.close()
 
 extensions = [
     "sphinx.ext.autodoc",
