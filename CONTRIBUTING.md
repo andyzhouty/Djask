@@ -92,28 +92,18 @@ $ cd Djask
 $ git remote add upstream https://github.com/z-t-y/Djask
 ```
 
-- Create a virtual environment and install requirements:
+- Install dependencies using [PDM](https://pdm.fming.dev/):
 
-For Linux/macOS:
+If you haven't PDM installed yet, refer to
+<https://github.com/pdm-project/pdm#installation>
+to install it first.
 
-```
-python3 -m venv env
-source env/bin/activate
-python -m pip install --upgrade pip setuptools
-pip install -r requirements/dev.txt
-pip install -e .
-pre-commit install
-```
 
-For Windows:
+Then:
 
 ```
-python -m venv env
-env\Scripts\activate
-python -m pip install --upgrade pip setuptools
-pip install -r .\requirements\dev.txt
-pip install -e .
-pre-commit install
+pdm install --dev
+pdm run pre-commit install
 ```
 
 [_fork]: https://github.com/z-t-y/Djask/fork
