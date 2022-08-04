@@ -1,3 +1,6 @@
+from curses import meta
+from importlib import metadata
+
 from flask import abort as abort
 from flask import flash as flash
 from flask import redirect as redirect
@@ -11,7 +14,8 @@ from .globals import g as g
 from .globals import request as request
 from .globals import session as session
 
-__version__ = "0.6.1"
+
+__version__ = metadata.version("djask")
 __all__ = [
     "abort",
     "flash",
