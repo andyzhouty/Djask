@@ -1,15 +1,17 @@
 import os
 import os.path as path
+import sys
 import typing as t
 
+import click
 from apiflask import APIFlask
 from apiflask.exceptions import HTTPError
 from apispec import APISpec
 from flask import abort
 from flask import Blueprint
 from flask.helpers import get_debug_flag
-from flask.helpers import get_env
 from flask.helpers import get_load_dotenv
+from werkzeug.serving import is_running_from_reloader
 
 from . import cli
 from .auth.abstract import AbstractUser
@@ -234,18 +236,34 @@ class Djask(APIFlask, ModelFunctionalityMixin):
         automatic reloading as this is badly supported.  Instead you should
         be using the :command:`djask` command line script's ``run`` support.
         """
-        if os.environ.get("FLASK_RUN_FROM_CLI") == "true":
-            from flask.debughelpers import explain_ignored_app_run
+        # Ignore this call so that it doesn't start another server if
+        # the 'djask run' command is used.
+        if (
+            os.environ.get("FLASK_RUN_FROM_CLI") == "true"
+            or os.environ.get("DJASK_RUN_FROM_CLI") == "true"
+        ):
+            if not is_running_from_reloader():
+                click.secho(
+                    " * Ignoring a call to 'app.run()' that would block"
+                    " the current 'djask' CLI command.\n"
+                    "   Only call 'app.run()' in an 'if __name__ =="
+                    ' "__main__"\' guard.',
+                    fg="red",
+                )
 
-            explain_ignored_app_run()
             return
 
         if get_load_dotenv(load_dotenv):
-            cli.load_dotenv()
+            cli.load_dotenv()  # type: ignore
 
             # if set, let env vars override previous values
-            if "FLASK_ENV" in os.environ:
-                self.env = get_env()
+            if "FLASK_ENV" in os.environ or "DJASK_ENV" in os.environ:
+                print(
+                    "'FLASK_ENV' or 'DJASK_ENV' is deprecated and will not be used in"
+                    " Flask 2.3. Use 'DJASK_DEBUG' instead.",
+                    file=sys.stderr,
+                )
+                self.config["ENV"] = os.environ.get("FLASK_ENV") or "production"
                 self.debug = get_debug_flag()
             elif "FLASK_DEBUG" in os.environ:
                 self.debug = get_debug_flag()
@@ -277,7 +295,7 @@ class Djask(APIFlask, ModelFunctionalityMixin):
         options.setdefault("use_debugger", self.debug)
         options.setdefault("threaded", True)
 
-        cli.show_server_banner(self.env, self.debug, self.name, False)
+        cli.show_server_banner(self.debug, self.name)  # type: ignore
 
         from werkzeug.serving import run_simple
 
