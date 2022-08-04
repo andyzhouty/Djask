@@ -20,8 +20,13 @@ This section just give a simple explanation of the three commands.
 
 ``djask routes`` will print out all the routes for your application.
 
-``djask run`` will run your application. You can use the debugger with ``DJASK_ENV=development``
-or call ``djask run`` with ``--debug``.
+``djask run`` will run your application. You can call ``djask run`` with ``--debug``.
+
+.. warning:: The deprecated ``DJASK_ENV`` environment variable
+
+   In Flask 2.2.0, the ``FLASK_ENV`` env has been marked as deprecated.
+   Therefore, the ``DJASK_ENV`` in Djask project has been deprecated as well.
+   It will be removed as soon as it's removed by Flask.
 
 ``djask shell`` will run an interactive shell with application context loaded, which means
 the ``app`` object is available in the shell.
