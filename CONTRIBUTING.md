@@ -146,9 +146,7 @@ pytest
 ### Building the docs
 
 ```
-cd docs
-make html
-python3 -m http.server -d=build/html
+pdm docs
 ```
 
 Open `localhost:8000` in your browser to view the docs.

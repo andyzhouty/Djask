@@ -105,3 +105,8 @@ simple-app = { shell = """
 cd examples/simpleapp
 pdm run flask run
 """}
+docs = { shell = """
+cd docs
+make html
+pdm run python -m http.server -d=build/html
+"""}
