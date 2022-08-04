@@ -36,3 +36,6 @@ repos:
             docs/|\
             examples\
           )"
+        args:
+          - "--ignore-missing-imports"
+          - "--implicit-reexport"

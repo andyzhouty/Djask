@@ -1,6 +1,5 @@
 # Mostly copied from flask 2.2.1 with a few modifications
 # fmt: off
-# type: ignore
 from __future__ import annotations
 
 import ast
@@ -781,7 +780,7 @@ def routes_command(sort: str, all_methods: bool) -> None:
         max(len(methods) for methods in rule_methods),
         max(len(rule.rule) for rule in rules),
     )
-    widths = [max(len(h), w) for h, w in zip(headers, widths)]
+    widths = [max(len(h), w) for h, w in zip(headers, widths)]  # type: ignore
     row = "{{0:<{0}}}  {{1:<{1}}}  {{2:<{2}}}".format(*widths)
 
     click.echo(row.format(*headers).strip())

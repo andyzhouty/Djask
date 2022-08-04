@@ -4,8 +4,8 @@ import shutil
 
 from djask.admin.cli import create_superuser
 from djask.auth.models import User
-from djask.cli import create_app_command
-from djask.cli import create_bp_command
+from djask.custom_commands import create_app_command
+from djask.custom_commands import create_bp_command
 from djask.exceptions import AppDirectoryNotFoundError
 
 
