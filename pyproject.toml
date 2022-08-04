@@ -37,7 +37,7 @@ license = { text = "MIT" }
 name = "Djask"
 readme = "README.md"
 requires-python = ">=3.8"
-version = "0.6.1"
+version = "0.6.2"
 
 [project.urls]
 Documentation = "https://djask.readthedocs.io"
@@ -88,6 +88,7 @@ docs = [
   "sphinxcontrib-qthelp>=1.0.3",
   "sphinxcontrib-serializinghtml>=1.1.5",
   "pip-tools>=6.8.0",
+  "tomli>=2.0.1",
 ]
 dev = ["pre-commit>=2.20.0"]
 testing = ["pytest>=7.1.2", "pytest-cov>=3.0.0", "pytest-xdist>=2.5.0"]
@@ -104,9 +105,9 @@ pip-compile docs/requirements.in \
 simple-app = { shell = """
 cd examples/simpleapp
 pdm run flask run
-"""}
+""" }
 docs = { shell = """
 cd docs
 make html
 pdm run python -m http.server -d=build/html
-"""}
+""" }
