@@ -1,4 +1,3 @@
-from curses import meta
 from importlib import metadata
 
 from flask import abort as abort
