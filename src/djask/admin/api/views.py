@@ -32,7 +32,7 @@ def user_api(uid: int):
         user = g.User.query.get(uid)
         return user.to_dict()
 
-    elif request.method == "DELETE":
+    elif request.method == "DELETE":  # pragma: no cover
         user = g.User.query.get_or_404(uid)
         db.session.delete(user)
         db.session.commit()
@@ -99,7 +99,7 @@ def model_api(model: str, model_id: int):
         instance = model.query.get(model_id)
         return instance.to_dict()
 
-    elif request.method == "DELETE":
+    elif request.method == "DELETE":  # pragma: no cover
         model = current_app.get_model_by_name(model)
         instance = model.query.get_or_404(model_id)
         db.session.delete(instance)

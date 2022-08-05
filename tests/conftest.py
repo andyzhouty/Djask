@@ -8,7 +8,7 @@ from djask.auth.models import User
 @pytest.fixture
 def app():
     app = Djask(__name__, {"TESTING": True, "WTF_CSRF_ENABLED": False})
-    ctx = app.app_context()
+    ctx = app.test_request_context()
     ctx.push()
     db = app.db
     db.create_all()

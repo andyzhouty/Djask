@@ -20,8 +20,12 @@ login_manager = LoginManager()
 
 
 @login_manager.user_loader
-def load_user(user_id: int):
-    return current_app.config["AUTH_MODEL"].query.get(user_id)
+def load_user(
+    user_id: str,  # according to flask-login's docs, the user_id is a string.
+):  # pragma: no cover
+    if not user_id.isdecimal():
+        return None
+    return current_app.config["AUTH_MODEL"].query.get(int(user_id))
 
 
 class AdminModeError(Exception):

@@ -12,12 +12,8 @@ def test_register_invalid_model(admin, client):
     class InvalidModel:
         pass
 
-    try:
+    with pytest.raises(type(ModelTypeError)):
         admin.register_model(InvalidModel)
-    except TypeError as e:
-        assert e == ModelTypeError
-    else:
-        pytest.fail("Should raise a TypeError")
 
 
 def test_register_model(admin, client):

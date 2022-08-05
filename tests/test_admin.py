@@ -1,3 +1,5 @@
+from flask_login import current_user
+
 from djask.admin.ext import Admin
 from djask.auth.models import User
 from djask.extensions import db
@@ -20,6 +22,7 @@ def test_frontend_pages(admin, client):
 
 
 def test_admin_login(admin, client):
+    assert current_user is not None
     client.get("/admin/logout")  # log out first
 
     # add a user without admin access
