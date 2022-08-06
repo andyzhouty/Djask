@@ -30,4 +30,4 @@ jobs:
         run: pdm run coverage xml
       - name: Upload coverage to codecov
         if: ${{ matrix.python == 3.10 && matrix.os == 'ubuntu-latest' }}
-        uses: codecov/codecov-action@v2
+        uses: codecov/codecov-action@v3
