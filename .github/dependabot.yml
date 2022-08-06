@@ -6,5 +6,5 @@ updates:
       interval: "weekly"
       time: "08:00"
     commit-message:
-      prefix: "chore(ci-deps)"
+      prefix: "chore"
       include: "scope"
