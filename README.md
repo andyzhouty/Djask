@@ -6,7 +6,8 @@
 
 ![Test Status](https://github.com/z-t-y/Djask/workflows/Test/badge.svg)
 [![pre-commit.ci status](https://results.pre-commit.ci/badge/github/z-t-y/Djask/main.svg)](https://results.pre-commit.ci/latest/github/z-t-y/Djask/main)
-![Codecov](https://img.shields.io/codecov/c/gh/z-t-y/Djask)
+[![codecov](https://codecov.io/gh/z-t-y/Djask/branch/main/graph/badge.svg?token=B39RLPDL69)](https://codecov.io/gh/z-t-y/Djask)
+![Supported Python Versions](https://img.shields.io/badge/python-3.8%20|%203.9%20|%203.10-blue?logo=python&logoColor=white)
 [![Discord](https://img.shields.io/discord/932075032409149570?color=purple&label=discord&logo=discord&logoColor=white)](https://discord.gg/GtFcKUjmk3)
 
 </div>
@@ -15,11 +16,18 @@ Djask is a web framework for python which stands on the top of [Flask](https://f
 
 ## Features
 
-- Web API Support
-- Integrated Admin Interface
+- Web API support
+- Integrated admin interface
 - Automatic OpenAPI spec generation
+- Automatic Web API generation for data models
+- New project generation
 
-More features to be done...
+## Features to be done
+
+- Database migration
+- Permission management
+- User roles
+...
 
 ## Documentation
 
@@ -33,3 +41,7 @@ You can have these documentations for more information:
 - [Flask](https://flask.palletsprojects.com)
 - [SQLAlchemy](https://www.sqlalchemy.org)
 - [Flask-SQLAlchemy](https://flask-sqlalchemy.palletsprojects.com)
+
+## Contributing guide
+
+Please refer to [CONTRIBUTING.md](./CONTRIBUTING.md)
