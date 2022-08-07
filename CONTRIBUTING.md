@@ -68,7 +68,7 @@ fails without your patch.
 - Update any relevant docs pages and docstrings. Docs pages and
 docstrings should be wrapped at 72 characters.
 - Add an entry in `CHANGES.md`. Use the same style as other
-entries. Also include `Version Changed` or `Version Added` section
+entries. Also include `.. versionchanged` or `.. versionadded` section
 in relevant docstrings.
 
 
@@ -137,7 +137,7 @@ $ git push --set-upstream origin your-branch-name
 
 ### Running the tests
 
-Run the basic test suite with pytest:
+Run the test suite with pytest:
 
 ```
 pytest
