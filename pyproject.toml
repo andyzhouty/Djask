@@ -101,13 +101,18 @@ pip-compile docs/requirements.in \
 --no-emit-index-url \
 > docs/requirements.txt \
 """ }
+
+[tool.pdm.scripts.simple-app]
 # You should call `simple-app` command from project root.
-simple-app = { shell = """
+shell = """
 cd examples/simpleapp
 pdm run flask run
-""" }
-docs = { shell = """
+"""
+
+[tool.pdm.scripts.docs]
+# You should call `docs` command from project root.
+shell = """
 cd docs
 make html
 pdm run python -m http.server -d=build/html
-""" }
+"""
