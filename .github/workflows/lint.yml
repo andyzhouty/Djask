@@ -1,0 +1,22 @@
+name: Lint
+
+on: [push, pull_request]
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          submodules: recursive
+      - name: Set up PDM
+        uses: pdm-project/setup-pdm@main
+        with:
+          python-version: "3.10"
+          architecture: x64
+      # pre-commit.ci doesn't have access to the internet
+      # so I have to run it in github actions
+      - name: Install pre-commit
+        run: pip3 install pre-commit
+      - name: Run pre-commit
+        run: pre-commit run --all-files

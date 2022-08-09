@@ -87,17 +87,18 @@ docs = [
     "sphinxcontrib-qthelp>=1.0.3",
     "sphinxcontrib-serializinghtml>=1.1.5",
     "tomli>=2.0.1",
-    "pip-tools>=6.8.0",
 ]
 dev = ["pre-commit>=2.20.0"]
 testing = ["pytest>=7.1.2", "pytest-cov>=3.0.0", "pytest-xdist>=2.5.0"]
 
 [tool.pdm.scripts.doc-deps]
 shell = """\
-pdm run \
-pip-compile docs/requirements.in \
---no-emit-index-url \
-> docs/requirements.txt \
+pdm export \
+-G docs \
+--no-default \
+-f requirements \
+-o docs/requirements.txt \
+--without-hashes
 """
 
 [tool.pdm.scripts.simple-app]
