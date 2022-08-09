@@ -121,6 +121,13 @@ $ git checkout -b your-branch-name upstream/main
 
 - Using your favorite editor, make your changes,
 [committing as you go][_commit]. Make sure the commit message follows [conventional commit](https://www.conventionalcommits.org/en/v1.0.0/).
+
+The `pdm-export` pre-commit hook is a bit slow.
+If you didn't change anything in the `docs` group in pyproject.toml,
+you can run `SKIP=pdm-export git commit -m "your message"`
+when committing to skip the check.
+GitHub Actions will check this for you when you open a PR.
+
 - Include tests that cover any code changes you make. Make sure the
 test fails without your patch. Run the tests as described below.
 - Push your commits to your fork on GitHub:
