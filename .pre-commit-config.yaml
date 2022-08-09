@@ -39,3 +39,17 @@ repos:
         args:
           - "--ignore-missing-imports"
           - "--implicit-reexport"
+  - repo: https://github.com/pdm-project/pdm
+    rev: 2.1.1
+    hooks:
+      - id: pdm-export
+        args:
+          - "-G"
+          - "docs"
+          - "--no-default"
+          - "-f"
+          - "requirements"
+          - "-o"
+          - "docs/requirements.txt"
+          - "--without-hashes"
+        files: ^pdm.lock$

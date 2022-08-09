@@ -87,20 +87,10 @@ docs = [
   "sphinxcontrib-jsmath>=1.0.1",
   "sphinxcontrib-qthelp>=1.0.3",
   "sphinxcontrib-serializinghtml>=1.1.5",
-  "pip-tools>=6.8.0",
   "tomli>=2.0.1",
 ]
 dev = ["pre-commit>=2.20.0"]
 testing = ["pytest>=7.1.2", "pytest-cov>=3.0.0", "pytest-xdist>=2.5.0"]
-
-[tool.pdm.scripts]
-# Generate requirements.txt for docs.
-doc-deps = { shell = """\
-pdm run \
-pip-compile docs/requirements.in \
---no-emit-index-url \
-> docs/requirements.txt \
-""" }
 
 [tool.pdm.scripts.simple-app]
 # You should call `simple-app` command from project root.
