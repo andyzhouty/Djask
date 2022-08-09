@@ -4,9 +4,11 @@
 
 <img src="https://raw.githubusercontent.com/z-t-y/Djask/main/icon/djask.svg" width="200" alt="Djask">
 
-![Test Status](https://github.com/z-t-y/Djask/workflows/Test/badge.svg)
-[![pre-commit.ci status](https://results.pre-commit.ci/badge/github/z-t-y/Djask/main.svg)](https://results.pre-commit.ci/latest/github/z-t-y/Djask/main)
+[![Test Status](https://github.com/z-t-y/Djask/workflows/Test/badge.svg)](https://github.com/z-t-y/Djask/actions/workflows/test.yml)
+[![Lint Status](https://github.com/z-t-y/Djask/workflows/Lint/badge.svg)](https://github.com/z-t-y/Djask/actions/workflows/lint.yml)
 [![codecov](https://codecov.io/gh/z-t-y/Djask/branch/main/graph/badge.svg?token=B39RLPDL69)](https://codecov.io/gh/z-t-y/Djask)
+
+
 ![Supported Python Versions](https://img.shields.io/badge/python-3.8%20|%203.9%20|%203.10-blue?logo=python&logoColor=white)
 [![Discord](https://img.shields.io/discord/932075032409149570?color=purple&label=discord&logo=discord&logoColor=white)](https://discord.gg/GtFcKUjmk3)
 
