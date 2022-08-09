@@ -76,21 +76,29 @@ ignore_missing_imports = true
 [tool.pdm.dev-dependencies]
 linting = ["flake8>=5.0.4", "black>=22.6.0", "mypy>=0.971"]
 docs = [
-  "alabaster>=0.7.12",
-  "pallets-sphinx-themes>=2.0.2",
-  "sphinx>=5.1.1",
-  "sphinx-tabs>=3.4.1",
-  "sphinxcontrib-applehelp>=1.0.2",
-  "sphinx-autobuild>=2021.3.14",
-  "sphinxcontrib-devhelp>=1.0.2",
-  "sphinxcontrib-htmlhelp>=2.0.0",
-  "sphinxcontrib-jsmath>=1.0.1",
-  "sphinxcontrib-qthelp>=1.0.3",
-  "sphinxcontrib-serializinghtml>=1.1.5",
-  "tomli>=2.0.1",
+    "pallets-sphinx-themes>=2.0.2",
+    "sphinx>=5.1.1",
+    "sphinx-tabs>=3.4.1",
+    "sphinxcontrib-applehelp>=1.0.2",
+    "sphinx-autobuild>=2021.3.14",
+    "sphinxcontrib-devhelp>=1.0.2",
+    "sphinxcontrib-htmlhelp>=2.0.0",
+    "sphinxcontrib-jsmath>=1.0.1",
+    "sphinxcontrib-qthelp>=1.0.3",
+    "sphinxcontrib-serializinghtml>=1.1.5",
+    "tomli>=2.0.1",
+    "pip-tools>=6.8.0",
 ]
 dev = ["pre-commit>=2.20.0"]
 testing = ["pytest>=7.1.2", "pytest-cov>=3.0.0", "pytest-xdist>=2.5.0"]
+
+[tool.pdm.scripts.doc-deps]
+shell = """\
+pdm run \
+pip-compile docs/requirements.in \
+--no-emit-index-url \
+> docs/requirements.txt \
+"""
 
 [tool.pdm.scripts.simple-app]
 # You should call `simple-app` command from project root.

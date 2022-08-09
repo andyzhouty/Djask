@@ -39,17 +39,13 @@ repos:
         args:
           - "--ignore-missing-imports"
           - "--implicit-reexport"
-  - repo: https://github.com/pdm-project/pdm
-    rev: 2.1.1
+  - repo: https://github.com/jazzband/pip-tools
+    rev: 6.8.0
     hooks:
-      - id: pdm-export
+      - id: pip-compile
+        files: ^docs/requirements\.(in|txt)$
         args:
-          - "-G"
-          - "docs"
-          - "--no-default"
-          - "-f"
-          - "requirements"
+          - "docs/requirements.in"
+          - "--no-emit-index-url"
           - "-o"
           - "docs/requirements.txt"
-          - "--without-hashes"
-        files: ^pdm.lock$
