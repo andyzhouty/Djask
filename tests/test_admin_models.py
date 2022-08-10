@@ -8,11 +8,11 @@ from djask.exceptions import ModelTypeError
 from djask.extensions import db
 
 
-def test_register_invalid_model(admin, client):
+def test_register_invalid_model(admin):
     class InvalidModel:
         pass
 
-    with pytest.raises(type(ModelTypeError)):
+    with pytest.raises(ModelTypeError):
         admin.register_model(InvalidModel)
 
 
