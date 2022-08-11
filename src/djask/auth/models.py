@@ -1,5 +1,6 @@
 from ..db import Model
 from .abstract import AbstractUser
+from .permission import Permission as Permission  # noqa
 
 
 class User(AbstractUser, Model):

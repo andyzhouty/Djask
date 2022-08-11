@@ -1,7 +1,10 @@
 from __future__ import annotations
 
+from base64 import b64decode
+from base64 import b64encode
 from time import time
 from typing import Any
+from warnings import warn
 
 import sqlalchemy as sa
 from apiflask.exceptions import abort
@@ -12,6 +15,8 @@ from werkzeug.security import check_password_hash
 from werkzeug.security import generate_password_hash
 
 from ..extensions import db
+from .permission import Permission
+from .permission import PermissionExistingWarning
 
 
 class AbstractUser(AbstractConcreteBase, UserMixin):
@@ -21,6 +26,10 @@ class AbstractUser(AbstractConcreteBase, UserMixin):
     It enables you to define a user model other than the
     :class:`~djask.auth.models.User` model below.
 
+    .. versionchanged:: 0.7.0
+
+        Add permissions
+
     .. versionadded:: 0.1.0
     """
 
@@ -29,7 +38,14 @@ class AbstractUser(AbstractConcreteBase, UserMixin):
     name = sa.Column(sa.String(128))
     email = sa.Column(sa.String(256), unique=True)
     password_hash = sa.Column(sa.String(256))
+    permissions = sa.Column(sa.Text)
     is_admin = sa.Column(sa.Boolean, default=False)
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for mapper in db.Model.registry.mappers:
+            print(mapper.class_.__tablename__)
+            self.add_permission(Permission(mapper.class_.__tablename__, "read"))
 
     def __repr__(self):  # pragma: no cover
         return f"<User {self.username}>"
@@ -80,4 +96,21 @@ class AbstractUser(AbstractConcreteBase, UserMixin):
                 abort(400, "You should not hard-code the password hash.")
             self.__setattr__(attr, value)
         db.session.add(self)
+        db.session.commit()
+
+    def has_permission(self, perm: Permission) -> bool:
+        """Check if a permission is in a user's permissions"""
+        return perm in (
+            b64decode(bytes(self_permission_b64, encoding="utf-8")).decode()
+            for self_permission_b64 in self.permissions.split(",")
+        )
+
+    def add_permission(self, perm: Permission) -> None:
+        """Add a permission to a user"""
+        if self.permissions is not None and self.has_permission(perm):
+            warn(PermissionExistingWarning(self.username, perm))
+        to_append = b64encode(bytes(perm, encoding="utf-8")).decode() + ","
+        self.permissions = (
+            "" if self.permissions is None else self.permissions + to_append
+        )
         db.session.commit()

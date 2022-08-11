@@ -6,6 +6,7 @@ from djask import Djask
 from djask.admin.ext import Admin
 from djask.auth.abstract import AbstractUser
 from djask.db.models import Model
+from djask.exceptions import InvalidAuthModelError
 
 
 class CustomUser(AbstractUser, Model):
@@ -17,6 +18,14 @@ class Article(Model):
     title = sa.Column(sa.String(255))
     author = sa.orm.relationship("CustomUser", back_populates="articles")
     author_id = sa.Column(sa.ForeignKey("customuser.id"))
+
+
+def test_invalid_auth_model():
+    with pytest.raises(InvalidAuthModelError):
+        Djask(
+            __name__,
+            {"TESTING": True, "WTF_CSRF_ENABLED": False, "AUTH_MODEL": Article},
+        )
 
 
 @pytest.fixture

@@ -1,4 +1,12 @@
-class AuthModelInvalid(TypeError):
+class ModelNotFoundError(Exception):
+    def __init__(self, model: str) -> None:
+        super().__init__(
+            f"The '{model}' is neither a table name nor a model class name"
+            ", check if there is a typo."
+        )
+
+
+class InvalidAuthModelError(TypeError):
     def __init__(self) -> None:
         super().__init__(
             "The auth model you passed to the app config "

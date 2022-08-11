@@ -16,7 +16,7 @@ from werkzeug.serving import is_running_from_reloader
 from . import cli
 from .auth.abstract import AbstractUser
 from .blueprints import Blueprint as DjaskBlueprint
-from .exceptions import AuthModelInvalid
+from .exceptions import InvalidAuthModelError
 from .extensions import bootstrap
 from .extensions import compress
 from .extensions import csrf
@@ -102,10 +102,8 @@ class Djask(APIFlask, ModelFunctionalityMixin):
             from .auth.models import User
 
             self.config["AUTH_MODEL"] = User
-        elif not isinstance(
-            self.config.get("AUTH_MODEL"), type(AbstractUser)
-        ):  # pragma: no cover
-            raise AuthModelInvalid
+        elif not issubclass(self.config.get("AUTH_MODEL"), AbstractUser):
+            raise InvalidAuthModelError
 
         self.jinja_env.globals["djask_bootstrap_icons"] = _initialize_bootstrap_icons
 
