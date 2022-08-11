@@ -46,6 +46,7 @@ class AbstractUser(AbstractConcreteBase, UserMixin):
         for mapper in db.Model.registry.mappers:
             print(mapper.class_.__tablename__)
             self.add_permission(Permission(mapper.class_.__tablename__, "read"))
+        db.session.commit()
 
     def __repr__(self):  # pragma: no cover
         return f"<User {self.username}>"
@@ -113,4 +114,3 @@ class AbstractUser(AbstractConcreteBase, UserMixin):
         self.permissions = (
             "" if self.permissions is None else self.permissions + to_append
         )
-        db.session.commit()
