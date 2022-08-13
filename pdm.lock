@@ -5,7 +5,7 @@ summary = "A configurable sidebar-enabled Sphinx theme"
 
 [[package]]
 name = "apiflask"
-version = "1.1.1"
+version = "1.1.2"
 requires_python = ">=3.7"
 summary = "A lightweight web API framework based on Flask and marshmallow-code projects."
 dependencies = [
@@ -806,9 +806,9 @@ content_hash = "sha256:ccd487baeb8768264ff9d48013ea7f27c58b6ec4ed74ea75bd607054f
     {url = "https://files.pythonhosted.org/packages/10/ad/00b090d23a222943eb0eda509720a404f531a439e803f6538f35136cae9e/alabaster-0.7.12-py2.py3-none-any.whl", hash = "sha256:446438bdcca0e05bd45ea2de1668c1d9b032e1a9154c2c259092d77031ddd359"},
     {url = "https://files.pythonhosted.org/packages/cc/b4/ed8dcb0d67d5cfb7f83c4d5463a7614cb1d078ad7ae890c9143edebbf072/alabaster-0.7.12.tar.gz", hash = "sha256:a661d72d58e6ea8a57f7a86e37d86716863ee5e92788398526d58b26a4e4dc02"},
 ]
-"apiflask 1.1.1" = [
-    {url = "https://files.pythonhosted.org/packages/43/10/51203e2f8403eee80cd0803b9e4b7d813f36c4e7a9f99fe4a181e865bba4/APIFlask-1.1.1.tar.gz", hash = "sha256:be7470eb60db23a69c1d950d7887584bf266adca4d8069e4de58fd51b2385861"},
-    {url = "https://files.pythonhosted.org/packages/87/1c/36ecbb71b99468caf5b4e45d3971b9205ec9c1a5b43607bf34082b55a3a0/APIFlask-1.1.1-py3-none-any.whl", hash = "sha256:38a659c4896b8e0893dde7e4ef47660a06a4ee26fcea0d454b2e69feaa6981b3"},
+"apiflask 1.1.2" = [
+    {url = "https://files.pythonhosted.org/packages/2d/69/b7edb767a8b6adaeb4bd2b26204451020eef79c4761e67aec5b0e6ff09b3/APIFlask-1.1.2-py3-none-any.whl", hash = "sha256:b65dc1e29810844ce6eb73e7310765c051da99af9055c4f5c3061af490e8a1e5"},
+    {url = "https://files.pythonhosted.org/packages/52/87/89d1d69a669393c30b7027af91f83ff82f08d988f299b5756ad1b43be43d/APIFlask-1.1.2.tar.gz", hash = "sha256:16fc7853f94070fa1029dc5dafe9592d36155c0764bfc6a8598ddfefd3788550"},
 ]
 "apispec 5.2.2" = [
     {url = "https://files.pythonhosted.org/packages/39/bb/2910f46ecba16334c19e4f02906b1fdb0e69f9c3fd9a21afcf86c45ba89e/apispec-5.2.2.tar.gz", hash = "sha256:6ea6542e1ebffe9fd95ba01ef3f51351eac6c200a974562c7473059b9cd20aa7"},
